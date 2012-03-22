@@ -11,7 +11,6 @@
 \usepackage[hang,small]{caption} % makes captions look nicer
 \usepackage{graphicx}
 \usepackage[margin=20mm]{geometry}
-\usepackage{hyperref} % for hyperlinks
 
 % for code listings
 \usepackage{listings}
@@ -35,6 +34,9 @@
   breakatwhitespace=true
   tabsize=3
 }
+
+\usepackage{hyperref} % for hyperlinks
+
 
 \title{The Intelligent Image}
 \author{Max Jaderberg\\
@@ -98,7 +100,7 @@ The aim of the project is to work towards recognising every object on Wikipedia,
 %-------------------------------
 \chapter{Data}
 \label{chpt:data}
-There are three main datasets used by the application: the images from Wikipedia used to build the database of objects (Section~\ref{sec:modelimages}), the images from Microsoft Bing used for the Turbo-boosting (Section~\ref{sec:turboimages}) and the images from Google Images used for validation and testing (Section~\ref{sec:validationimages}). This chapter describes the various datasets and how they are acquired.
+There are three main datasets used by the application: the images from Wikipedia used to build the database of objects (Section~\ref{sec:modelimages}), the images from Microsoft Bing used for the Turbo-boosting (Section~\ref{sec:turboimages}) and the images from Google Images used for validation and testing (Section~\ref{sec:validationimages}). All images that are used are resized so that their larger dimension does not exceed 1000 pixels to reduce storage space. This chapter describes the various datasets and how they are acquired.
 
 \section{Model Images}
 \label{sec:modelimages}
@@ -162,6 +164,11 @@ soup = _get_content_body(soup)
 image_links = _get_image_links(soup)
 \end{lstlisting}
 
+The output of the crawler is a CSV file of the image urls and the object class the images belong to. The object class is simply named from the url of the Wikipedia page (for example all images appearing on \url{http://en.wikipedia.org/wiki/Tower_Bridge} will have class \lstinline!Tower_Bridge!).
+
+The images mentioned in the CSV file produced by the crawler are then downloaded to local storage. Each image that appears on Wikipedia has a ``file page'' which displays the image along with properties and metadata on the image\footnote{For an example see \url{http://en.wikipedia.org/wiki/File:Tower_bridge_London_Twilight_-_November_2006.jpg}}. This ``file page'' is visited for each image, and the page is parsed to extract the storage url of the image as well as its file format and original size. As the application resizes all images that exceed 1000 pixels to 1000 pixels, it is a waste of time and storage space to download the original image and later resize it. Instead, Wikipedia's inbuilt thumbnail engine is exploited, which resizes the image on Wikipedia's servers and allows you to download a thumbnail of a user selected width\footnote{\url{http://www.algorithm.co.il/blogs/programming/wikipedia-images/} describes how this is exploited}. The thumbnail images are downloaded and are saved in a folder named after it's class. Therefore if the original image on Wikipedia exceeds 1000 pixels, the 1000 pixel thumbnail version is downloaded instead. The result is a directory containing a folder for each class, within which are the images for that class.
+
+This process creates a structured dataset of model images from the Wikipedia pages visited. For the List of Structures in London dataset used, there were 701 classes which had 3963 images associated with them.
 
 
 \section{Turbo-boosting Images}
