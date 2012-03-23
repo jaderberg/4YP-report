@@ -201,11 +201,11 @@ Bing image search takes a number of keywords - the query - and returns a list of
 \begin{figure}[htb]
 \centering 
 \includegraphics[width=0.9\textwidth]{images/bing-images.png}
-\caption{The browser interface of Bing image search which is replicated in the API query URL.}
+\caption{The browser interface of Bing image search which is replicated in the API query URL. Note the filters in the left column.}
 \label{fig:bingimages}
 \end{figure}
 
-All the parameters that appear in the web interface for Bing image search can be replicated in the API request with query parameters. A MATLAB script is used to consume the API and download the images. Listing~\ref{lst:bingapi} shows the URL used for the API call to get the search results for the images for a particular class. The URL encoded\footnote{URL encoding ensures that all characters are in a form which can be used as a URL. See \url{http://www.w3schools.com/tags/ref_urlencode.asp} for more information.} class name is used as the query. For example, for the class \lstinline!Tower_Bridge!, the variable \lstinline!search_term! appearing in Listing~\ref{lst:bingapi} will be set to \lstinline!"Tower%20Bridge"!. Both the ``Style'' and ``Size'' image filters are set to ``Photo'' and ``Large'' respectively by setting the \lstinline!Image.Filters! parameter.
+All the parameters that appear in the web interface for Bing image search can be replicated in the API request with query parameters. A MATLAB script is used to consume the API and download the images. Listing~\ref{lst:bingapi} shows the URL used for the API call to get the search results for the images for a particular class. The URL encoded\footnote{URL encoding ensures that all characters are in a form which can be used as a URL. See \url{http://www.w3schools.com/tags/ref_urlencode.asp} for more information.} class name is used as the query. For example, for the class \lstinline!Tower_Bridge!, the variable \lstinline!search_term! appearing in Listing~\ref{lst:bingapi} will be set to \lstinline!"Tower%20Bridge"! (note \lstinline{" "} is URL encoded as \lstinline{"%20"}). Both the ``Style'' and ``Size'' image filters are set to ``Photo'' and ``Large'' respectively by setting the \lstinline!Image.Filters! parameter.
 
 \linespread{1} % single line spacing
 \lstset{language=Matlab,caption=A Bing image search API request.,label=lst:bingapi}
