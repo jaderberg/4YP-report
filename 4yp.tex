@@ -9,6 +9,7 @@
 \linespread{2} % double line spacing
 \usepackage{amssymb,amsmath}
 \usepackage[hang,small]{caption} % makes captions look nicer
+\usepackage{subfig}
 \usepackage{graphicx}
 \usepackage[margin=20mm]{geometry}
 
@@ -122,20 +123,14 @@ There are three main datasets used by the application: the images from Wikipedia
 
 \section{Model Images}
 \label{sec:modelimages}
-The model comprises of a dataset of images that depict the objects that are to be able to be recognised. To enable an object to be recognised, the object must be represented by one or more images contained within the model. For example, the object ``Tower Bridge'' will be best represented by multiple images of Tower Bridge taken at different angles and focussing on different features. Wikipedia is used as the source of the images to represent the objects described by the Wikipedia pages. The resulting representations work well - an example object representation is shown in Figure~\ref{fig:towerbridge}.
-
-\begin{figure}[htb]
-\centering 
-\includegraphics{images/intimage.png}
-\caption{The representation of the object ``Tower Bridge'' by images}
-\label{fig:towerbridge}
-\end{figure}
+The model comprises of a dataset of images that depict the objects that are to be able to be recognised. 
 
 Each page of Wikipedia that contains images represents an object which can be matched. The database of images which is used to build the model is simply created by visiting each page on Wikipedia for the objects desired and downloading the relevant images contained on the web page, labelling those images as being associated with the object. A script automates this process of building the model database.
 
 \begin{figure}[htb]
 \centering 
-\includegraphics{images/intimage.png}
+\subfloat[]{\includegraphics[width=0.5\textwidth]{images/wikipedia-article1.png}}
+\subfloat[]{\includegraphics[width=0.5\textwidth]{images/wikipedia-article2.png}}
 \caption{The Wikipedia page for ``Tower Bridge''. Note the images contained are those used in the model to represent this object.}
 \label{fig:wikipage}
 \end{figure}
@@ -205,7 +200,7 @@ Bing image search takes a number of keywords - the query - and returns a list of
 
 \begin{figure}[htb]
 \centering 
-\includegraphics{images/intimage.png}
+\includegraphics[width=0.9\textwidth]{images/bing-images.png}
 \caption{The browser interface of Bing image search which is replicated in the API query URL.}
 \label{fig:bingimages}
 \end{figure}
