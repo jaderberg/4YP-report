@@ -18,7 +18,7 @@
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
-\lstset{frame=tb,
+\lstset{frame=single,
   language=Java,
   aboveskip=3mm,
   belowskip=3mm,
@@ -100,11 +100,29 @@ The aim of the project is to work towards recognising every object on Wikipedia,
 %-------------------------------
 \chapter{Data}
 \label{chpt:data}
-There are three main datasets used by the application: the images from Wikipedia used to build the database of objects (Section~\ref{sec:modelimages}), the images from Microsoft Bing used for the Turbo-boosting (Section~\ref{sec:turboimages}) and the images from Google Images used for validation and testing (Section~\ref{sec:validationimages}). All images that are used are resized so that their larger dimension does not exceed 1000 pixels to reduce storage space. This chapter describes the various datasets and how they are acquired.
+There are three main datasets used by the application: the images from Wikipedia used to build the database of objects (Section~\ref{sec:modelimages}), the images from Microsoft Bing used for the Turbo-boosting (Section~\ref{sec:turboimages}) and the images from Google Images used for validation and testing (Section~\ref{sec:validationimages}). All images that are used are resized so that their larger dimension does not exceed 1000 pixels to reduce storage space and provide homogeneity for image size. This chapter describes the various datasets and how they are acquired. Table~\ref{tbl:data} gives an overview of the data used.
+
+\begin{table}[hbtp]
+\caption{A summary of the datasets.}
+\begin{center}
+\begin{tabular}{c|c|c|c|}
+\cline{2-4}
+ & Source &  \# Images &  \# Classes \\ 
+ \cline{1-4}
+\multicolumn{1}{|c|}{Model images} & Wikipedia & \texttt{3963} & \texttt{732} \\  
+\cline{1-4}
+\multicolumn{1}{|c|}{Turbo-boosting images} & Microsoft Bing & \texttt{18273} & \texttt{701} \\  
+\cline{1-4}
+\multicolumn{1}{|c|}{Validation images} & Google &  \texttt{701} & \texttt{294} \\  
+\cline{1-4}
+\end{tabular}
+\end{center}
+\label{tbl:data}
+\end{table}
 
 \section{Model Images}
 \label{sec:modelimages}
-The model comprises of a dataset of images which depict the objects that are to be able to be recognised. To enable an object to be recognised, the object must be represented by one or more images contained within the model. For example, the object ``Tower Bridge'' will be best represented by multiple images of Tower Bridge taken at different angles and focussing on different features. Wikipedia was used as the source of the images to represent the objects described by the Wikipedia pages. The resulting representations work well - an example object representation is shown in Figure~\ref{fig:towerbridge}.
+The model comprises of a dataset of images that depict the objects that are to be able to be recognised. To enable an object to be recognised, the object must be represented by one or more images contained within the model. For example, the object ``Tower Bridge'' will be best represented by multiple images of Tower Bridge taken at different angles and focussing on different features. Wikipedia is used as the source of the images to represent the objects described by the Wikipedia pages. The resulting representations work well - an example object representation is shown in Figure~\ref{fig:towerbridge}.
 
 \begin{figure}[htb]
 \centering 
@@ -113,7 +131,7 @@ The model comprises of a dataset of images which depict the objects that are to 
 \label{fig:towerbridge}
 \end{figure}
 
-Each page of Wikipedia that contains images represents an object which can be matched. The database of images which is used to build the model is simply created by visiting each page on Wikipedia for the objects desired and downloading the relevant images contained on the web page, labelling that image as being associated with the object. A script automates this process of building the model database.
+Each page of Wikipedia that contains images represents an object which can be matched. The database of images which is used to build the model is simply created by visiting each page on Wikipedia for the objects desired and downloading the relevant images contained on the web page, labelling those images as being associated with the object. A script automates this process of building the model database.
 
 \begin{figure}[htb]
 \centering 
@@ -122,13 +140,14 @@ Each page of Wikipedia that contains images represents an object which can be ma
 \label{fig:wikipage}
 \end{figure}
 
-To automate the downloading of object images from Wikipedia, Python\footnote{\url{http://www.python.org}} is used. WIkipedia offers a public application programming interface (API) over HTTP as it is built on the MediaWiki framework\footnote{The MediaWiki framework was originally developed for Wikipedia and provides an API over HTTP as standard. \url{http://www.mediawiki.org/wiki/API} provides documentation for the API.}, however it is cumbersome and not easy to consume. Instead, a web crawler was written to explore Wikipedia pages and extract the relevant images. 
+To automate the downloading of object images from Wikipedia, Python\footnote{\url{http://www.python.org}} is used. WIkipedia offers a public application programming interface (API) over HTTP to access its data, as it is built on the MediaWiki framework\footnote{The MediaWiki framework was originally developed for Wikipedia and provides an API over HTTP as standard. \url{http://www.mediawiki.org/wiki/API} provides documentation for the API.}. However it is cumbersome and not easy to consume. Instead, a web crawler was written to explore Wikipedia pages and extract the relevant images. 
 
-A crawler object in Python finds all the images and notes the urls of them for subsequent download. Firstly, the HTML of the Wikipedia page must be downloaded, as it appears to a web browser (an example of a web browser being Google Chrome). However, Wikipedia does not allow crawlers and automated bots to access its web pages. To overcome this, the HTTP header\footnote{\url{http://www.w3.org/Protocols/rfc2616/rfc2616.html} describes the Hyper Text Transport Protocol and the various header fields.} of the crawler is edited to emulate that of a browser. This is implemented using the urllib2 library\footnote{\url{http://docs.python.org/library/urllib2.html}}. The code shown in Listing~\ref{lst:crawler} shows an example of how to read the HTML of the main Wikipedia homepage. The HTML document for each Wikipedia page is parsed using the BeautifulSoup library\footnote{\url{http://www.crummy.com/software/BeautifulSoup/}}. All the anchor elements are found and stored for further crawling. The images contained within the HTML are also found by looking within the part of the HTML document that is unique to the specific Wikipedia page (see Listing~\ref{lst:beautifulsoup}).
+A crawler object in Python finds all the images and notes the URLs of them for subsequent download. Firstly, the HTML of the Wikipedia page must be downloaded, as it appears to a web browser (an example of a web browser being Google Chrome). However, Wikipedia does not allow crawlers and automated bots to access its web pages. To overcome this, the HTTP header\footnote{\url{http://www.w3.org/Protocols/rfc2616/rfc2616.html} describes the Hyper Text Transport Protocol and the various header fields.} of the crawler is edited to emulate that of a browser. This is implemented using the urllib2 library\footnote{\url{http://docs.python.org/library/urllib2.html}}. The code shown in Listing~\ref{lst:crawler} shows an example of how to read the HTML of the main Wikipedia homepage. The HTML document for each Wikipedia page is parsed using the BeautifulSoup library\footnote{\url{http://www.crummy.com/software/BeautifulSoup/}}. All the anchor elements are found and stored for further crawling. The images contained within the HTML are also found by looking within the part of the HTML document that is unique to the specific Wikipedia page (see Listing~\ref{lst:beautifulsoup}).
 
+\linespread{1} % single line spacing
 \lstset{language=Python,caption=The code used to gain access to Wikipedia's content using a crawler by emulating a browser.,label=lst:crawler}
-\begin{lstlisting}
-### Python
+\begin{lstlisting}[frame=single]
+## Python
 import urllib2
 # Emulate the user agent as that of a browser
 user_agent = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en-US; rv:1.8.1.7) Gecko/2007091417 Firefox/2.0.0.7"
@@ -139,11 +158,14 @@ resp=urllib2.urlopen(req)
 # Read the HTML of the response
 html = resp.read()
 \end{lstlisting}
+\linespread{2} % double line spacing
 
 
+
+\linespread{1} % single line spacing
 \lstset{language=Python,caption=Parsing the Wikipedia article HTML document to find the relevent images.,label=lst:beautifulsoup}
-\begin{lstlisting}
-### Python
+\begin{lstlisting}[frame=single]
+## Python
 def _get_content_body(self, soup):
         main_content = soup.find('div', {"class": "mw-content-ltr"})
         if main_content is None:
@@ -163,20 +185,154 @@ soup = _get_content_body(soup)
 # Get a list of image links
 image_links = _get_image_links(soup)
 \end{lstlisting}
+\linespread{2} % double line spacing
 
-The output of the crawler is a CSV file of the image urls and the object class the images belong to. The object class is simply named from the url of the Wikipedia page (for example all images appearing on \url{http://en.wikipedia.org/wiki/Tower_Bridge} will have class \lstinline!Tower_Bridge!).
 
-The images mentioned in the CSV file produced by the crawler are then downloaded to local storage. Each image that appears on Wikipedia has a ``file page'' which displays the image along with properties and metadata on the image\footnote{For an example see \url{http://en.wikipedia.org/wiki/File:Tower_bridge_London_Twilight_-_November_2006.jpg}}. This ``file page'' is visited for each image, and the page is parsed to extract the storage url of the image as well as its file format and original size. As the application resizes all images that exceed 1000 pixels to 1000 pixels, it is a waste of time and storage space to download the original image and later resize it. Instead, Wikipedia's inbuilt thumbnail engine is exploited, which resizes the image on Wikipedia's servers and allows you to download a thumbnail of a user selected width\footnote{\url{http://www.algorithm.co.il/blogs/programming/wikipedia-images/} describes how this is exploited}. The thumbnail images are downloaded and are saved in a folder named after it's class. Therefore if the original image on Wikipedia exceeds 1000 pixels, the 1000 pixel thumbnail version is downloaded instead. The result is a directory containing a folder for each class, within which are the images for that class.
+The output of the crawler is a CSV file of the image URLs and the object class the images belong to. The object class is simply named from the URL of the Wikipedia page (for example all images appearing on \url{http://en.wikipedia.org/wiki/Tower_Bridge} will have class \lstinline!Tower_Bridge!).
 
-This process creates a structured dataset of model images from the Wikipedia pages visited. For the List of Structures in London dataset used, there were 701 classes which had 3963 images associated with them.
+The images mentioned in the CSV file produced by the crawler are then downloaded to local storage. Each image that appears on Wikipedia has a ``file page'' which displays the image along with properties and metadata on the image\footnote{For an example see \url{http://en.wikipedia.org/wiki/File:Tower_bridge_London_Twilight_-_November_2006.jpg}}. This ``file page'' is visited for each image, and the page is parsed to extract the storage URL of the image as well as its file format and original size. As the application resizes all images that exceed 1000 pixels to 1000 pixels, it is a waste of time and storage space to download the original image and later resize it. Instead, Wikipedia's inbuilt thumbnail engine is exploited, which resizes the image on Wikipedia's servers and allows you to download a thumbnail of a user selected width\footnote{\url{http://www.algorithm.co.il/blogs/programming/wikipedia-images/} describes how this is exploited}. The thumbnail images are downloaded and are saved in a folder named after it's class. Therefore if the original image on Wikipedia exceeds 1000 pixels, the 1000 pixel thumbnail version is downloaded instead. The result is a directory containing a folder for each class, within which are the images for that class.
+
+This process creates a structured dataset of model images from the Wikipedia pages visited. For the List of Structures in London dataset used, there were 701 classes which had 3963 images associated with them (on average 6 images per class).
 
 
 \section{Turbo-boosting Images}
 \label{sec:turboimages}
+To achieve effective turbo-boosting, many additional images are needed to supplement the model images acquired from Wikipedia. Microsoft Bing is used as the source of the turbo-boosting images. For each class, 25 additional images are downloaded which should depict that class.
+
+Bing offers a public API that can be used to perform image searches programmatically. After obtaining an application ID from Bing for authentication, complex search requests can be made over HTTP, with the results returned in JavaScript Object Notation (JSON) format\footnote{JSON is an alternative to XML for representing structured data. \url{http://www.json.org/} provides more information.}.
+
+Bing image search takes a number of keywords - the query - and returns a list of images from web pages related to the query. Further filters can be applied to further narrow down the search to the most relevant images. This is shown in Figure~\ref{fig:bingimages} on the website version of Bing. The ``Style'' and ``Size'' filters are especially useful in this application, as all images should be photographs for the List of Structures in London dataset, and large images are preferable so as to include as much detail as possible. Setting these filters precludes many instances of graphics and logos which are not suitable for turbo-boosting.
+
+\begin{figure}[htb]
+\centering 
+\includegraphics{images/intimage.png}
+\caption{The browser interface of Bing image search which is replicated in the API query URL.}
+\label{fig:bingimages}
+\end{figure}
+
+All the parameters that appear in the web interface for Bing image search can be replicated in the API request with query parameters. A MATLAB script is used to consume the API and download the images. Listing~\ref{lst:bingapi} shows the URL used for the API call to get the search results for the images for a particular class. The URL encoded\footnote{URL encoding ensures that all characters are in a form which can be used as a URL. See \url{http://www.w3schools.com/tags/ref_urlencode.asp} for more information.} class name is used as the query. For example, for the class \lstinline!Tower_Bridge!, the variable \lstinline!search_term! appearing in Listing~\ref{lst:bingapi} will be set to \lstinline!"Tower%20Bridge"!. Both the ``Style'' and ``Size'' image filters are set to ``Photo'' and ``Large'' respectively by setting the \lstinline!Image.Filters! parameter.
+
+\linespread{1} % single line spacing
+\lstset{language=Matlab,caption=A Bing image search API request.,label=lst:bingapi}
+\begin{lstlisting}[frame=single]
+%% MATLAB
+request_url = ['http://api.bing.net/json.aspx?' ...
+                   'AppId=' app_id ...
+                   '&Query=' search_term ...
+                   '&Sources=Image' ...
+                   '&Version=2.0' ...
+                   '&Adult=Strict' ...
+                   '&Image.Count=' nPhotos ...
+                   '&Image.Filters=Style:Photo+Size:Large' ...
+                   '&JsonType=raw' ...
+                  ];
+% Read the result of the request
+response = urlread(request_url);
+% Parse the result from JSON to MATLAB structure form
+resp_struct = parse_json(response);
+\end{lstlisting}
+\linespread{2} % double line spacing
+
+Using MATLAB's inbuilt \lstinline!urlread! function, the search results are requested and returned in JSON format. The JSON result is then parsed and converted into a MATLAB structure object for reading. An example JSON response is shown in Listing~\ref{lst:bingjson}. Each element in the array \lstinline!Results! is an image result. Each image is then downloaded from its \lstinline!MediaUrl! field using a modified version of the \lstinline!imread! function which allows for request timeouts, as some image resources may have expired since their submission to the Bing database.
+
+\linespread{1} % single line spacing
+\lstset{language=Java,caption=A Bing image search response in JSON format. The ``Results'' array is truncated to one element.,label=lst:bingjson}
+\begin{lstlisting}[frame=single]
+// JSON
+{
+   "SearchResponse":{
+      "Version":"2.0",
+      "Query":{
+         "SearchTerms":"Tower Bridge"
+      },
+      "Image":{
+         "Total":780000,
+         "Offset":0,
+         "Results":[
+            {
+               "Title":"Tower Bridge - London Photo (551176) - Fanpop",
+               "MediaUrl":"http://images.fanpop.com/images/image_uploads/Tower-Bridge.jpg",
+               "Url":"http://www.fanpop.com/spots/london/images/551176/title/tower-bridge",
+               "DisplayUrl":"http://www.fanpop.com/spots/london/images/title/tower-bridge",
+               "Width":1600,
+               "Height":1200,
+               "FileSize":761104,
+               "Thumbnail":{
+                  "Url":"http://ts3.mm.bing.net/images/thumbnail.aspx?q=4757...",
+                  "ContentType":"image/jpeg",
+                  "Width":160,
+                  "Height":120,
+                  "FileSize":3274
+               }
+            }, ...
+         ]
+      }
+   }
+}
+\end{lstlisting}
+\linespread{2} % double line spacing
+
+The downloaded images are resized if larger than 1000 pixels stored in a folder named after its class. As for the model images, the result is a directory containing a folder for each class, within which are the turbo-boosting images for that class.
 
 \section{Validation Images}
 \label{sec:validationimages}
 
+Images are needed to test and validate the yield performance of the object recognition system. Therefore a separate dataset of images with their ground truth classes is needed. Ideally all classes would be tested and each test image should be a fair representation of the object of that class. Google image search was used first to automatically download 8 images for each class. The images were then checked manually to refine the dataset.
+
+Google image search is very similar to Bing image search described in the previous section. However the results are markedly different, which provides another set of images which are perfect for testing. Google offers an API over HTTP which can be used to search based on a text query, and as with Bing, filters can be applied. The result is returned in JSON format.
+
+\linespread{1} % single line spacing
+\lstset{language=Matlab,caption=A Google image search API request.,label=lst:googleapi}
+\begin{lstlisting}[frame=single]
+%% MATLAB
+request_url = ['https://ajax.googleapis.com/ajax/services/search/images?v=1.0' ...
+	'&q=' search_term ...
+	'&as_filetype=jpg' ...
+	'&imgsz=xxlarge' ...
+	'&imgtype=photo' ...
+	'&rsz=8' ...
+];
+% Read the result of the request
+response = urlread(request_url);
+% Parse the result from JSON to MATLAB structure form
+resp_struct = parse_json(response);
+\end{lstlisting}
+\linespread{2} % double line spacing
+
+Listing~\ref{lst:googleapi} shows the formulation and request of a Google search API request. As with the Bing requests, the search term is the URL encoded class name. The JSON response (Listing~\ref{lst:googlejson}) is parsed into a MATLAB object and the \lstinline!url! field is used to download the image.
+
+\linespread{1} % single line spacing
+\lstset{language=Java,caption=A Google image search response in JSON format. The ``results'' array is truncated to one element.,label=lst:googlejson}
+\begin{lstlisting}[frame=single]
+// JSON
+{
+   "responseData":{
+      "results":[
+         {
+            "GsearchResultClass":"GimageSearch",
+            "width":"1024",
+            "height":"819",
+            "imageId":"ANd9GcSTU9Qv93OE3Q5kjo0h5Dcsl6sYBGURxSlmw8tfUbISx6heecXcY9VKkquZ",
+            "tbWidth":"150",
+            "tbHeight":"120",
+            "unescapedUrl":"http://www2.hiren.info/desktopwallpapers/natural/the-tower-...",
+            "url":"http://www2.hiren.info/desktopwallpapers/natural/the-tower-bridge.jpg",
+            "visibleUrl":"www.hiren.info",
+            "title":"Desktop Wallpapers È Natural Backgrounds È The \u003cb\u003eTower Bridge\u003c/b\u003e \u003cb\u003e...\u003c/b\u003e",
+            "titleNoFormatting":"Desktop Wallpapers È Natural Backgrounds È The Tower Bridge ...",
+            "originalContextUrl":"http://www.hiren.info/desktop-wallpapers/natural-pic...",
+            "content":"The \u003cb\u003eTower Bridge\u003c/b\u003e, London,",
+            "contentNoFormatting":"The Tower Bridge, London,",
+            "tbUrl":"http://t1.gstatic.com/images?q\u003dtbn:ANd9GcSTU9Qv93OE3Q5kjo..."
+         }, ...
+      ], ...
+   "responseDetails":null,
+   "responseStatus":200
+}
+\end{lstlisting}
+\linespread{2} % double line spacing
+
+As with the turbo-boosting images, the downloaded images are resized if larger than 1000 pixels stored in a folder named after its class. Again, the result is a directory containing a folder for each class, within which are the turbo-boosting images for that class.
 
 %-------------------------------
 % Base line system
