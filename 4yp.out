@@ -5,7 +5,12 @@
 \BOOKMARK [1][-]{section.3.2}{Turbo-boosting Images}{chapter.3}% 5
 \BOOKMARK [1][-]{section.3.3}{Validation Images}{chapter.3}% 6
 \BOOKMARK [0][-]{chapter.4}{Base line system}{}% 7
-\BOOKMARK [0][-]{chapter.5}{Software architecture}{}% 8
-\BOOKMARK [0][-]{chapter.6}{Geometric Improvements}{}% 9
-\BOOKMARK [0][-]{chapter.7}{Turbo-boosting}{}% 10
-\BOOKMARK [0][-]{chapter.8}{Summary}{}% 11
+\BOOKMARK [1][-]{section.4.1}{Feature Detection and Description}{chapter.4}% 8
+\BOOKMARK [1][-]{section.4.2}{Visual Words}{chapter.4}% 9
+\BOOKMARK [1][-]{section.4.3}{Histograms and Index}{chapter.4}% 10
+\BOOKMARK [1][-]{section.4.4}{Spatial Verification}{chapter.4}% 11
+\BOOKMARK [1][-]{section.4.5}{Multiple Object Matching}{chapter.4}% 12
+\BOOKMARK [0][-]{chapter.5}{Software architecture}{}% 13
+\BOOKMARK [0][-]{chapter.6}{Geometric Improvements}{}% 14
+\BOOKMARK [0][-]{chapter.7}{Turbo-boosting}{}% 15
+\BOOKMARK [0][-]{chapter.8}{Summary}{}% 16

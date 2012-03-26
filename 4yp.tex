@@ -336,6 +336,45 @@ After automatic download of potential test images for each class, the dataset wa
 %-------------------------------
 \chapter{Base line system}
 \label{chpt:system}
+The base line system draws upon the research and literature mentioned in Chapter~\ref{chpt:background}. Upon starting the project, an application was provided that includes a basic database creation and image matching process based on a dataset of structures in Oxford. This application was expanded upon to create the current system.
+
+There are two separate processes which form the project. The first is the pre-computation process that creates the databases and data structures required for object recognition. The second is the object recognition process that takes a query image and returns the names and locations of the objects in the image. A summary of these two processes is described in Figure~\ref{fig:precompprocess} and Figure~\ref{fig:searchprocess} respectively.
+
+\begin{figure}[htb]
+\centering 
+\includegraphics[width=0.6\textwidth]{images/PrecomputeProcess.pdf}
+\caption{The flow diagram for the basic pre-computation process.}
+\label{fig:precompprocess}
+\end{figure}
+
+\begin{figure}[htb]
+\centering 
+\includegraphics[width=0.5\textwidth]{images/SearchProcess.pdf}
+\caption{The flow diagram for the basic object recognition process.}
+\label{fig:searchprocess}
+\end{figure}
+
+The pre-computation process is run once on the dataset to produce the database and working data structures required for the object recognition process. For each model image, the features are detected and associated descriptors generated. This is described further in Section~\ref{sec:featuredetection}. A sample of the features are then used to generate the visual word vocabulary (Section~\ref{sec:visualwords}). The histograms of visual words are then weighted and collected into an index ready for querying (Section~\ref{sec:histograms}). This completes the basic pre-computation process and the system is ready for use.
+
+The object recognition process takes a query image and attempts to recognise the objects contained within the image. Firstly, the feature descriptors are computed for the detected features within the query image. The visual words are computed based on the vocabulary created during the pre-computation process, and the weighted histogram produced for the query image. A search is then performed on the index of histograms for the model images (see Section~\ref{sec:histograms}) the output of which is a list of images based on how highly they match the query image. Going down the list of top matches by histogram, spatial verification is performed to ensure the visual words in both the query image and match image form the same shaped object (all objects are assumed rigid). This is described in Section~\ref{sec:spatialverification}. Once a match has been spatially verified, this object is deemed recognised and added to the list of found objects. Multiple matching is then performed by repeating this process, excluding regions of the image containing a previously recognised object (Section~\ref{sec:multiobject}).
+
+The remainder of this chapter describes further details of the parts of the processes described above.
+
+
+\section{Feature Detection and Description}
+\label{sec:featuredetection}
+
+\section{Visual Words}
+\label{sec:visualwords}
+
+\section{Histograms and Index}
+\label{sec:histograms}
+
+\section{Spatial Verification}
+\label{sec:spatialverification}
+
+\section{Multiple Object Matching}
+\label{sec:multiobject}
 
 %-------------------------------
 % Software architecture
