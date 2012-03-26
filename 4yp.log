@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2012.3.10)  23 MAR 2012 19:19
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2012.3.10)  23 MAR 2012 23:53
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -548,24 +548,24 @@ Chapter 8.
 ]
 
 LaTeX Font Warning: Font shape `OT1/cmss/m/it' in size <10.95> not available
-(Font)              Font shape `OT1/cmss/m/sl' tried instead on input line 373.
+(Font)              Font shape `OT1/cmss/m/sl' tried instead on input line 375.
 
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 377.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 379.
 [18
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 377.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 379.
  (./4yp.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 377.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 377.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 379.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 379.
 Package rerunfilecheck Info: File `4yp.out' has not changed.
 (rerunfilecheck)             Checksum: 20086BDC202B8AD2D8AD891A4EECB4EB;576.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 377.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 379.
  ) 
 Here is how much of TeX's memory you used:
  9493 strings out of 493633
@@ -574,7 +574,7 @@ Here is how much of TeX's memory you used:
  12515 multiletter control sequences out of 15000+200000
  17106 words of font info for 65 fonts, out of 3000000 for 9000
  831 hyphenation exceptions out of 8191
- 36i,10n,45p,1298b,1728s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 36i,10n,45p,1280b,1728s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb
 ></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb>
 </usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmss17.pfb><
@@ -585,7 +585,7 @@ r/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></us
 r/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr
 /local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/
 local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on 4yp.pdf (20 pages, 1721308 bytes).
+Output written on 4yp.pdf (20 pages, 1721484 bytes).
 PDF statistics:
  405 PDF objects out of 1000 (max. 8388607)
  364 compressed objects within 4 object streams

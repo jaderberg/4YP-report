@@ -101,10 +101,9 @@ The aim of the project is to work towards recognising every object on Wikipedia,
 %-------------------------------
 \chapter{Data}
 \label{chpt:data}
-There are three main datasets used by the application: the images from Wikipedia used to build the database of objects (Section~\ref{sec:modelimages}), the images from Microsoft Bing used for the Turbo-boosting (Section~\ref{sec:turboimages}) and the images from Google Images used for validation and testing (Section~\ref{sec:validationimages}). All images that are used are resized so that their larger dimension does not exceed 1000 pixels to reduce storage space and provide homogeneity for image size. This chapter describes the various datasets and how they are acquired. Table~\ref{tbl:data} gives an overview of the data used.
+There are three main datasets used by the application: the images from Wikipedia used to build the database of objects (Section~\ref{sec:modelimages}), the images from Microsoft Bing used for the Turbo-boosting (Section~\ref{sec:turboimages}) and the images from Google Images used for validation and testing (Section~\ref{sec:validationimages}). All images that are used are resized so that their larger dimension does not exceed 1000 pixels to reduce storage space and provide homogeneity. This chapter describes the various datasets and how they are acquired. Table~\ref{tbl:data} gives an overview of the data used.
 
 \begin{table}[hbtp]
-\caption{A summary of the datasets.}
 \begin{center}
 \begin{tabular}{c|c|c|c|}
 \cline{2-4}
@@ -112,12 +111,13 @@ There are three main datasets used by the application: the images from Wikipedia
  \cline{1-4}
 \multicolumn{1}{|c|}{Model images} & Wikipedia & \texttt{3963} & \texttt{732} \\  
 \cline{1-4}
-\multicolumn{1}{|c|}{Turbo-boosting images} & Microsoft Bing & \texttt{18273} & \texttt{701} \\  
+\multicolumn{1}{|c|}{Turbo-boosting images} & Microsoft Bing & \texttt{18273} & \texttt{732} \\  
 \cline{1-4}
 \multicolumn{1}{|c|}{Validation images} & Google &  \texttt{701} & \texttt{294} \\  
 \cline{1-4}
 \end{tabular}
 \end{center}
+\caption{A summary of the datasets.}
 \label{tbl:data}
 \end{table}
 
@@ -185,14 +185,14 @@ image_links = _get_image_links(soup)
 
 The output of the crawler is a CSV file of the image URLs and the object class the images belong to. The object class is simply named from the URL of the Wikipedia page (for example all images appearing on \url{http://en.wikipedia.org/wiki/Tower_Bridge} will have class \lstinline!Tower_Bridge!).
 
-The images mentioned in the CSV file produced by the crawler are then downloaded to local storage. Each image that appears on Wikipedia has a ``file page'' which displays the image along with properties and metadata on the image\footnote{For an example see \url{http://en.wikipedia.org/wiki/File:Tower_bridge_London_Twilight_-_November_2006.jpg}}. This ``file page'' is visited for each image, and the page is parsed to extract the storage URL of the image as well as its file format and original size. As the application resizes all images that exceed 1000 pixels to 1000 pixels, it is a waste of time and storage space to download the original image and later resize it. Instead, Wikipedia's inbuilt thumbnail engine is exploited, which resizes the image on Wikipedia's servers and allows you to download a thumbnail of a user selected width\footnote{\url{http://www.algorithm.co.il/blogs/programming/wikipedia-images/} describes how this is exploited}. The thumbnail images are downloaded and are saved in a folder named after it's class. Therefore if the original image on Wikipedia exceeds 1000 pixels, the 1000 pixel thumbnail version is downloaded instead. The result is a directory containing a folder for each class, within which are the images for that class.
+The images mentioned in the CSV file produced by the crawler are then downloaded to local storage. Each image that appears on Wikipedia has a ``file page'' which displays the image along with properties and metadata on the image\footnote{For an example see \url{http://en.wikipedia.org/wiki/File:Tower_bridge_London_Twilight_-_November_2006.jpg}}. This ``file page'' is visited for each image, and the page is parsed to extract the storage URL of the image as well as its file format and original size. As the application resizes all images that exceed 1000 pixels to 1000 pixels, it is a waste of time and storage space to download the original image and later resize it. Instead, Wikipedia's inbuilt thumbnail engine is exploited, which resizes the image on Wikipedia's servers and allows you to download a thumbnail of a user selected width\footnote{\url{http://www.algorithm.co.il/blogs/programming/wikipedia-images/} describes how this is exploited}. Therefore if the original image on Wikipedia exceeds 1000 pixels, the 1000 pixel thumbnail version is downloaded instead. The images downloaded are saved in a folder named after it's class. The result is a directory containing a folder for each class, within which are the images for that class.
 
-This process creates a structured dataset of model images from the Wikipedia pages visited. For the List of Structures in London dataset used, there were 701 classes which had 3963 images associated with them (on average 6 images per class).
+This process creates a structured dataset of model images from the Wikipedia pages visited. For the List of Structures in London dataset used, there were 732 classes which had 3963 images associated with them (on average 6 images per class).
 
 
 \section{Turbo-boosting Images}
 \label{sec:turboimages}
-To achieve effective turbo-boosting, many additional images are needed to supplement the model images acquired from Wikipedia. Microsoft Bing is used as the source of the turbo-boosting images. For each class, 25 additional images are downloaded which should depict that class.
+To achieve effective turbo-boosting, many additional images are needed to supplement the model images acquired from Wikipedia. Microsoft Bing is used as the source of the turbo-boosting images. For each class, 25 additional images are downloaded to boost that class.
 
 Bing offers a public API that can be used to perform image searches programmatically. After obtaining an application ID from Bing for authentication, complex search requests can be made over HTTP, with the results returned in JavaScript Object Notation (JSON) format\footnote{JSON is an alternative to XML for representing structured data. \url{http://www.json.org/} provides more information.}.
 
@@ -267,14 +267,14 @@ Using MATLAB's inbuilt \lstinline!urlread! function, the search results are requ
 \end{lstlisting}
 \linespread{2} % double line spacing
 
-The downloaded images are resized if larger than 1000 pixels stored in a folder named after its class. As for the model images, the result is a directory containing a folder for each class, within which are the turbo-boosting images for that class.
+The downloaded images are resized if larger than 1000 pixels and stored in a folder named after its class. As for the model images, the result is a directory containing a folder for each class, within which are the turbo-boosting images for that class.
 
 \section{Validation Images}
 \label{sec:validationimages}
 
 Images are needed to test and validate the yield performance of the object recognition system. Therefore a separate dataset of images with their ground truth classes is needed. Ideally all classes would be tested and each test image should be a fair representation of the object of that class. Google image search was used first to automatically download 8 images for each class. The images were then checked manually to refine the dataset.
 
-Google image search is very similar to Bing image search described in the previous section. However the results are markedly different, which provides another set of images which are perfect for testing. Google offers an API over HTTP which can be used to search based on a text query, and as with Bing, filters can be applied. The result is returned in JSON format.
+Google image search is very similar to Bing image search described in the previous section. However the results are markedly different, providing another set of images that are perfect for testing. Google offers an API over HTTP which can be used to search based on a text query and, as with Bing, filters can be applied. The result is returned in JSON format.
 
 \linespread{1} % single line spacing
 \lstset{language=Matlab,caption=A Google image search API request.,label=lst:googleapi}
@@ -328,6 +328,8 @@ Listing~\ref{lst:googleapi} shows the formulation and request of a Google search
 \linespread{2} % double line spacing
 
 As with the turbo-boosting images, the downloaded images are resized if larger than 1000 pixels stored in a folder named after its class. Again, the result is a directory containing a folder for each class, within which are the turbo-boosting images for that class.
+
+After automatic download of potential test images for each class, the dataset was checked over manually. Images that appear in the model dataset, as well as images that do not fairly depict the class they are to test are removed from the test set . 
 
 %-------------------------------
 % Base line system
