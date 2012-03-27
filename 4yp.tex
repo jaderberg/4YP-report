@@ -332,9 +332,9 @@ As with the turbo-boosting images, the downloaded images are resized if larger t
 After automatic download of potential test images for each class, the dataset was checked over manually. Images that appear in the model dataset, as well as images that do not fairly depict the class they are to test are removed from the test set . 
 
 %-------------------------------
-% Base line system
+% Baseline system
 %-------------------------------
-\chapter{Base line system}
+\chapter{Baseline system}
 \label{chpt:system}
 The base line system draws upon the research and literature mentioned in Chapter~\ref{chpt:background}. Upon starting the project, an application was provided that includes a basic database creation and image matching process based on a dataset of structures in Oxford. This application was expanded upon to create the current system.
 
@@ -360,12 +360,38 @@ The object recognition process takes a query image and attempts to recognise the
 
 The remainder of this chapter describes further details of the parts of the processes described above.
 
-
 \section{Feature Detection and Description}
 \label{sec:featuredetection}
+The feature detection and description methods used are the original scale-invariant feature transform (SIFT) algorithms. The advantages of using SIFT are that the detected features and their descriptors are invariant to image translation, scaling, and rotation, partially invariant to illumination changes and robust to local geometric distortion. This is essential to be able to match the same object features across varied sources of images.
+
+The SIFT features are defined as maxima and minima of the result of difference of Gaussians function\footnote{\url{http://en.wikipedia.org/wiki/Difference_of_Gaussians}} applied in scale-space to a series of smoothed and resampled images. Low contrast candidate points and edge response points along an edge are discarded. These features are then described by the SIFT feature descriptor - a 128-dimensional vector.
+
+The result of the SIFT feature detection and description algorithm are two matrices. The first is a matrix of feature points or frames, Equation~\ref{eqn:frames}, where each column describes the position $(x_i, y_i)$ in the image, the scale $s_i$ and orientation $\theta_i$ for feature $i$. Corresponding to the frames matrix is a descriptor matrix, Equation~\ref{eqn:descrs}, where each column is the 128-D vector $\mathbf{d_i}$ that describes feature $i$.
+
+\begin{equation}
+\left[ \begin{array}{ccccc}
+x_1 & x_2 & \cdots & x_{N-1} & x_N \\
+y_1 & y_2 & \cdots & y_{N-1} & y_N \\
+s_1 & s_2 & \cdots & s_{N-1} & s_N \\
+\theta_1 & \theta_2 & \cdots & \theta_{N-1} & \theta_N
+\end{array}\right]
+\label{eqn:frames}
+\end{equation}
+
+\begin{equation}
+\left[ \begin{array}{ccccc}
+\mathbf{d_1} & \mathbf{d_2} & \cdots & \mathbf{d_{N-1}} & \mathbf{d_N} 
+\end{array}\right]
+\label{eqn:descrs}
+\end{equation}
 
 \section{Visual Words}
 \label{sec:visualwords}
+To avoid trying to match features in unbounded, 128-dimensional space, the SIFT features are quantised. These quantised SIFT features are known as visual words.
+
+During the pre-computation process, the vocabulary of words is created. The vocabulary is essentially the clustering of SIFT space. The number of clusters (visual words) to be created is the vocabulary size, 100,000 for this application. Vocabulary creation is done using the approximate nearest neighbours K-means algorithm. The clustering is performed on a random sample from all the feature descriptors for the entire model images dataset. The number of features sampled was 30 times the size of the vocabulary, i.e. 3 million. 
+
+The result of the vocabulary creation is a kd-tree which can be used to get the word associated with a SIFT descriptor. Each word is assigned an ID, and the images can then be represented as a list of words, where each word is the nearest visual word to the SIFT descriptor.
 
 \section{Histograms and Index}
 \label{sec:histograms}
