@@ -387,7 +387,7 @@ s_1 & s_2 & \cdots & s_{N-1} & s_N \\
 
 \section{Visual Words}
 \label{sec:visualwords}
-To avoid trying to match features in unbounded, 128-dimensional space, the SIFT features are quantised. These quantised SIFT features are known as visual words.
+To avoid matching features in unbounded, 128-dimensional space, the SIFT features are quantised. These quantised SIFT features are known as visual words.
 
 During the pre-computation process, the vocabulary of words is created. The vocabulary is essentially the clustering of SIFT space. The number of clusters (visual words) to be created is the vocabulary size, 100,000 for this application. Vocabulary creation is done using the approximate nearest neighbours K-means algorithm. The clustering is performed on a random sample from all the feature descriptors for the entire model images dataset. The number of features sampled was 30 times the size of the vocabulary, i.e. 3 million. 
 
@@ -395,12 +395,77 @@ The result of the vocabulary creation is a kd-tree which can be used to get the 
 
 \section{Histograms and Index}
 \label{sec:histograms}
+The images are represented by a list of words as described in the previous section. This list of words can in turn be represented as a histogram, with each element containing the number of occurrences of the word with ID equal to the element number in the image. Therefore each histogram is a sparse 100,000 element array. Two examples of the raw histograms are shown in Figure~\ref{fig:rawhist1} and Figure~\ref{fig:rawhist2}.
+
+The term frequency-inverse document frequency\footnote{\url{http://en.wikipedia.org/wiki/Tf*idf}} (tf-idf) weights are then computed for each word across the entire dataset of model images. These weights are applied to the histograms to down-weight common, uninformative visual words and up-weight unique, informative visual words. The differences in histograms before and after weighting is illustrated in Figure~\ref{fig:histograms}.
+
+\begin{figure}[htb]
+\centering 
+\subfloat[Tower Bridge image 1]{\includegraphics[width=0.4\textwidth]{images/tb_city_hall.jpg}}
+~
+\subfloat[Tower Bridge image 2]{\includegraphics[width=0.4\textwidth]{images/tb_twilight.jpg}}
+\\
+\subfloat[Raw histogram for image 1]{\label{fig:rawhist1}\includegraphics[width=0.4\textwidth]{images/tb_city_hall.pdf}}
+~
+\subfloat[Raw histogram for image 2]{\label{fig:rawhist2}\includegraphics[width=0.4\textwidth]{images/tb_twilight.pdf}}
+\\
+\subfloat[Weighted histogram for image 1]{\includegraphics[width=0.4\textwidth]{images/tb_city_hall_weighted.pdf}}
+~
+\subfloat[Weighted histogram for image 2]{\includegraphics[width=0.4\textwidth]{images/tb_twilight_weighted.pdf}}
+\caption{Two images for the class \lstinline!Tower_Bridge! with their raw histograms and tf-idf weighted histograms}
+\label{fig:histograms}
+\end{figure}
+
+Each model image therefore has a histogram that is used for matching. All the histograms are packaged into a matrix (each column being an image's histogram) that is used as the index for query matching.
+
+To find the most similar images to a query image, a dot product is performed between each of the model image histograms and the query image histogram. This is shown in Equation~\ref{eqn:tfidfscore}, where $\mathbf{h_{query}}$ is the tf-idf weighted histogram of the query image and $\mathbf{h_i}$ is the tf-idf weighted histogram of model image $i$. $\mathbf{scores}$ is a $Nx1$ array with the result of the dot product with each model image's histogram in each element. The matches are ranked in decreasing order of their score - the model image with the highest score said to be the most similar to the query image.
+
+\begin{equation}
+\mathbf{scores}= \mathbf{h_{query}^T}
+\left[ \begin{array}{ccccc}
+\mathbf{h_1} & \mathbf{h_2} & \cdots & \mathbf{h_{N-1}} & \mathbf{h_N}
+\end{array}\right]
+\label{eqn:tfidfscore}
+\end{equation} 
+
 
 \section{Spatial Verification}
 \label{sec:spatialverification}
+Matching based purely on the tf-idf weighted histograms is effective, however it is prone to false positives. This is due to the fact that two different objects may have very similar features (and therefore many similar visual words), but these features are in very different places as they are not the same object. Therefore, a final spatial verification must be done to ensure that the visual words that appear both in the query image and the model image form the same rigid bodied object.
+
+The spatial verification restraint in this application is that there should exist an affine transformation\footnote{\url{http://en.wikipedia.org/wiki/Affine_transformation}} between the scene in the query image and the scene in model image that is the potential match. Practically, this means that there should be an affine transformation that maps the visual words in the query image to the position of the same visual words in the model image.
+
+The random sample consensus algorithm\footnote{\url{http://en.wikipedia.org/wiki/RANSAC}} (RANSAC) is used to estimate an affine transformation between the two images, using the corresponding visual words in each image. The result of the RANSAC spatial verification is the number of visual words in the query image that map to the correct positions in the model image (within some tolerance region). Matches that have enough inliers under the transformation are said to be spatially verified - that is the estimated affine transformation is accurate and both images depict the same rigid bodied object.
+
+Figure~\ref{fig:spatialverification} shows the result of spatial verification on matched SIFT features. Note the disregarding of some matches after RANSAC as these matches do not conform with the estimated affine transformation.
+
+\begin{figure}[htb]
+\centering 
+\subfloat[Big Ben image 1]{\includegraphics[width=0.3\textwidth]{images/bigben.jpg}}
+~
+\subfloat[Big Ben image 2]{\includegraphics[width=0.3\textwidth]{images/bigben2.jpeg}}
+\\
+\subfloat[Matches based purely on SIFT feature similarity]{\includegraphics[width=0.5\textwidth]{images/spatial_verification1.pdf}}
+\subfloat[Matches after RANSAC spatial verification]{\includegraphics[width=0.5\textwidth]{images/spatial_verification2.pdf}}
+\caption{RANSAC spatial verification performed on two images of Big Ben.}
+\label{fig:spatialverification}
+\end{figure}
+
+Spatial verification is performed on each model image in descending order of the tf-idf histogram matching score. The first model image to be successfully spatially verified is deemed to be an accurate match and the process is terminated, with the class the model image represents being the object found. The region of the query image that is labelled as the object is the bounding box of visual words that spatially match the model image.
+
 
 \section{Multiple Object Matching}
 \label{sec:multiobject}
+The object recognition engine can recognise multiple objects in a single image (an example is shown in Figure~\ref{fig:multiplematching}). Once an object has been successfully recognised, the query is re-issued with the same query image, however the visual words contained within the regions of already recognised objects are excluded from the query process. Previously recognised objects are ignored as matches from the re-issued queries and the process finishes when no new objects can be found. 
+
+This method allows any number of objects to be recognised within a single image. The downside of this process is that it requires multiple queries so increases the time taken to complete.
+
+\begin{figure}[htb]
+\centering 
+\includegraphics[width=0.5\textwidth]{images/intimage.png}
+\caption{Multiple matched objects in a single query image.}
+\label{fig:multiplematching}
+\end{figure}
 
 %-------------------------------
 % Software architecture
