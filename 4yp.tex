@@ -472,7 +472,69 @@ This method allows any number of objects to be recognised within a single image.
 %-------------------------------
 \chapter{Software architecture}
 \label{chpt:architecture}
+While Chapter~\ref{chpt:system} outlines the processes involved with the object recognition engine, this chapter describes the practical implementation of the system including the front end web application for consumer interaction.
 
+\begin{figure}[htb]
+\centering 
+\includegraphics[width=0.7\textwidth]{images/SystemArchitecture.pdf}
+\caption{An overview of the system architecture.}
+\label{fig:architecture}
+\end{figure}
+
+Figure~\ref{fig:architecture} gives a holistic view of the system architecture. The solution is divided in to two separate parts: the object recognition engine and the web application. These are described in Section~\ref{sec:engine} and Section~\ref{sec:webapp} respectively. These two parts are completely independent modules by design, however they are connected via a Python-MATLAB bridge, the details of which are given in Section~\ref{sec:bridge}.
+
+The resulting product is a web site with an intuitive user interface. A user can upload a photo, and the photo will be presented back to the user with the objects tagged.
+
+~\section{Object Recognition Engine}
+~\label{sec:engine}
+The object recognition engine performs the pre-computation and recognition processes described in Chapter~\ref{chpt:system}. This is all implemented using MATLAB. MATLAB was chosen due to its ease in image manipulation, rich toolboxes, and the provided starter application was written in MATLAB.
+
+The resulting interface is a MATLAB function \lstinline!get_objects()! that takes a single argument containing the location of the query image to recognise the objects in. The output is a structure of the object classes found and their rectangle coordinates in the query image. The function takes around 5-10 seconds to run.
+
+~\subsection{Database}
+
+A filesystem is used for the storage of model images (see Chapter~\ref{chpt:data}), however a working record is needed of the dataset for book keeping and quick searching. For this, MongoDB\footnote{\url{http://www.mongodb.org}} is used. 
+
+MongoDB is a NoSQL database application that stores data in the form of documents - data structures similar to JSON objects. The data is unstructured, and provides a simple way of storing data without dealing with the complexities of tables and relationships that come with relational databases (e.g. SQL). Listing~\ref{lst:bson} shows a model image stored in the MongoDB database. The fields of the documents (i.e. \lstinline!"_id", "name", "path", "class", "size"!) are fully searchable and can be indexed for faster lookup\footnote{By deafault, the \lstinline!"_id"! field is indexed for fast lookup by ID.}. 
+
+
+\linespread{1} % single line spacing
+\lstset{language=Java,caption=A document representing a model image stored in MongoDB.,label=lst:bson}
+\begin{lstlisting}[frame=single]
+{
+	"_id" : ObjectId("4f7317501b515eaa6f148c5d"),
+	"name" : "1222|10_Downing_Street.jpg",
+	"path" : "~/4YP/data/d_ransac/images/10_Downing_Street/1222|10_Downing_Street.jpg",
+	"class" : "10_Downing_Street",
+	"size" : {
+		"width" : 800,
+		"height" : 457
+	}
+}
+\end{lstlisting}
+\linespread{2} % double line spacing
+
+MongoDB is run as a daemon and the directory of storage files is set to be a directory within the solutions working directory. This allows complete segmentation of each database. The daemon sets up a web server which can accept any number of connections over TCP to access the database.
+
+The interface with MATLAB is done using the Java library provided by MongoDB\footnote{See \url{http://www.mongodb.org/display/DOCS/Java+Tutorial} for documentation.}. MATLAB has the ability to run Java inside it, so the Java MongoDB library can be consumed in a fairly natural way.
+
+The frames, descriptors, words and histograms for the model images are stored on disk as MATLAB binary files. They are associated to the database entries via their filename which includes the ID assigned by MongoDB to the image's document. For example, for the model image \lstinline!1222|10_Downing_Street.jpg! shown in Listing~\ref{lst:bson} the frames file will be stored in the frames directory with the filename \\ \lstinline!4f7317501b515eaa6f148c5d-frames.mat!.
+
+~\subsection{Image Processing}
+The bulk of the image processing and processor intensive operations are outsourced to the VLFeat library\footnote{\url{http://www.vlfeat.org}}. VLFeat is an open source library implementing various computer vision algorithms in C. Being implemented in C means that the algorithms compute faster and more efficiently than if they were written in MATLAB. The VLFeat provides MATLAB wrappers to the functions which are use to interface with the MATLAB engine.
+
+\lstset{language=Matlab}
+To enable VLFeat, \lstinline!run vlfeat/toolbox/vl_setup! is executed on startup, after which all the VLFeat functions can be used. \lstinline!vl_sift()! is used for SIFT feature detection and descriptor computation, and \lstinline!vl_kdtreebuild()! and \lstinline!vl_kdtreequery()! are used for efficient visual word creation and retrieval.
+
+~\subsection{Distributed Pre-computation}
+The pre-computation process takes a long time to complete, as every image of the thousands in the dataset must be processed and the clustering algorithm must be run. 
+
+
+~\section{Web Application}
+~\label{sec:webapp}
+
+~\section{Python-MATLAB Bridge}
+~\label{sec:bridge}
 
 %-------------------------------
 % Geometric Improvements
