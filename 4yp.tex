@@ -527,11 +527,94 @@ The bulk of the image processing and processor intensive operations are outsourc
 To enable VLFeat, \lstinline!run vlfeat/toolbox/vl_setup! is executed on startup, after which all the VLFeat functions can be used. \lstinline!vl_sift()! is used for SIFT feature detection and descriptor computation, and \lstinline!vl_kdtreebuild()! and \lstinline!vl_kdtreequery()! are used for efficient visual word creation and retrieval.
 
 ~\subsection{Distributed Pre-computation}
-The pre-computation process takes a long time to complete, as every image of the thousands in the dataset must be processed and the clustering algorithm must be run. 
+The pre-computation process takes a long time to complete, as every image of the thousands in the dataset must be processed and the clustering algorithm must be run. However, the majority of the functions within the pre-computation involve independent computations on each image in turn. This means that these steps can be run in parallel.
 
+A room of computers in the Engineering Science Department is used for the parallel pre-computation. These Linux machines are accessed via SSH\footnote{\url{http://en.wikipedia.org/wiki/Secure_Shell}}. In total there are around 30 machines that are used.
+
+The distributed pre-computation is conducted by a Python script using the Fabric library\footnote{\url{http://docs.fabfile.org/en/1.4.0/index.html}} for simplifying the SSH tasks. The current build is zipped up locally and deployed to the remote shared disk. The Python script then distributes the jobs across all the hosts that can be connected to. All jobs generate a finished flag so the pre-computation script can keep track of the dispatched jobs and synchronise the process.
+
+\linespread{1} % single line spacing
+\lstset{language=bash,caption=The bash script used to start MATLAB.,label=lst:distmatlab}
+\begin{lstlisting}[frame=single]
+#!/bin/bash
+unset DISPLAY
+nohup matlab -nodesktop -nosplash -nodisplay -r "try,$1($2,$3,'$4','$5'),catch err, f=fopen('error_logs/$2-$1-error.txt','w'); fprintf(f,err.message); fclose(f); exit, end, exit" -logfile matlab_logs/matlab_log$2.txt > nohup_logs/nohup$2.out 2>&1 &
+
+# Example usage for machine 11 out of 28:
+sh dist_matlab_suppress.sh dist_compute_features 11 28 engs-station41.eng.ox.ac.uk engs-station51.eng.ox.ac.uk
+\end{lstlisting}
+\linespread{2} % double line spacing
+
+\lstset{language=Matlab}
+Listing~\ref{lst:distmatlab} shows the script used to launch a MATLAB job. The MATLAB function must take four arguments: \lstinline!n_split, N_split, first_host, this_host!. These describe the current machine's number, the total number of machines, the address of the first machine and the address of the current machine. These are required for the splitting of the data and to connect to the MongoDB server which is always run on the first machine.
+
+Using the distributed system of pre-computation and validation [WHERE DO I WRITE ABOUT THE VALIDATION AND RESULTS?!] results in a far quicker process, reducing the time from 15-20 hours for some jobs to around 1 hour.
 
 ~\section{Web Application}
 ~\label{sec:webapp}
+The web application sits in front of the object recognition engine and implements a practical application of the engine. The function is a website that allows users to upload photos for automatic tagging of objects.
+
+The web application is divided in to two parts, the front-end application that is runs in a users web browser (Section~\ref{subsec:front}) and the back-end web server (Section~\ref{subsec:back}) that handles the requests and responses from the front-end.
+
+\begin{figure}[htb]
+\centering 
+\subfloat[Stage 1 - initial view]{\includegraphics[width=0.4\textwidth]{images/stage1.png}}
+~
+\subfloat[Stage 2 - start matching process]{\includegraphics[width=0.4\textwidth]{images/stage2.png}}
+\\
+\subfloat[Stage 3 - log of matching process]{\includegraphics[width=0.4\textwidth]{images/log.png}}
+~
+\subfloat[Stage 4 - the intelligent image]{\includegraphics[width=0.4\textwidth]{images/stage3.png}}
+\\
+\caption{Screenshots showcasing the web application's functionality.}
+\label{fig:webapp}
+\end{figure}
+
+
+Figure~\ref{fig:webapp} shows the steps for a user using the website which are as follows:
+
+\begin{enumerate}
+\item Select and upload an image.
+\item Click ``Tag Image'' to start the matching process.
+\item View the log of the matching process.
+\item When match is complete, view and interact with the ``intelligent image''.
+\end{enumerate}
+
+~\subsection{Front-end}
+~\label{subsec:front}
+The front-end is a web page viewed in a browser (such as Google Chrome). It consists of three components, the HTML code that defines the structure and layout of the web site, the CSS that defines the styling and the Javascript that provides the logic for the website.
+
+The Javascript scripts make heavy use of the JQuery library\footnote{\url{http://jquery.com}}. JQuery abstracts and simplifies manipulating HTML elements on the page as well as providing built in animation and HTTP request functions. 
+
+The goal of the website is to appear smooth and responsive, therefore all requests after the initial loading of the page are done asynchronously. This means that Javascript handles all subsequent HTTP requests and responses in the background, without refreshing the browser state. While an asynchronous request is occurring in the background, a loading image is displayed to provide user feedback.
+
+\lstset{language=HTML}
+The website consists of the three stages described above, and there is an HTML  \lstinline!div! (a container element) for each stage. The CSS styles these to look indented in the page to provide a point of focus for the user. The three containers for each stage, as well as the containers for the loading graphic and log are all included in the initial HTML. However, only the stage that is currently active is shown by adding the following attribute to the other containers: \lstinline!style="display: none;"!. 
+
+Initially, the user is presented with an image upload form (see Figure loljk). Once an image has been selected, a Javascript event is fired, prompting the automatic asynchronous upload of the image. The server responds with HTML to display the image which is inserted in the next container and shown.
+
+\linespread{1} % single line spacing
+\lstset{language=HTML,caption=The HTML code first stage container which includes the image upload form.,label=lst:distmatlab}
+\begin{lstlisting}[frame=single]
+<div id="upload-box" class="smooth-box">
+	<div style="height: 70px;">
+		<img id="upload-img" src="/img/down_arrow.png">
+		<h1>Upload an image...</h1>
+	</div>
+	<div class="clearit"></div>
+	<div class="form-holder">
+		<form method="post" action="/upload" enctype="multipart/form-data">
+                    <input type="file" name="image">
+                    <input type="submit" style="display: none;">
+                </form>
+	</div>
+</div>
+\end{lstlisting}
+\linespread{2} % double line spacing
+[Image of smooth box]
+
+~\subsection{Back-end}
+~\label{subsec:back}
 
 ~\section{Python-MATLAB Bridge}
 ~\label{sec:bridge}
