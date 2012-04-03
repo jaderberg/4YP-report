@@ -93,12 +93,12 @@
 \newlabel{fig:spatialverification}{{4.4}{19}{RANSAC spatial verification performed on two images of Big Ben.\relax \relax }{figure.caption.8}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4.5}Multiple Object Matching}{20}{section.4.5}}
 \newlabel{sec:multiobject}{{4.5}{20}{Multiple Object Matching\relax }{section.4.5}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces Multiple matched objects in a single query image.\relax }}{20}{figure.caption.9}}
-\newlabel{fig:multiplematching}{{4.5}{20}{Multiple matched objects in a single query image.\relax \relax }{figure.caption.9}{}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Software architecture}{21}{chapter.5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces Multiple matched objects in a single query image. Note: this example query image has been artificially created to include two objects.\relax }}{20}{figure.caption.9}}
+\newlabel{fig:multiplematching}{{4.5}{20}{Multiple matched objects in a single query image. Note: this example query image has been artificially created to include two objects.\relax \relax }{figure.caption.9}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Implementation}{21}{chapter.5}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{chpt:architecture}{{5}{21}{Software architecture\relax }{chapter.5}{}}
+\newlabel{chpt:architecture}{{5}{21}{Implementation\relax }{chapter.5}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces An overview of the system architecture.\relax }}{21}{figure.caption.10}}
 \newlabel{fig:architecture}{{5.1}{21}{An overview of the system architecture.\relax \relax }{figure.caption.10}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {5.1}Object Recognition Engine}{22}{section.5.1}}
@@ -112,6 +112,14 @@
 \@writefile{lol}{\contentsline {lstlisting}{\numberline {5.2}The bash script used to start MATLAB.}{24}{lstlisting.5.2}}
 \@writefile{toc}{\contentsline {section}{\numberline {5.2}Web Application}{25}{section.5.2}}
 \newlabel{sec:webapp}{{5.2}{25}{Web Application\relax }{section.5.2}{}}
+\newlabel{fig:uploadform}{{5.2a}{25}{Subfigure 5 5.2a\relax }{subfigure.5.2.1}{}}
+\newlabel{sub@fig:uploadform}{{(a)}{a}{Subfigure 5 5.2a\relax }{subfigure.5.2.1}{}}
+\newlabel{fig:tagimage}{{5.2b}{25}{Subfigure 5 5.2b\relax }{subfigure.5.2.2}{}}
+\newlabel{sub@fig:tagimage}{{(b)}{b}{Subfigure 5 5.2b\relax }{subfigure.5.2.2}{}}
+\newlabel{fig:log}{{5.2c}{25}{Subfigure 5 5.2c\relax }{subfigure.5.2.3}{}}
+\newlabel{sub@fig:log}{{(c)}{c}{Subfigure 5 5.2c\relax }{subfigure.5.2.3}{}}
+\newlabel{fig:taggedimage}{{5.2d}{25}{Subfigure 5 5.2d\relax }{subfigure.5.2.4}{}}
+\newlabel{sub@fig:taggedimage}{{(d)}{d}{Subfigure 5 5.2d\relax }{subfigure.5.2.4}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces Screenshots showcasing the web application's functionality.\relax }}{25}{figure.caption.11}}
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Stage 1 - initial view}}}{25}{subfigure.5.2.1}}
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Stage 2 - start matching process}}}{25}{subfigure.5.2.2}}
@@ -122,19 +130,23 @@
 \newlabel{subsec:front}{{5.2.1}{26}{Front-end\relax }{subsection.5.2.1}{}}
 \newlabel{lst:distmatlab}{{5.3}{26}{The HTML code first stage container which includes the image upload form}{lstlisting.5.3}{}}
 \@writefile{lol}{\contentsline {lstlisting}{\numberline {5.3}The HTML code first stage container which includes the image upload form.}{26}{lstlisting.5.3}}
+\newlabel{lst:intimage}{{5.4}{27}{The HTML code for the intelligent image}{lstlisting.5.4}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.4}The HTML code for the intelligent image.}{27}{lstlisting.5.4}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2.2}Back-end}{27}{subsection.5.2.2}}
 \newlabel{subsec:back}{{5.2.2}{27}{Back-end\relax }{subsection.5.2.2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.3}Python-MATLAB Bridge}{27}{section.5.3}}
-\newlabel{sec:bridge}{{5.3}{27}{Python-MATLAB Bridge\relax }{section.5.3}{}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {6}Geometric Improvements}{28}{chapter.6}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}Python-MATLAB Bridge}{28}{section.5.3}}
+\newlabel{sec:bridge}{{5.3}{28}{Python-MATLAB Bridge\relax }{section.5.3}{}}
+\newlabel{lst:pymat}{{5.5}{29}{Python code to run the object matching MATLAB function}{lstlisting.5.5}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.5}Python code to run the object matching MATLAB function.}{29}{lstlisting.5.5}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}Geometric Improvements}{30}{chapter.6}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{chpt:geoimprovements}{{6}{28}{Geometric Improvements\relax }{chapter.6}{}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {7}Turbo-boosting}{29}{chapter.7}}
+\newlabel{chpt:geoimprovements}{{6}{30}{Geometric Improvements\relax }{chapter.6}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {7}Turbo-boosting}{31}{chapter.7}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{chpt:turboboosting}{{7}{29}{Turbo-boosting\relax }{chapter.7}{}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {8}Summary}{30}{chapter.8}}
+\newlabel{chpt:turboboosting}{{7}{31}{Turbo-boosting\relax }{chapter.7}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {8}Summary}{32}{chapter.8}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \bibcite{turcot09}{1}

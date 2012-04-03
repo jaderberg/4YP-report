@@ -338,7 +338,7 @@ After automatic download of potential test images for each class, the dataset wa
 \label{chpt:system}
 The base line system draws upon the research and literature mentioned in Chapter~\ref{chpt:background}. Upon starting the project, an application was provided that includes a basic database creation and image matching process based on a dataset of structures in Oxford. This application was expanded upon to create the current system.
 
-There are two separate processes which form the project. The first is the pre-computation process that creates the databases and data structures required for object recognition. The second is the object recognition process that takes a query image and returns the names and locations of the objects in the image. A summary of these two processes is described in Figure~\ref{fig:precompprocess} and Figure~\ref{fig:searchprocess} respectively.
+There are two separate processes forming the project. The first is the pre-computation process that creates the databases and data structures required for object recognition. The second is the object recognition process that takes a query image and returns the names and locations of the objects in the image. A summary of these two processes is described in Figure~\ref{fig:precompprocess} and Figure~\ref{fig:searchprocess} respectively.
 
 \begin{figure}[htb]
 \centering 
@@ -395,9 +395,9 @@ The result of the vocabulary creation is a kd-tree which can be used to get the 
 
 \section{Histograms and Index}
 \label{sec:histograms}
-The images are represented by a list of words as described in the previous section. This list of words can in turn be represented as a histogram, with each element containing the number of occurrences of the word with ID equal to the element number in the image. Therefore each histogram is a sparse 100,000 element array. Two examples of the raw histograms are shown in Figure~\ref{fig:rawhist1} and Figure~\ref{fig:rawhist2}.
+The images are represented by a list of words as described in the previous section. This list of words can in turn be represented as a histogram, with each element containing the number of occurrences in the image of the word with ID equal to the element number. Therefore each histogram is a sparse 100,000 element array. Two examples of the raw histograms are shown in Figure~\ref{fig:rawhist1} and Figure~\ref{fig:rawhist2}.
 
-The term frequency-inverse document frequency\footnote{\url{http://en.wikipedia.org/wiki/Tf*idf}} (tf-idf) weights are then computed for each word across the entire dataset of model images. These weights are applied to the histograms to down-weight common, uninformative visual words and up-weight unique, informative visual words. The differences in histograms before and after weighting is illustrated in Figure~\ref{fig:histograms}.
+The term frequency-inverse document frequency\footnote{This is a practice developed originally for text search. See \url{http://en.wikipedia.org/wiki/Tf*idf} for more information.} (tf-idf) weights are then computed for each word across the entire dataset of model images. These weights are applied to the histograms to down-weight common, uninformative visual words and up-weight unique, informative visual words. The differences in histograms before and after weighting are illustrated in Figure~\ref{fig:histograms}.
 
 \begin{figure}[htb]
 \centering 
@@ -418,7 +418,7 @@ The term frequency-inverse document frequency\footnote{\url{http://en.wikipedia.
 
 Each model image therefore has a histogram that is used for matching. All the histograms are packaged into a matrix (each column being an image's histogram) that is used as the index for query matching.
 
-To find the most similar images to a query image, a dot product is performed between each of the model image histograms and the query image histogram. This is shown in Equation~\ref{eqn:tfidfscore}, where $\mathbf{h_{query}}$ is the tf-idf weighted histogram of the query image and $\mathbf{h_i}$ is the tf-idf weighted histogram of model image $i$. $\mathbf{scores}$ is a $Nx1$ array with the result of the dot product with each model image's histogram in each element. The matches are ranked in decreasing order of their score - the model image with the highest score said to be the most similar to the query image.
+To find the most similar images to a query image, a dot product is performed between each of the model image histograms and the query image histogram. This is shown in Equation~\ref{eqn:tfidfscore}, where $\mathbf{h_{query}}$ is the tf-idf weighted histogram of the query image and $\mathbf{h_i}$ is the tf-idf weighted histogram of model image $i$. $\mathbf{scores}$ is a $N\times1$ array with the result of the dot product with each model image's histogram in each element. The matches are ranked in decreasing order of their score - the model image with the highest score is said to be the most similar to the query image.
 
 \begin{equation}
 \mathbf{scores}= \mathbf{h_{query}^T}
@@ -433,7 +433,7 @@ To find the most similar images to a query image, a dot product is performed bet
 \label{sec:spatialverification}
 Matching based purely on the tf-idf weighted histograms is effective, however it is prone to false positives. This is due to the fact that two different objects may have very similar features (and therefore many similar visual words), but these features are in very different places as they are not the same object. Therefore, a final spatial verification must be done to ensure that the visual words that appear both in the query image and the model image form the same rigid bodied object.
 
-The spatial verification restraint in this application is that there should exist an affine transformation\footnote{\url{http://en.wikipedia.org/wiki/Affine_transformation}} between the scene in the query image and the scene in model image that is the potential match. Practically, this means that there should be an affine transformation that maps the visual words in the query image to the position of the same visual words in the model image.
+The spatial verification restraint in this application is that there should exist an affine transformation\footnote{\url{http://en.wikipedia.org/wiki/Affine_transformation}} between the scene in the query image and the scene in the model image that is the potential match. Practically, this means that there should be an affine transformation that maps the visual words in the query image to the position of the same visual words in the model image.
 
 The random sample consensus algorithm\footnote{\url{http://en.wikipedia.org/wiki/RANSAC}} (RANSAC) is used to estimate an affine transformation between the two images, using the corresponding visual words in each image. The result of the RANSAC spatial verification is the number of visual words in the query image that map to the correct positions in the model image (within some tolerance region). Matches that have enough inliers under the transformation are said to be spatially verified - that is the estimated affine transformation is accurate and both images depict the same rigid bodied object.
 
@@ -462,15 +462,15 @@ This method allows any number of objects to be recognised within a single image.
 
 \begin{figure}[htb]
 \centering 
-\includegraphics[width=0.5\textwidth]{images/intimage.png}
-\caption{Multiple matched objects in a single query image.}
+\includegraphics[width=0.9\textwidth]{images/multimatch.png}
+\caption{Multiple matched objects in a single query image. Note: this example query image has been artificially created to include two objects.}
 \label{fig:multiplematching}
 \end{figure}
 
 %-------------------------------
-% Software architecture
+% Implementation
 %-------------------------------
-\chapter{Software architecture}
+\chapter{Implementation}
 \label{chpt:architecture}
 While Chapter~\ref{chpt:system} outlines the processes involved with the object recognition engine, this chapter describes the practical implementation of the system including the front end web application for consumer interaction.
 
@@ -489,18 +489,19 @@ The resulting product is a web site with an intuitive user interface. A user can
 ~\label{sec:engine}
 The object recognition engine performs the pre-computation and recognition processes described in Chapter~\ref{chpt:system}. This is all implemented using MATLAB. MATLAB was chosen due to its ease in image manipulation, rich toolboxes, and the provided starter application was written in MATLAB.
 
-The resulting interface is a MATLAB function \lstinline!get_objects()! that takes a single argument containing the location of the query image to recognise the objects in. The output is a structure of the object classes found and their rectangle coordinates in the query image. The function takes around 5-10 seconds to run.
+The resulting interface is a MATLAB function \lstinline!get_objects()! that takes a single argument containing the location of the query image to recognise the objects in. The output is a structure of the object classes found and their bounding rectangles in the query image. The function takes around 5-10 seconds to run.
 
 ~\subsection{Database}
 
 A filesystem is used for the storage of model images (see Chapter~\ref{chpt:data}), however a working record is needed of the dataset for book keeping and quick searching. For this, MongoDB\footnote{\url{http://www.mongodb.org}} is used. 
 
-MongoDB is a NoSQL database application that stores data in the form of documents - data structures similar to JSON objects. The data is unstructured, and provides a simple way of storing data without dealing with the complexities of tables and relationships that come with relational databases (e.g. SQL). Listing~\ref{lst:bson} shows a model image stored in the MongoDB database. The fields of the documents (i.e. \lstinline!"_id", "name", "path", "class", "size"!) are fully searchable and can be indexed for faster lookup\footnote{By deafault, the \lstinline!"_id"! field is indexed for fast lookup by ID.}. 
+MongoDB is a NoSQL\footnote{NoSQL is a family of databases that does not require fixed table schemas, and are sometimes known as ``structured storage''.} database application that stores data in the form of documents - data structures similar to JSON objects. The data is unstructured, and provides a simple way of storing data without dealing with the complexities of tables and relationships that come with relational databases (e.g. SQL). Listing~\ref{lst:bson} shows a model image stored in the MongoDB database. The fields of the documents (i.e. \lstinline!"_id", "name", "path", "class", "size"!) are fully searchable and can be indexed for faster lookup\footnote{By deafault, the \lstinline!"_id"! field is indexed for fast lookup by ID.}. 
 
 
 \linespread{1} % single line spacing
 \lstset{language=Java,caption=A document representing a model image stored in MongoDB.,label=lst:bson}
 \begin{lstlisting}[frame=single]
+// BSON
 {
 	"_id" : ObjectId("4f7317501b515eaa6f148c5d"),
 	"name" : "1222|10_Downing_Street.jpg",
@@ -514,7 +515,7 @@ MongoDB is a NoSQL database application that stores data in the form of document
 \end{lstlisting}
 \linespread{2} % double line spacing
 
-MongoDB is run as a daemon and the directory of storage files is set to be a directory within the solutions working directory. This allows complete segmentation of each database. The daemon sets up a web server which can accept any number of connections over TCP to access the database.
+MongoDB is run as a daemon and the directory of storage files is set to be a directory within the solution's working directory. This allows complete segmentation of each database. The daemon sets up a web server on port \lstinline!3036! which can accept any number of connections over TCP to access the database.
 
 The interface with MATLAB is done using the Java library provided by MongoDB\footnote{See \url{http://www.mongodb.org/display/DOCS/Java+Tutorial} for documentation.}. MATLAB has the ability to run Java inside it, so the Java MongoDB library can be consumed in a fairly natural way.
 
@@ -548,7 +549,7 @@ sh dist_matlab_suppress.sh dist_compute_features 11 28 engs-station41.eng.ox.ac.
 \lstset{language=Matlab}
 Listing~\ref{lst:distmatlab} shows the script used to launch a MATLAB job. The MATLAB function must take four arguments: \lstinline!n_split, N_split, first_host, this_host!. These describe the current machine's number, the total number of machines, the address of the first machine and the address of the current machine. These are required for the splitting of the data and to connect to the MongoDB server which is always run on the first machine.
 
-Using the distributed system of pre-computation and validation [WHERE DO I WRITE ABOUT THE VALIDATION AND RESULTS?!] results in a far quicker process, reducing the time from 15-20 hours for some jobs to around 1 hour.
+Using the distributed system for pre-computation and validation [WHERE DO I WRITE ABOUT THE VALIDATION AND RESULTS?!] results in a far quicker process, reducing the time from 15-20 hours for some jobs to around 1 hour.
 
 ~\section{Web Application}
 ~\label{sec:webapp}
@@ -558,13 +559,13 @@ The web application is divided in to two parts, the front-end application that i
 
 \begin{figure}[htb]
 \centering 
-\subfloat[Stage 1 - initial view]{\includegraphics[width=0.4\textwidth]{images/stage1.png}}
+\subfloat[Stage 1 - initial view]{\label{fig:uploadform}\includegraphics[width=0.4\textwidth]{images/stage1.png}}
 ~
-\subfloat[Stage 2 - start matching process]{\includegraphics[width=0.4\textwidth]{images/stage2.png}}
+\subfloat[Stage 2 - start matching process]{\label{fig:tagimage}\includegraphics[width=0.4\textwidth]{images/stage2.png}}
 \\
-\subfloat[Stage 3 - log of matching process]{\includegraphics[width=0.4\textwidth]{images/log.png}}
+\subfloat[Stage 3 - log of matching process]{\label{fig:log}\includegraphics[width=0.4\textwidth]{images/log.png}}
 ~
-\subfloat[Stage 4 - the intelligent image]{\includegraphics[width=0.4\textwidth]{images/stage3.png}}
+\subfloat[Stage 4 - the intelligent image]{\label{fig:taggedimage}\includegraphics[width=0.4\textwidth]{images/stage3.png}}
 \\
 \caption{Screenshots showcasing the web application's functionality.}
 \label{fig:webapp}
@@ -582,20 +583,21 @@ Figure~\ref{fig:webapp} shows the steps for a user using the website which are a
 
 ~\subsection{Front-end}
 ~\label{subsec:front}
-The front-end is a web page viewed in a browser (such as Google Chrome). It consists of three components, the HTML code that defines the structure and layout of the web site, the CSS that defines the styling and the Javascript that provides the logic for the website.
+The front-end is a web page viewed in a web browser. It consists of three components: the HTML code that defines the structure and layout of the web site, the CSS\footnote{Cascading style sheers - more information at \url{http://www.w3schools.com/css/}} that defines the styling and the Javascript that provides the logic for the website.
 
-The Javascript scripts make heavy use of the JQuery library\footnote{\url{http://jquery.com}}. JQuery abstracts and simplifies manipulating HTML elements on the page as well as providing built in animation and HTTP request functions. 
+The Javascript scripts make heavy use of the JQuery library\footnote{\url{http://jquery.com}}. JQuery abstracts and simplifies manipulation of HTML elements on the page as well as providing built in animation and HTTP request functions. 
 
-The goal of the website is to appear smooth and responsive, therefore all requests after the initial loading of the page are done asynchronously. This means that Javascript handles all subsequent HTTP requests and responses in the background, without refreshing the browser state. While an asynchronous request is occurring in the background, a loading image is displayed to provide user feedback.
+The goal of the website is to appear smooth and responsive, therefore all requests after the initial loading of the page are done asynchronously. This means that Javascript handles all subsequent HTTP requests and responses in the background, without refreshing the browser state. This is done using JQuery's \lstinline!getJSON()! function, where the response data is packaged in JSON format.
 
 \lstset{language=HTML}
-The website consists of the three stages described above, and there is an HTML  \lstinline!div! (a container element) for each stage. The CSS styles these to look indented in the page to provide a point of focus for the user. The three containers for each stage, as well as the containers for the loading graphic and log are all included in the initial HTML. However, only the stage that is currently active is shown by adding the following attribute to the other containers: \lstinline!style="display: none;"!. 
+The website consists of the four stages described above, and there is an HTML  \lstinline!div! (a container element) for each stage. The CSS styles these to look indented in the page to provide a point of focus for the user. The four containers for each stage are all included in the initial HTML. However, only the stage that is currently active is shown by adding the following attribute to the other containers: \lstinline!style="display: none;"!. 
 
-Initially, the user is presented with an image upload form (see Figure loljk). Once an image has been selected, a Javascript event is fired, prompting the automatic asynchronous upload of the image. The server responds with HTML to display the image which is inserted in the next container and shown.
+Initially, the user is presented with an image upload form (see Figure~\ref{fig:uploadform}). Once an image has been selected, a Javascript event is fired, prompting the automatic asynchronous upload of the image. The server responds with HTML to display the image which is inserted in the next container and shown (Figure~\ref{fig:tagimage}).
 
 \linespread{1} % single line spacing
 \lstset{language=HTML,caption=The HTML code first stage container which includes the image upload form.,label=lst:distmatlab}
 \begin{lstlisting}[frame=single]
+<!--HTML-->
 <div id="upload-box" class="smooth-box">
 	<div style="height: 70px;">
 		<img id="upload-img" src="/img/down_arrow.png">
@@ -611,13 +613,62 @@ Initially, the user is presented with an image upload form (see Figure loljk). O
 </div>
 \end{lstlisting}
 \linespread{2} % double line spacing
-[Image of smooth box]
+
+Upon clicking the ``Tag Image'' button, the real-time log is displaying informing the user of the progress of the matching process (Figure~\ref{fig:log}). The real-time log is achieved by the MATLAB process writing a log file and the Javascript app periodically asking the web server for the contents of the latest version of that file.
+
+Once the match process is complete, the ``intelligent image'' HTML (shown in Listing~\ref{lst:intimage}) is returned to the Javascript app. The image is shown with the tags for the objects overlaid. On hover over, the border of the tag becomes solid and the name of the object is shown (Figure~\ref{fig:taggedimage}). On click, the Wikipedia page for the object is opened. This is achieved purely with HTML and CSS.
+
+\linespread{1} % single line spacing
+\lstset{language=HTML,caption=The HTML code for the intelligent image.,label=lst:intimage}
+\begin{lstlisting}[frame=single]
+<!--HTML-->
+<div class="tagged-img-wrap">
+	<img id="tagged-img" src="/uploads/query_image.jpg}">
+	<a style="left: 105px; bottom: 232px;" class="img-tag" href="http://en.wikipedia.org/wiki/Tower_Bridge}" target="_blank">
+		<div style="width: 303px; height:288px;" class="tag-border"></div>
+		<span class="tag-label">Tower Bridge</span>
+        </a>
+</div>
+\end{lstlisting}
+\linespread{2} % double line spacing
 
 ~\subsection{Back-end}
 ~\label{subsec:back}
+The back-end web server is in place to handle all incoming HTTP requests and produce appropriate responses. 
+
+In this application, a Python web server using the Django framework\footnote{Django is an open source web framework written in Python. See \url{https://www.djangoproject.com}.} is used. The HTTP requests are routed to different Python functions depending on what URL is requested, and these functions handle the processing of the request and the rendering of a response. All responses are in JSON format except for the response for the home page which is HTML.
+
+The Django application uses a MySQL database to store user session data as well as the references and details of uploaded images. To perform a matching process, the Django application uses the Python-MATLAB bridge described in Section~\ref{sec:bridge} to start the job and receive the results for subsequent rendering.
 
 ~\section{Python-MATLAB Bridge}
 ~\label{sec:bridge}
+The object recognition engine runs in MATLAB, however the web application runs in Python. Therefore a bridge between the two environments is needed for interaction. In essence, Python code needs to be able to call a MATLAB function and interpret the result.
+
+Some solutions already exist for this purpose\footnote{See \url{http://claymore.engineer.gvsu.edu/~steriana/Python/pymat.html} for an example.} however these all involve starting an instance of MATLAB for each function call. As the system should be fast and deployable, this is not a desirable solution, as there will be a 5-10 second overhead for each MATLAB function call while MATLAB starts up.
+
+\lstset{language=Matlab}
+Instead, a Python-MATLAB bridge was achieved using MATLAB's Java runtime environment. Using some code written by D.Kroon (University of Twente), Java's TCP and socket libraries are used to create a TCP server to handle requests. This is run on a separate TCP port to the web application to avoid cross communication. This means that MATLAB needs to startup only once, after which function calls are issued with local HTTP requests. For example, to call the function \lstinline!test_connect()! in the file \lstinline!test_connect.m! with the MATLAB server running on port \lstinline!4000!, simply issue an HTTP request to \lstinline!http://localhost:4000/test_connect.m!. Arguments to the function can be added as query parameters to the HTTP request and decoded by the MATLAB function.
+
+A MATLAB function \lstinline!web_feval! with a supporting function \lstinline!run_dot_m! simplifies this process so any MATLAB function can be called (whether it be on MATLAB's path or not) with any number of arguments, with the results returned as JSON structures. A Python class \lstinline!Matlab! abstracts this on the Python side - any locally stored MATLAB function can be run, with arguments, and the results are returned as a Python dictionary. Listing~\ref{lst:pymat} shows how a MATLAB function is called with the created class. The \lstinline!run()! function takes two arguments: the location of the function and a dictionary of arguments to be passed in to the function.
+ 
+ \linespread{1} % single line spacing
+\lstset{language=Python,caption=Python code to run the object matching MATLAB function.,label=lst:pymat}
+\begin{lstlisting}[frame=single]
+## Python
+# First initialise the Matlab object. This is done once when the web server starts
+matlab = Matlab('http://localhost:4000')
+# Now run the desired function
+while matlab.running:
+	# Matlab is already processing something, wait
+        time.sleep(2)
+resp = matlab.run('~/Sites/4YP/visualindex/wikilist_dataset/demo_wiki_get_objects.m', {'image_path': query_image_path, 'display': 1, 'log_file': '%slogs/%s-log.txt' % (settings.MEDIA_ROOT, request.POST.get('key'))}, maxtime=999999)
+# Get the results
+result = resp['result']
+\end{lstlisting}
+\linespread{2} % double line spacing
+
+With this bridge, running any MATLAB functions becomes trivial and so the web application can run the MATLAB matching process.
+
 
 %-------------------------------
 % Geometric Improvements
