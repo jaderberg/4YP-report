@@ -19,6 +19,9 @@
 \BOOKMARK [2][-]{subsection.5.2.1}{Front-end}{section.5.2}% 19
 \BOOKMARK [2][-]{subsection.5.2.2}{Back-end}{section.5.2}% 20
 \BOOKMARK [1][-]{section.5.3}{Python-MATLAB Bridge}{chapter.5}% 21
-\BOOKMARK [0][-]{chapter.6}{Geometric Improvements}{}% 22
-\BOOKMARK [0][-]{chapter.7}{Turbo-boosting}{}% 23
-\BOOKMARK [0][-]{chapter.8}{Summary}{}% 24
+\BOOKMARK [0][-]{chapter.6}{Geometric and Descriptor Improvements}{}% 22
+\BOOKMARK [1][-]{section.6.1}{NOSAC}{chapter.6}% 23
+\BOOKMARK [1][-]{section.6.2}{Affine Invariant Detector}{chapter.6}% 24
+\BOOKMARK [1][-]{section.6.3}{RootSIFT}{chapter.6}% 25
+\BOOKMARK [0][-]{chapter.7}{Turbo-boosting}{}% 26
+\BOOKMARK [0][-]{chapter.8}{Summary}{}% 27

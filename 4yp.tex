@@ -349,7 +349,7 @@ There are two separate processes forming the project. The first is the pre-compu
 
 \begin{figure}[htb]
 \centering 
-\includegraphics[width=0.5\textwidth]{images/SearchProcess.pdf}
+\includegraphics[width=0.9\textwidth]{images/SearchProcess.pdf}
 \caption{The flow diagram for the basic object recognition process.}
 \label{fig:searchprocess}
 \end{figure}
@@ -433,7 +433,29 @@ To find the most similar images to a query image, a dot product is performed bet
 \label{sec:spatialverification}
 Matching based purely on the tf-idf weighted histograms is effective, however it is prone to false positives. This is due to the fact that two different objects may have very similar features (and therefore many similar visual words), but these features are in very different places as they are not the same object. Therefore, a final spatial verification must be done to ensure that the visual words that appear both in the query image and the model image form the same rigid bodied object.
 
-The spatial verification restraint in this application is that there should exist an affine transformation\footnote{\url{http://en.wikipedia.org/wiki/Affine_transformation}} between the scene in the query image and the scene in the model image that is the potential match. Practically, this means that there should be an affine transformation that maps the visual words in the query image to the position of the same visual words in the model image.
+The spatial verification restraint in this application is that there should exist an affine transformation between the scene in the query image and the scene in the model image that is the potential match. Practically, this means that there should be an affine transformation that maps the visual words in the query image to the position of the same visual words in the model image. Equation~\ref{eqn:affine} shows this transformation, such that $\mathbf{x'}$ is the positions of the visual word in the model image, $\mathbf{x}$ is the position of the visual word in the query image, and $\mathbf{H}$ is the affine transformation between the two images.
+
+\begin{equation}
+\mathbf{x'}=
+\left[ \begin{array}{c}
+x' \\
+y' \\
+1
+\end{array}\right]
+=
+\left[ \begin{array}{ccc}
+a & b & t_x \\
+c & d & t_y \\
+0 & 0 & 1
+\end{array}\right]
+\left[ \begin{array}{c}
+x \\
+y \\
+1
+\end{array}\right]
+= \mathbf{H}\mathbf{x}
+\label{eqn:affine}
+\end{equation} 
 
 The random sample consensus algorithm\footnote{\url{http://en.wikipedia.org/wiki/RANSAC}} (RANSAC) is used to estimate an affine transformation between the two images, using the corresponding visual words in each image. The result of the RANSAC spatial verification is the number of visual words in the query image that map to the correct positions in the model image (within some tolerance region). Matches that have enough inliers under the transformation are said to be spatially verified - that is the estimated affine transformation is accurate and both images depict the same rigid bodied object.
 
@@ -485,13 +507,13 @@ Figure~\ref{fig:architecture} gives a holistic view of the system architecture. 
 
 The resulting product is a web site with an intuitive user interface. A user can upload a photo, and the photo will be presented back to the user with the objects tagged.
 
-~\section{Object Recognition Engine}
-~\label{sec:engine}
+\section{Object Recognition Engine}
+\label{sec:engine}
 The object recognition engine performs the pre-computation and recognition processes described in Chapter~\ref{chpt:system}. This is all implemented using MATLAB. MATLAB was chosen due to its ease in image manipulation, rich toolboxes, and the provided starter application was written in MATLAB.
 
 The resulting interface is a MATLAB function \lstinline!get_objects()! that takes a single argument containing the location of the query image to recognise the objects in. The output is a structure of the object classes found and their bounding rectangles in the query image. The function takes around 5-10 seconds to run.
 
-~\subsection{Database}
+\subsection{Database}
 
 A filesystem is used for the storage of model images (see Chapter~\ref{chpt:data}), however a working record is needed of the dataset for book keeping and quick searching. For this, MongoDB\footnote{\url{http://www.mongodb.org}} is used. 
 
@@ -521,13 +543,13 @@ The interface with MATLAB is done using the Java library provided by MongoDB\foo
 
 The frames, descriptors, words and histograms for the model images are stored on disk as MATLAB binary files. They are associated to the database entries via their filename which includes the ID assigned by MongoDB to the image's document. For example, for the model image \lstinline!1222|10_Downing_Street.jpg! shown in Listing~\ref{lst:bson} the frames file will be stored in the frames directory with the filename \\ \lstinline!4f7317501b515eaa6f148c5d-frames.mat!.
 
-~\subsection{Image Processing}
+\subsection{Image Processing}
 The bulk of the image processing and processor intensive operations are outsourced to the VLFeat library\footnote{\url{http://www.vlfeat.org}}. VLFeat is an open source library implementing various computer vision algorithms in C. Being implemented in C means that the algorithms compute faster and more efficiently than if they were written in MATLAB. The VLFeat provides MATLAB wrappers to the functions which are use to interface with the MATLAB engine.
 
 \lstset{language=Matlab}
 To enable VLFeat, \lstinline!run vlfeat/toolbox/vl_setup! is executed on startup, after which all the VLFeat functions can be used. \lstinline!vl_sift()! is used for SIFT feature detection and descriptor computation, and \lstinline!vl_kdtreebuild()! and \lstinline!vl_kdtreequery()! are used for efficient visual word creation and retrieval.
 
-~\subsection{Distributed Pre-computation}
+\subsection{Distributed Pre-computation}
 The pre-computation process takes a long time to complete, as every image of the thousands in the dataset must be processed and the clustering algorithm must be run. However, the majority of the functions within the pre-computation involve independent computations on each image in turn. This means that these steps can be run in parallel.
 
 A room of computers in the Engineering Science Department is used for the parallel pre-computation. These Linux machines are accessed via SSH\footnote{\url{http://en.wikipedia.org/wiki/Secure_Shell}}. In total there are around 30 machines that are used.
@@ -551,8 +573,8 @@ Listing~\ref{lst:distmatlab} shows the script used to launch a MATLAB job. The M
 
 Using the distributed system for pre-computation and validation [WHERE DO I WRITE ABOUT THE VALIDATION AND RESULTS?!] results in a far quicker process, reducing the time from 15-20 hours for some jobs to around 1 hour.
 
-~\section{Web Application}
-~\label{sec:webapp}
+\section{Web Application}
+\label{sec:webapp}
 The web application sits in front of the object recognition engine and implements a practical application of the engine. The function is a website that allows users to upload photos for automatic tagging of objects.
 
 The web application is divided in to two parts, the front-end application that is runs in a users web browser (Section~\ref{subsec:front}) and the back-end web server (Section~\ref{subsec:back}) that handles the requests and responses from the front-end.
@@ -581,8 +603,8 @@ Figure~\ref{fig:webapp} shows the steps for a user using the website which are a
 \item When match is complete, view and interact with the ``intelligent image''.
 \end{enumerate}
 
-~\subsection{Front-end}
-~\label{subsec:front}
+\subsection{Front-end}
+\label{subsec:front}
 The front-end is a web page viewed in a web browser. It consists of three components: the HTML code that defines the structure and layout of the web site, the CSS\footnote{Cascading style sheers - more information at \url{http://www.w3schools.com/css/}} that defines the styling and the Javascript that provides the logic for the website.
 
 The Javascript scripts make heavy use of the JQuery library\footnote{\url{http://jquery.com}}. JQuery abstracts and simplifies manipulation of HTML elements on the page as well as providing built in animation and HTTP request functions. 
@@ -632,26 +654,26 @@ Once the match process is complete, the ``intelligent image'' HTML (shown in Lis
 \end{lstlisting}
 \linespread{2} % double line spacing
 
-~\subsection{Back-end}
-~\label{subsec:back}
+\subsection{Back-end}
+\label{subsec:back}
 The back-end web server is in place to handle all incoming HTTP requests and produce appropriate responses. 
 
 In this application, a Python web server using the Django framework\footnote{Django is an open source web framework written in Python. See \url{https://www.djangoproject.com}.} is used. The HTTP requests are routed to different Python functions depending on what URL is requested, and these functions handle the processing of the request and the rendering of a response. All responses are in JSON format except for the response for the home page which is HTML.
 
 The Django application uses a MySQL database to store user session data as well as the references and details of uploaded images. To perform a matching process, the Django application uses the Python-MATLAB bridge described in Section~\ref{sec:bridge} to start the job and receive the results for subsequent rendering.
 
-~\section{Python-MATLAB Bridge}
-~\label{sec:bridge}
+\section{Python-MATLAB Bridge}
+\label{sec:bridge}
 The object recognition engine runs in MATLAB, however the web application runs in Python. Therefore a bridge between the two environments is needed for interaction. In essence, Python code needs to be able to call a MATLAB function and interpret the result.
 
-Some solutions already exist for this purpose\footnote{See \url{http://claymore.engineer.gvsu.edu/~steriana/Python/pymat.html} for an example.} however these all involve starting an instance of MATLAB for each function call. As the system should be fast and deployable, this is not a desirable solution, as there will be a 5-10 second overhead for each MATLAB function call while MATLAB starts up.
+Some solutions already exist for this purpose\footnote{See \url{http://claymore.engineer.gvsu.edu/~steriana/Python/pymat.html} for an example.} however these all involve starting an instance of MATLAB for each function call. As the system should be fast and scalable, this is not a desirable solution, as there will be a 5-10 second overhead for each MATLAB function call while MATLAB starts up.
 
 \lstset{language=Matlab}
 Instead, a Python-MATLAB bridge was achieved using MATLAB's Java runtime environment. Using some code written by D.Kroon (University of Twente), Java's TCP and socket libraries are used to create a TCP server to handle requests. This is run on a separate TCP port to the web application to avoid cross communication. This means that MATLAB needs to startup only once, after which function calls are issued with local HTTP requests. For example, to call the function \lstinline!test_connect()! in the file \lstinline!test_connect.m! with the MATLAB server running on port \lstinline!4000!, simply issue an HTTP request to \lstinline!http://localhost:4000/test_connect.m!. Arguments to the function can be added as query parameters to the HTTP request and decoded by the MATLAB function.
 
 A MATLAB function \lstinline!web_feval! with a supporting function \lstinline!run_dot_m! simplifies this process so any MATLAB function can be called (whether it be on MATLAB's path or not) with any number of arguments, with the results returned as JSON structures. A Python class \lstinline!Matlab! abstracts this on the Python side - any locally stored MATLAB function can be run, with arguments, and the results are returned as a Python dictionary. Listing~\ref{lst:pymat} shows how a MATLAB function is called with the created class. The \lstinline!run()! function takes two arguments: the location of the function and a dictionary of arguments to be passed in to the function.
  
- \linespread{1} % single line spacing
+\linespread{1} % single line spacing
 \lstset{language=Python,caption=Python code to run the object matching MATLAB function.,label=lst:pymat}
 \begin{lstlisting}[frame=single]
 ## Python
@@ -673,8 +695,144 @@ With this bridge, running any MATLAB functions becomes trivial and so the web ap
 %-------------------------------
 % Geometric Improvements
 %-------------------------------
-\chapter{Geometric Improvements}
+\chapter{Geometric and Descriptor Improvements}
 \label{chpt:geoimprovements}
+
+A number of modifications to the baseline system were explored to increase the matching performance of the object recognition system. These improvements are using the NOSAC algorithm in place of RANSAC (Section~\ref{sec:nosac}), using a different feature detector and transformation estimation algorithm based on affine invariant feature regions (Section~\ref{sec:affine}), and modifying the descriptors to improve conditioning (Section~\ref{sec:rootsift}).
+
+Recalled from Chapter~\ref{chpt:system}, the baseline system uses RANSAC to estimate an affine transformation between the query image and model images for spatial verification. If the number of corresponding features that conform to this transformation exceeds a threshold, the inlier threshold, the match is said to be spatially verified. Table~\ref{tbl:improvements} shows the impact on yield (the percent of objects in validation images successfully recognised) by implementing these improvements and varying the inlier threshold.
+
+\begin{table}[hbtp]
+\begin{center}
+\begin{tabular}{c|c|c|c|}
+\cline{2-4}
+ & \multicolumn{3}{|c|}{Inlier Threshold} \\ 
+ \cline{2-4}
+ & 5 & 7 & 9 \\
+ \cline{2-4}
+ \cline{1-4}
+\multicolumn{1}{|c|}{RANSAC} & \texttt{14.1\%} & \textcolor{red}{\texttt{18.1\%}} & \texttt{14.3\%} \\  
+\cline{1-4}
+\multicolumn{1}{|c|}{NOSAC} & \textcolor{red}{\texttt{20.8\%}} & \texttt{17.7\%} & \texttt{16.1\%} \\  
+\cline{1-4}
+\multicolumn{1}{|c|}{Affine} & \textcolor{red}{\texttt{22.3\%}} &  \texttt{17.4\%} & \texttt{13.8\%} \\  
+\cline{1-4}
+\multicolumn{1}{|c|}{Affine RootSIFT} & \textcolor{red}{\texttt{22.3\%}} &  \texttt{17.4\%} & \texttt{13.8\%} \\  
+\cline{1-4}
+\end{tabular}
+\end{center}
+\caption{The yield acheived for each improvement method with different thresholds for the number of RANSAC inliers required for a match.}
+\label{tbl:improvements}
+\end{table}
+
+
+\section{NOSAC}
+\label{sec:nosac}
+To estimate an affine transformation between two images, six variables must be estimated ($a$, $b$, $c$, $d$, $t_x$, and $t_y$ in Equation~\ref{eqn:affine}). 
+Each feature point that is computed for an image contains four data points: the $x$ coordinate, $y$ coordinate, scale $s$, and rotation $\theta$ of the feature. The baseline RANSAC method randomly selects three correspondences and uses the $x$ and $y$ coordinates to yield two equations for each correspondence. For three correspondences, that means there are six equations, so the transformation can be solved. The best transformation (the one with the most inliers) over all the iterations of sampling is then used as a basis for the overall affine transformation.
+
+This method works well, however it is based on random sampling so either accuracy or speed is sacrificed. Instead, a new estimation method is used called NOSAC. 
+
+Rather than selecting three correspondences, only one correspondence is needed to estimate a transformation. Initially, it is assumed the only components of the transformation are scaling and translation, as shown in Equation~\ref{eqn:scaleaffine}. There are therefore only three unknown variables - $a$, $t_x$, and $t_y$. The scaling factor $a$ is estimated from the relative scales of the feature points, and the translation from the coordinates. An estimation is done for every correspondence. The inliers of the best estimation of the transformation are then used to compute the full six degree of freedom affine transformation\footnote{This is done using \lstinline$vgg_Haffine_from_x_MLE$ by Andrew Zisserman found on \url{http://www.robots.ox.ac.uk/~vgg}}. 
+
+\begin{equation}
+\mathbf{x'}=
+\left[ \begin{array}{ccc}
+a & 0 & t_x \\
+0 & a & t_y \\
+0 & 0 & 1
+\end{array}\right]\mathbf{x}
+\label{eqn:scaleaffine}
+\end{equation} 
+
+\linespread{1} % single line spacing
+\lstset{language=Matlab,caption=Estimating the pure scale affine transformation for each corresponding feature.,label=lst:nosac}
+\begin{lstlisting}[frame=single]
+%% MATLAB
+% for each correspondence
+for i=1:n_correspondences
+    % compute transformation (a 0 tx; 0 a ty; 0 0 1) where a = s2/s1
+    a = f2(3,i)/f1(3,i);
+    T = f2(1:2,i) - s*f1(1:2,i);
+    H{i} = [s 0 T(1); 0 s T(2); 0 0 1]; 
+    % score all the other points from transformation
+    X2_ = H{i} * X1;
+    delta = X2_ - X2;
+    ok_rough{i} = sum(delta.*delta,1) < (1*thresh)^2;
+    score_rough(i) = sum(ok_rough{i});
+end\end{lstlisting}
+\linespread{2} % double line spacing
+
+As an estimation is performed on every correspondence, there is no randomness to the process. Also, as the number of iterations is the number of correspondences, the NOSAC method is considerably faster than RANSAC. Matching performance is also increased by 15\%.
+
+\section{Affine Invariant Detector}
+\label{sec:affine}
+An alternative feature detector is used as an improvement. The Hessian affine region detector detects regions similar to the SIFT detector of the baseline system. However, the features detected are affine invariant - the detector will detect the same features and describe them in the same way even if the viewpoint has changed. This has the advantage of allowing matching of features even when the view of the object is markedly different.
+
+The feature points are now six-dimensional rather than four-dimensional, with each feature region being described by its $x$ and $y$ position, orientation $\theta$\footnote{In practice, no useful interpretation of the orientation has been found.} and the ellipse representing the region, given by three parameters $a$, $b$ and $c$ such that the ellipse is described by Equation~\ref{eqn:ellipse}.
+
+\begin{equation}
+ax^2 + 2bxy + cy^2 = 
+\left[ \begin{array}{cc}
+x & y
+\end{array}\right]
+\left[ \begin{array}{cc}
+a & b \\
+b & c
+\end{array}\right]
+\left[ \begin{array}{c}
+x\\
+y
+\end{array}\right]
+=
+\mathbf{x^T}\mathbf{S}\mathbf{x}
+= 0
+\label{eqn:ellipse}
+\end{equation} 
+
+There are two advantages of using the affine invariant detector. The first is that there are more corresponding features between images of the same object as the a feature from a different viewpoint is always detected, and described in the same way. 
+
+The second is that better estimations of the affine transformation can be done during the NOSAC process. However, rather than assuming purely scaling and translation as in Section~\ref{sec:nosac}, a full affine transformation can be computed for each correspondence. This is because each feature is described by an ellipse. For a correspondence between two points with ellipses described by
+\begin{equation}
+\mathbf{x_1^T}\mathbf{S_1}\mathbf{x_1}= 0
+\label{eqn:ellipse1}
+\end{equation} 
+and
+\begin{equation}
+\mathbf{x_2^T}\mathbf{S_2}\mathbf{x_2}= 0
+\label{eqn:ellipse2}
+\end{equation} 
+related by
+\begin{equation}
+\mathbf{x_2} = \mathbf{H}\mathbf{x_1}
+\label{eqn:elaffine}
+\end{equation} 
+the unknown affine transformation $\mathbf{H}$ can be found by solving
+\begin{equation}
+\mathbf{S_1} = \mathbf{H^T}\mathbf{S_2}\mathbf{H}
+\label{eqn:elaffine}
+\end{equation} 
+
+As with NOSAC, this is done for every correspondence and the inliers from the best estimation used to compute a final estimate for the transformation. The process is faster than RANSAC and results in a 23\% increase in yield.
+
+[INCLUDE REMOVAL OF REPEATING STRUCTURES SOMEWHERE???]
+
+\section{RootSIFT}
+\label{sec:rootsift}
+To measure the similarity between two features, the Euclidean distance between the SIFT descriptors is used in the baseline system. However, a recent publication \cite{rootsift12} notes that using a different distance measure can increase performance.
+
+The Hellinger kernel is used in place of the standard Euclidean kernel for computing distance. This change can be performed by simply mapping the descriptors from SIFT space to RootSIFT space - the RootSIFT descriptor is an element wise square root of the L1 normalised SIFT vector. Computing the Euclidean distance between two RootSIFT vectors is equivalent to using the Hellinger kernel for comparing the original SIFT descriptors. Listing~\ref{lst:rootsift} shows the conversion of the SIFT descriptor \lstinline!d! to RootSIFT space.
+
+\linespread{1} % single line spacing
+\lstset{language=Matlab,caption=Mapping of SIFT descriptors to RootSIFT space.,label=lst:rootsift}
+\begin{lstlisting}[frame=single]
+%% MATLAB
+d = sqrt(d/sum(d));
+\end{lstlisting}
+\linespread{2} % double line spacing
+
+
+The effect of using RootSIFT is to reduce the larger SIFT dimensions in relation to the smaller ones. This prevents the Euclidean distance being dominated by these large values, which could be noisy. By using RootSIFT space with the affine invariant detector, matching performance is increased x\% compared to the baseline system
 
 
 %-------------------------------
@@ -699,6 +857,11 @@ With this bridge, running any MATLAB functions becomes trivial and so the web ap
 		P. Turcot and D. G. Lowe.
 		Better matching with fewer features: The selection of useful features in large database recognition problems
 		In \emph{WS-LAVD, ICCV}, 2009.
+		
+	\bibitem{rootsift12}
+		R. Arandjelovi\'{c} and A. Zisserman.
+		Three things everyone should know to improve object retrieval  
+		In \emph{IEEE Conference on Computer Vision and Pattern Recognition}, 2012
 	  
 \end{thebibliography}
 
