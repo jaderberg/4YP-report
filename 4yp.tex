@@ -704,21 +704,21 @@ Recalled from Chapter~\ref{chpt:system}, the baseline system uses RANSAC to esti
 
 \begin{table}[hbtp]
 \begin{center}
-\begin{tabular}{c|c|c|c|}
-\cline{2-4}
- & \multicolumn{3}{|c|}{Inlier Threshold} \\ 
- \cline{2-4}
- & 5 & 7 & 9 \\
- \cline{2-4}
- \cline{1-4}
-\multicolumn{1}{|c|}{RANSAC} & \texttt{14.1\%} & \textcolor{red}{\texttt{18.1\%}} & \texttt{14.3\%} \\  
-\cline{1-4}
-\multicolumn{1}{|c|}{NOSAC} & \textcolor{red}{\texttt{20.8\%}} & \texttt{17.7\%} & \texttt{16.1\%} \\  
-\cline{1-4}
-\multicolumn{1}{|c|}{Affine} & \textcolor{red}{\texttt{22.3\%}} &  \texttt{17.4\%} & \texttt{13.8\%} \\  
-\cline{1-4}
-\multicolumn{1}{|c|}{Affine RootSIFT} & \textcolor{red}{\texttt{22.3\%}} &  \texttt{17.4\%} & \texttt{13.8\%} \\  
-\cline{1-4}
+\begin{tabular}{c|c|c|c|c|}
+\cline{2-5}
+ & \multicolumn{4}{|c|}{Inlier Threshold} \\ 
+ \cline{2-5}
+ & 4 & 5 & 7 & 9 \\
+ \cline{2-5}
+ \cline{1-5}
+\multicolumn{1}{|c|}{RANSAC} & \texttt{12.0\%} & \texttt{14.1\%} & \textcolor{red}{\texttt{18.1\%}} & \texttt{14.3\%} \\  
+\cline{1-5}
+\multicolumn{1}{|c|}{NOSAC} & \texttt{20.7\%} & \textcolor{red}{\texttt{20.8\%}} & \texttt{17.7\%} & \texttt{16.1\%} \\  
+\cline{1-5}
+\multicolumn{1}{|c|}{Affine} & \textcolor{red}{\texttt{22.5\%}} & \texttt{22.3\%} &  \texttt{17.4\%} & \texttt{13.8\%} \\  
+\cline{1-5}
+\multicolumn{1}{|c|}{Affine RootSIFT} & \textcolor{red}{\texttt{24.5\%}} & \texttt{22.6\%} &  \texttt{18.0\%} & \texttt{15.5\%} \\  
+\cline{1-5}
 \end{tabular}
 \end{center}
 \caption{The yield acheived for each improvement method with different thresholds for the number of RANSAC inliers required for a match.}
@@ -813,7 +813,7 @@ the unknown affine transformation $\mathbf{H}$ can be found by solving
 \label{eqn:elaffine}
 \end{equation} 
 
-As with NOSAC, this is done for every correspondence and the inliers from the best estimation used to compute a final estimate for the transformation. The process is faster than RANSAC and results in a 23\% increase in yield.
+As with NOSAC, this is done for every correspondence and the inliers from the best estimation used to compute a final estimate for the transformation. The process is faster than RANSAC and results in a 24\% increase in yield.
 
 [INCLUDE REMOVAL OF REPEATING STRUCTURES SOMEWHERE???]
 
@@ -821,31 +821,106 @@ As with NOSAC, this is done for every correspondence and the inliers from the be
 \label{sec:rootsift}
 To measure the similarity between two features, the Euclidean distance between the SIFT descriptors is used in the baseline system. However, a recent publication \cite{rootsift12} notes that using a different distance measure can increase performance.
 
-The Hellinger kernel is used in place of the standard Euclidean kernel for computing distance. This change can be performed by simply mapping the descriptors from SIFT space to RootSIFT space - the RootSIFT descriptor is an element wise square root of the L1 normalised SIFT vector. Computing the Euclidean distance between two RootSIFT vectors is equivalent to using the Hellinger kernel for comparing the original SIFT descriptors. Listing~\ref{lst:rootsift} shows the conversion of the SIFT descriptor \lstinline!d! to RootSIFT space.
+The Hellinger kernel is used in place of the standard Euclidean kernel for computing distance. This change can be performed by simply mapping the descriptors from SIFT space to RootSIFT space - the RootSIFT descriptor is an element wise square root of the L1 normalised SIFT vector. Computing the Euclidean distance between two RootSIFT vectors is equivalent to using the Hellinger kernel for comparing the original SIFT descriptors. Listing~\ref{lst:rootsift} shows the conversion of the SIFT descriptor \lstinline!sift! to RootSIFT space.
 
 \linespread{1} % single line spacing
 \lstset{language=Matlab,caption=Mapping of SIFT descriptors to RootSIFT space.,label=lst:rootsift}
 \begin{lstlisting}[frame=single]
 %% MATLAB
-d = sqrt(d/sum(d));
+root_sift = sqrt(sift/sum(sift));
 \end{lstlisting}
 \linespread{2} % double line spacing
 
 
-The effect of using RootSIFT is to reduce the larger SIFT dimensions in relation to the smaller ones. This prevents the Euclidean distance being dominated by these large values, which could be noisy. By using RootSIFT space with the affine invariant detector, matching performance is increased x\% compared to the baseline system
+The effect of using RootSIFT is to reduce the larger SIFT dimensions in relation to the smaller ones. This prevents the Euclidean distance being dominated by these large values, which could be noisy. By using RootSIFT space with the affine invariant detector, matching performance is increased 35\% compared to the baseline system
 
 
 %-------------------------------
 % Turbo-boosting
 %-------------------------------
-\chapter{Turbo-boosting}
+\chapter{Augmentation Improvements}
 \label{chpt:turboboosting}
+This chapter describes a technique to inflate the visual word content of the model images in the database. This novel technique, defined as \emph{turbo-boosting}, increases the performance by xyz as shown in Table HAHAHAH.
 
+\section{Motivation}
+
+The performance of the baseline system with the improvements described in the previous chapter is good. However, it can be argued that the yield the object recognition engine can achieve is limited by the amount of accurate image data. 
+
+A data source such as Wikipedia is very good at providing labelled images - at least one of the images on an article page will depict the object of the article. However, the other images may be related to esoteric aspects of the article and may not actually depict the object in question. This is advantageous in one aspect as it allows esoteric matching of the object. Unfortunately, this also results in the amount of specific image data for an object being very low. In many cases there are only one or two images of the actual object in question. For example, for the object \lstinline!10_Downing_Street!, there are 16 images in total, though only two show the front facade of the building. All the validation images are of the front facade of 10 Downing Street, as that is what one would associate most with that object. 
+
+\begin{figure}[htb]
+\centering 
+\includegraphics[width=0.9\textwidth]{images/10downingcollage.png}
+\caption{A selection of images from Wikipedia for the object \lstinline!10_Downing_Street!.}
+\label{fig:10downingcollage}
+\end{figure}
+
+WIthout more images of the same object, viewpoints, environmental conditions, objects of occlusion, and noise content of individual images may vary to such a large extent that an obvious match cannot be made. 
+
+\section{Database Augmentation}
+
+Existing work addresses this problem by including a process known as database augmentation. This database-side feature augmentation works by including the visual words present in other images of the same object for an image of an object. For each model image, a query using the baseline system is issued and all the spatially verified matches are collected. In the original database augmentation technique described in \cite{turcot09}, the visual words of the query model image are augmented with all the visual words of the spatially verified database matches. Further work such as \cite{rootsift12} shows that instead of incorporating the entire vector of visual words from database matches, only the visual words contained within the regions in the database matches that correspond spatially are augmented. 
+
+[Figure of database-side augmentation?]
+
+The process of querying the baseline system with each model image creates what is known as an image graph - the interconnection of matches between images. Each edge of the image graph infers that the two images connected share (at least part of) the same object. An image graph is not needed in this project, as the absolute classes of each image are already known, at is assumed that overlap between classes does not exist\footnote{This is a contentious point. Due to the nature of images from Wikipedia, there is a fair amount of overlap between images between classes. For example, a picture of Big Ben may well be included in the corpus of images for Palace of Westminster. This is an issue that produces false positives. Methods to remedy this issue can be employed, such as querying the baseline system with each model image, and if a false positive match is made, remove the image. However, this is beyond the scope of this report.}. In the object recognition engine produced in this report, the lack of multiple images of the same object means that the amount of augmentation that occurs is negligible, so the gains of database-side spatial feature augmentation is non-existant.
+
+\section{Turbo-boosting}
+
+While database-side feature augmentation is not suited to this application, the overall idea of feature augmentation can still be used. Rather than database-side feature expansion, an independent source of images is used for augmentation. The turbo-boosting can be thought of as expanding the information content of your ground-truth image database using an external dataset.
+
+The external source of images used for turbo-boosting in this project is Microsoft's Bing image search, though any labelled image dataset can be used. The rationale for using a search engine is that labelled images for each class (a class being an object that could be contained with in an image) can be generated by issuing a search query. Therefore, for images of a class, the candidate images to use for augmentation are the results of a search query of the class name. More detail of gathering images for potential augmentation (turbo-boosting images) is given in Section~\ref{sec:turboimages}.
+
+
+
+\linespread{1} % single line spacing
+\lstset{language=Matlab,caption=High level MATLAB code to outline the augmentation stage of the turbo-boosting process.,label=lst:turboboost}
+\begin{lstlisting}[frame=single]
+%% MATLAB
+% Get a list of classes
+classes = get_class_names(db);
+for i=1:length(classes)
+    class = classes(i);
+    % Download images from an external source for that class
+    turbo_images = download_images(class);
+    % Get the model images for that class
+    model_images = get_images_by_class(class, db);
+    for j=1:length(model_images)
+        model_image = model_images(j);
+        model_im_words = get_words(model_image, vocab);
+        for k=1:length(turbo_images)
+            turbo_image = turbo_images(k);
+            turbo_im_words = get_words(turbo_image, vocab);
+            % Get corresponding visual words
+            correspondences = get_corresponding_words(model_im_words, turbo_im_words);
+            % Spatially verify correspondences
+            verified, verified_model_words, verified_turbo_words, affine_transformation = spatially_verify(correspondences);
+            if verified
+                % Get the region within the turbo_image that contains
+                % words
+                bounding_rectangle = get_bounding_box(verified_turbo_words);
+                verified_turbo_words = words_within_rectangle(bounding_rectange, verified_turbo_words);
+                % Map the verified turbo words within the bounding
+                % rectangle onto the model image and augment these words
+                model_im_words = augment_words(model_im_words, verified_turbo_words, affine_transformation);
+            end
+        end
+        % Save the fully augmented word vector for the model image
+        save_augmented_words(model_im_words);
+    end
+end
+\end{lstlisting}
+\linespread{2} % double line spacing
+
+
+Turbo-boosting uses the ground truth of your dataset to expand the information content of your images.
+THIS IS A GENERAL STRATEGY FOR INCREASING MATCHING ON ANY!!! DATASET
 
 %-------------------------------
 % Summary
 %-------------------------------
 \chapter{Summary}
+[Removal of duplicates + ambiguous class objects]
 
 
 %-------------------------------
