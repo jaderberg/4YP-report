@@ -840,7 +840,7 @@ The effect of using RootSIFT is to reduce the larger SIFT dimensions in relation
 %-------------------------------
 \chapter{Augmentation Improvements}
 \label{chpt:turboboosting}
-This chapter describes a technique to inflate the visual word content of the model images in the database. This novel technique, defined as \emph{turbo-boosting}, increases the performance by xyz as shown in Table HAHAHAH.
+This chapter describes the improvements made using a technique to inflate the visual word content of the model images in the database. This novel technique, defined as \emph{turbo-boosting}, increases the performance by xyz as shown in Table HAHAHAH.
 
 \section{Motivation}
 
@@ -859,19 +859,19 @@ WIthout more images of the same object, viewpoints, environmental conditions, ob
 
 \section{Database Augmentation}
 
-Existing work addresses this problem by including a process known as database augmentation. This database-side feature augmentation works by including the visual words present in other images of the same object for an image of an object. For each model image, a query using the baseline system is issued and all the spatially verified matches are collected. In the original database augmentation technique described in \cite{turcot09}, the visual words of the query model image are augmented with all the visual words of the spatially verified database matches. Further work such as \cite{rootsift12} shows that instead of incorporating the entire vector of visual words from database matches, only the visual words contained within the regions in the database matches that correspond spatially are augmented. 
+Existing work addresses this problem by including a process known as database augmentation. This database-side feature augmentation works by including the visual words present in other images of the same object for an image of an object. For each model image, a query using the baseline system is issued and all the spatially verified matches are collected. In the original database augmentation technique described in \cite{turcot09}, the visual words of the model image used as the query are augmented with all the visual words of the spatially verified database matches. Further work such as \cite{rootsift12} shows that instead of incorporating the entire vector of visual words from database matches, only the visual words contained within the regions in the database matches that correspond spatially are augmented. 
 
 [Figure of database-side augmentation?]
 
-The process of querying the baseline system with each model image creates what is known as an image graph - the interconnection of matches between images. Each edge of the image graph infers that the two images connected share (at least part of) the same object. An image graph is not needed in this project, as the absolute classes of each image are already known, at is assumed that overlap between classes does not exist\footnote{This is a contentious point. Due to the nature of images from Wikipedia, there is a fair amount of overlap between images between classes. For example, a picture of Big Ben may well be included in the corpus of images for Palace of Westminster. This is an issue that produces false positives. Methods to remedy this issue can be employed, such as querying the baseline system with each model image, and if a false positive match is made, remove the image. However, this is beyond the scope of this report.}. In the object recognition engine produced in this report, the lack of multiple images of the same object means that the amount of augmentation that occurs is negligible, so the gains of database-side spatial feature augmentation is non-existant.
+The process of querying the baseline system with each model image creates what is known as an image graph - the interconnection of matches between images. Each edge of the image graph infers that the two images connected share (at least part of) the same object. An image graph is not needed in this project, as the absolute classes of each image are already known, and it is assumed that overlap between classes does not exist\footnote{This is a contentious point. Due to the nature of images from Wikipedia, there is a fair amount of overlap between images between classes. For example, a picture of Big Ben may well be included in the corpus of images for Palace of Westminster. This is an issue that produces false positives. Methods to remedy this issue can be employed, such as querying the baseline system with each model image, and if a false positive match is made, remove the image. However, this is beyond the scope of this report.}. In dataset of model images used in this project, the lack of multiple images of the same object means that the amount of augmentation that occurs is negligible, so the gains of database-side spatial feature augmentation is non-existant.
 
 \section{Turbo-boosting}
 
 While database-side feature augmentation is not suited to this application, the overall idea of feature augmentation can still be used. Rather than database-side feature expansion, an independent source of images is used for augmentation. The turbo-boosting can be thought of as expanding the information content of your ground-truth image database using an external dataset.
 
-The external source of images used for turbo-boosting in this project is Microsoft's Bing image search, though any labelled image dataset can be used. The rationale for using a search engine is that labelled images for each class (a class being an object that could be contained with in an image) can be generated by issuing a search query. Therefore, for images of a class, the candidate images to use for augmentation are the results of a search query of the class name. More detail of gathering images for potential augmentation (turbo-boosting images) is given in Section~\ref{sec:turboimages}.
+The external source of images used for turbo-boosting in this project is Microsoft's Bing image search, though any labelled image dataset can be used. The rationale for using a search engine is that labelled images for each class (a class being an object that could be contained with in an image) can be generated by issuing a search query. Therefore, for images of a class, the candidate images to use for augmentation are the results of a search query of the class name. The result is that turbo-boosting keeps the accuracy of the ground truth of your dataset but expands the information content of the dataset images.
 
-
+Listing~\ref{lst:turboboost} shows the high level MATLAB code that outlines the implementation of turbo-boosting. A class centric approach is taken, so the images from each class are augmented in the same loop. For each class, the candidate images for augmentation are downloaded, called \emph{turbo images}. Section~\ref{sec:turboimages} describes the data gathering process in detail. Then, for each model image belonging to the class in question, each downloaded turbo image is tested to see if it can be spatially verified against the model image. If a turbo image is spatially verified, a rectangle that is the bounding box of the spatially verified visual words is computed (with a margin of tolerance). All the visual words contained within the rectangle on the turbo image are added to the visual words in the model image at the position mapped by the affine transformation relating the two images. 
 
 \linespread{1} % single line spacing
 \lstset{language=Matlab,caption=High level MATLAB code to outline the augmentation stage of the turbo-boosting process.,label=lst:turboboost}
@@ -912,9 +912,31 @@ end
 \end{lstlisting}
 \linespread{2} % double line spacing
 
+The process inflates the the visual word vector used for spatial verification on the fly - as the for-loop continues with each subsequent turbo image to boost a model image, the model image's visual word vector gets larger and so there is more chance for further spatial verification and therefore augmentation.
 
-Turbo-boosting uses the ground truth of your dataset to expand the information content of your images.
-THIS IS A GENERAL STRATEGY FOR INCREASING MATCHING ON ANY!!! DATASET
+\begin{figure}[htb]
+\centering 
+\subfloat[]{\label{fig:turbodownload}\includegraphics[width=0.9\textwidth]{images/turboboosting-001.png}}
+\\
+\subfloat[]{\label{fig:turboaugment}\includegraphics[width=0.9\textwidth]{images/turboboosting-002.png}}
+\caption{The turboboosting process [I NEED TO MAKE THIS MUCH BETTER].}
+\label{fig:turboboosting}
+\end{figure}
+
+Once the turbo-boosting for every model image in every class has completed, the weighted histograms and new turbo-boosted index is created, just as for the baseline system (see Section~\ref{sec:histograms}). Matching is then performed just as with the baseline system, except that the turbo-boosted index and visual word vectors are used.
+
+The results of turbo-boosting with different sized candidate pools of turbo images is shown in Table woop woop. Matching performance is increased x\% over the equivalent system not employing turbo-boosting. 
+
+Turbo-boosting works by increasing the information content of the model images. When a turbo image is spatially verified with a model image, it may be verified on a minimum seven visual words. However, many hundreds of words can be added to the model image's visual word vector, as all the words contained within the bounding box of the few spatially verified visual words are added. These added words help matching in three ways:
+
+\begin{itemize}
+\item There may be features that were detected in the turbo image that were not detected in the model image. When these visual words are added to the model image from turbo-boosting, this increases the detailed description of the object in the model image.
+\item Some features common to both images may be described by different visual words due to noise. After turbo-boosting, both visual words will therefore be in the same position in the model image describing the same feature. This increases the robustness to noise.
+\item Some augmented features will be duplicates - a duplicate feature being one that is common to both the turbo image and the model image and is described by the same visual word in both cases. This means that after turbo-boosting, the model image will contain  multiple identical visual words for the same feature. This effectively gives the feature more weight for matching.
+\end{itemize}
+
+
+Turbo-boosting is a completely general strategy for increasing the yield/recall - any labelled dataset can use this technique. The only draw backs are the increase in pre-computation time due to the turbo-boosting routine, which is $O(N_c\overline{N}_mN_t^2)$ where $N_c$ is the number of classes, $\overline{N}_m$ is the average number of model images of each class, and $N_t$ is the number of turbo images that are downloaded. Although, the process is easily parallelised as the inner loop on each class is completely independent. Another disadvantage is the slight increase in storage needed. The downloaded turbo images can be deleted as they are only needed temporarily, however due to the increase of visual words in each model's vector and the fact that the histograms will be generally less sparse after augmentation, the byte size of these structures increases.
 
 %-------------------------------
 % Summary
