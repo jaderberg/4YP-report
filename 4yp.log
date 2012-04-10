@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2012.3.10)  5 APR 2012 20:42
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2012.3.10)  10 APR 2012 13:21
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -475,6 +475,10 @@ Overfull \hbox (31.22562pt too wide) in paragraph at lines 69--70
  [][] 
  []
 
+
+LaTeX Font Warning: Font shape `OT1/cmss/m/it' in size <10.95> not available
+(Font)              Font shape `OT1/cmss/m/sl' tried instead on input line 74.
+
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
 <to be read again> 
@@ -496,242 +500,245 @@ LaTeX Font Warning: Font shape `OMS/cmss/m/n' undefined
 Chapter 2.
 [4
 
-]
+] [5] [6]
 Chapter 3.
-[5
+[7
 
-] <images/wikipedia-article1.png, id=189, 1256.695pt x 785.93625pt>
+] <images/wikipedia-article1.png, id=221, 1256.695pt x 785.93625pt>
 File: images/wikipedia-article1.png Graphic file (type png)
 
 <use images/wikipedia-article1.png>
-Package pdftex.def Info: images/wikipedia-article1.png used on input line 132.
+Package pdftex.def Info: images/wikipedia-article1.png used on input line 147.
 (pdftex.def)             Requested size: 241.84843pt x 151.24821pt.
 
-<images/wikipedia-article2.png, id=190, 1257.69875pt x 797.98125pt>
+<images/wikipedia-article2.png, id=222, 1257.69875pt x 797.98125pt>
 File: images/wikipedia-article2.png Graphic file (type png)
 
 <use images/wikipedia-article2.png>
-Package pdftex.def Info: images/wikipedia-article2.png used on input line 133.
+Package pdftex.def Info: images/wikipedia-article2.png used on input line 148.
 (pdftex.def)             Requested size: 241.84843pt x 153.44444pt.
- [6 <./images/wikipedia-article1.png> <./images/wikipedia-article2.png>]
+ [8 <./images/wikipedia-article1.png> <./images/wikipedia-article2.png>]
 (/usr/local/texlive/2011/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2004/09/05 1.3 listings language file
-) [7]
-<images/bing-images.png, id=260, 1263.72125pt x 780.9175pt>
+) [9]
+<images/bing-images.png, id=292, 1263.72125pt x 780.9175pt>
 File: images/bing-images.png Graphic file (type png)
 
 <use images/bing-images.png>
-Package pdftex.def Info: images/bing-images.png used on input line 203.
+Package pdftex.def Info: images/bing-images.png used on input line 218.
 (pdftex.def)             Requested size: 435.32422pt x 269.01169pt.
- [8]
+ [10]
 (/usr/local/texlive/2011/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2004/09/05 1.3 listings language file
-) [9 <./images/bing-images.png>] [10]
+) [11 <./images/bing-images.png>] [12]
 Missing character: There is no È in font cmtt10!
 Missing character: There is no È in font cmtt10!
- [11]
+ [13]
 Missing character: There is no È in font cmtt10!
 Missing character: There is no È in font cmtt10!
- [12]
+ [14]
 Chapter 4.
-<images/PrecomputeProcess.pdf, id=385, 303.60225pt x 308.1143pt>
+<images/PrecomputeProcess.pdf, id=418, 303.60225pt x 308.1143pt>
 File: images/PrecomputeProcess.pdf Graphic file (type pdf)
 
 <use images/PrecomputeProcess.pdf>
-Package pdftex.def Info: images/PrecomputeProcess.pdf used on input line 345.
+Package pdftex.def Info: images/PrecomputeProcess.pdf used on input line 360.
 (pdftex.def)             Requested size: 290.22107pt x 294.54048pt.
 
-<images/SearchProcess.pdf, id=386, 495.69034pt x 284.26453pt>
+<images/SearchProcess.pdf, id=419, 495.69034pt x 284.26453pt>
 File: images/SearchProcess.pdf Graphic file (type pdf)
 
 <use images/SearchProcess.pdf>
-Package pdftex.def Info: images/SearchProcess.pdf used on input line 352.
+Package pdftex.def Info: images/SearchProcess.pdf used on input line 367.
 (pdftex.def)             Requested size: 435.32422pt x 249.64606pt.
- [13
+ [15
 
-] [14 <./images/PrecomputeProcess.pdf>]
-[15 <./images/SearchProcess.pdf>]
-<images/tb_city_hall.jpg, id=687, 1003.75pt x 501.875pt>
+] [16 <./images/PrecomputeProcess.pdf>]
+[17 <./images/SearchProcess.pdf>]
+<images/tb_city_hall.jpg, id=721, 1003.75pt x 501.875pt>
 File: images/tb_city_hall.jpg Graphic file (type jpg)
 
 <use images/tb_city_hall.jpg>
-Package pdftex.def Info: images/tb_city_hall.jpg used on input line 404.
+Package pdftex.def Info: images/tb_city_hall.jpg used on input line 419.
 (pdftex.def)             Requested size: 193.47578pt x 96.73567pt.
 
-<images/tb_twilight.jpg, id=688, 1003.75pt x 507.8975pt>
+<images/tb_twilight.jpg, id=722, 1003.75pt x 507.8975pt>
 File: images/tb_twilight.jpg Graphic file (type jpg)
 
 <use images/tb_twilight.jpg>
-Package pdftex.def Info: images/tb_twilight.jpg used on input line 406.
+Package pdftex.def Info: images/tb_twilight.jpg used on input line 421.
 (pdftex.def)             Requested size: 193.47578pt x 97.8965pt.
 
-<images/tb_city_hall.pdf, id=689, 468.61742pt x 391.26657pt>
+<images/tb_city_hall.pdf, id=723, 468.61742pt x 391.26657pt>
 File: images/tb_city_hall.pdf Graphic file (type pdf)
 
 <use images/tb_city_hall.pdf>
-Package pdftex.def Info: images/tb_city_hall.pdf used on input line 408.
+Package pdftex.def Info: images/tb_city_hall.pdf used on input line 423.
 (pdftex.def)             Requested size: 193.47578pt x 161.53676pt.
 
-<images/tb_twilight.pdf, id=690, 474.41885pt x 389.97734pt>
+<images/tb_twilight.pdf, id=724, 474.41885pt x 389.97734pt>
 File: images/tb_twilight.pdf Graphic file (type pdf)
 
 <use images/tb_twilight.pdf>
-Package pdftex.def Info: images/tb_twilight.pdf used on input line 410.
+Package pdftex.def Info: images/tb_twilight.pdf used on input line 425.
 (pdftex.def)             Requested size: 193.47578pt x 159.0408pt.
 
-<images/tb_city_hall_weighted.pdf, id=691, 484.73222pt x 393.20041pt>
+<images/tb_city_hall_weighted.pdf, id=725, 484.73222pt x 393.20041pt>
 File: images/tb_city_hall_weighted.pdf Graphic file (type pdf)
 
 <use images/tb_city_hall_weighted.pdf>
-Package pdftex.def Info: images/tb_city_hall_weighted.pdf used on input line 41
-2.
+Package pdftex.def Info: images/tb_city_hall_weighted.pdf used on input line 42
+7.
 (pdftex.def)             Requested size: 193.47578pt x 156.94138pt.
 
-<images/tb_twilight_weighted.pdf, id=692, 481.50931pt x 387.39914pt>
+<images/tb_twilight_weighted.pdf, id=726, 481.50931pt x 387.39914pt>
 File: images/tb_twilight_weighted.pdf Graphic file (type pdf)
 
 <use images/tb_twilight_weighted.pdf>
-Package pdftex.def Info: images/tb_twilight_weighted.pdf used on input line 414
+Package pdftex.def Info: images/tb_twilight_weighted.pdf used on input line 429
 .
 (pdftex.def)             Requested size: 193.47578pt x 155.66034pt.
- [16] [17]
-<images/bigben.jpg, id=715, 768.8725pt x 1003.75pt>
+ [18] [19]
+<images/bigben.jpg, id=747, 768.8725pt x 1003.75pt>
 File: images/bigben.jpg Graphic file (type jpg)
  <use images/bigben.jpg>
-Package pdftex.def Info: images/bigben.jpg used on input line 466.
+Package pdftex.def Info: images/bigben.jpg used on input line 481.
 (pdftex.def)             Requested size: 145.11053pt x 189.42793pt.
 
-<images/bigben2.jpeg, id=716, 1003.75pt x 752.8125pt>
+<images/bigben2.jpeg, id=748, 1003.75pt x 752.8125pt>
 File: images/bigben2.jpeg Graphic file (type jpg)
 
 <use images/bigben2.jpeg>
-Package pdftex.def Info: images/bigben2.jpeg used on input line 468.
+Package pdftex.def Info: images/bigben2.jpeg used on input line 483.
 (pdftex.def)             Requested size: 145.11053pt x 108.82764pt.
 
-<images/spatial_verification1.pdf, id=717, 406.16753pt x 249.50284pt>
+<images/spatial_verification1.pdf, id=749, 406.16753pt x 249.50284pt>
 File: images/spatial_verification1.pdf Graphic file (type pdf)
 
 <use images/spatial_verification1.pdf>
-Package pdftex.def Info: images/spatial_verification1.pdf used on input line 47
-0.
+Package pdftex.def Info: images/spatial_verification1.pdf used on input line 48
+5.
 (pdftex.def)             Requested size: 241.84843pt x 148.56451pt.
 
-<images/spatial_verification2.pdf, id=718, 411.9699pt x 248.85823pt>
+<images/spatial_verification2.pdf, id=750, 411.9699pt x 248.85823pt>
 File: images/spatial_verification2.pdf Graphic file (type pdf)
 
 <use images/spatial_verification2.pdf>
-Package pdftex.def Info: images/spatial_verification2.pdf used on input line 47
-1.
+Package pdftex.def Info: images/spatial_verification2.pdf used on input line 48
+6.
 (pdftex.def)             Requested size: 241.84843pt x 146.0922pt.
 
-<images/multimatch.png, id=720, 628.3475pt x 238.8925pt>
+<images/multimatch.png, id=752, 628.3475pt x 238.8925pt>
 File: images/multimatch.png Graphic file (type png)
 
 <use images/multimatch.png>
-Package pdftex.def Info: images/multimatch.png used on input line 487.
+Package pdftex.def Info: images/multimatch.png used on input line 502.
 (pdftex.def)             Requested size: 435.32422pt x 165.50671pt.
- [18] [19 <./images/tb_city_hall.jpg> <./images/tb_twilight.jpg> <./images/tb_c
+ [20] [21 <./images/tb_city_hall.jpg> <./images/tb_twilight.jpg> <./images/tb_c
 ity_hall.pdf> <./images/tb_twilight.pdf> <./images/tb_city_hall_weighted.pdf> <
-./images/tb_twilight_weighted.pdf>] [20 <./images/bigben.jpg> <./images/bigben2
+./images/tb_twilight_weighted.pdf>] [22 <./images/bigben.jpg> <./images/bigben2
 .jpeg> <./images/spatial_verification1.pdf> <./images/spatial_verification2.pdf
 > <./images/multimatch.png>]
 Chapter 5.
-<images/SystemArchitecture.pdf, id=846, 324.22911pt x 251.3904pt>
+<images/SystemArchitecture.pdf, id=878, 324.22911pt x 251.3904pt>
 File: images/SystemArchitecture.pdf Graphic file (type pdf)
 
 <use images/SystemArchitecture.pdf>
-Package pdftex.def Info: images/SystemArchitecture.pdf used on input line 501.
+Package pdftex.def Info: images/SystemArchitecture.pdf used on input line 516.
 (pdftex.def)             Requested size: 338.58632pt x 262.52922pt.
- [21
+ [23
 
  <./images/SystemArchitecture.pdf>]
-[22] [23] (/usr/local/texlive/2011/texmf-dist/tex/latex/listings/lstlang1.sty
+[24] [25] (/usr/local/texlive/2011/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2004/09/05 1.3 listings language file
 )
 (/usr/local/texlive/2011/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2004/09/05 1.3 listings language file
-) [24]
-<images/stage1.png, id=1003, 769.87625pt x 612.2875pt>
+) [26]
+<images/stage1.png, id=1035, 769.87625pt x 612.2875pt>
 File: images/stage1.png Graphic file (type png)
  <use images/stage1.png>
-Package pdftex.def Info: images/stage1.png used on input line 584.
+Package pdftex.def Info: images/stage1.png used on input line 599.
 (pdftex.def)             Requested size: 193.47578pt x 153.87497pt.
 
-<images/stage2.png, id=1004, 742.775pt x 584.1825pt>
+<images/stage2.png, id=1036, 742.775pt x 584.1825pt>
 File: images/stage2.png Graphic file (type png)
  <use images/stage2.png>
-Package pdftex.def Info: images/stage2.png used on input line 586.
+Package pdftex.def Info: images/stage2.png used on input line 601.
 (pdftex.def)             Requested size: 193.47578pt x 152.16019pt.
 
-<images/log.png, id=1005, 873.2625pt x 560.0925pt>
+<images/log.png, id=1037, 873.2625pt x 560.0925pt>
 File: images/log.png Graphic file (type png)
  <use images/log.png>
-Package pdftex.def Info: images/log.png used on input line 588.
+Package pdftex.def Info: images/log.png used on input line 603.
 (pdftex.def)             Requested size: 193.47578pt x 124.09245pt.
 
-<images/stage3.png, id=1006, 765.86125pt x 551.05875pt>
+<images/stage3.png, id=1038, 765.86125pt x 551.05875pt>
 File: images/stage3.png Graphic file (type png)
 
 <use images/stage3.png>
-Package pdftex.def Info: images/stage3.png used on input line 590.
+Package pdftex.def Info: images/stage3.png used on input line 605.
 (pdftex.def)             Requested size: 193.47578pt x 139.2106pt.
- [25 <./images/stage1.png> <./images/stage2.png> <./images/log.png> <./images/s
+ [27 <./images/stage1.png> <./images/stage2.png> <./images/log.png> <./images/s
 tage3.png>]
 (/usr/local/texlive/2011/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2004/09/05 1.3 listings language file
 )
 (/usr/local/texlive/2011/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
-) [26]
-[27] [28] [29]
+) [28]
+[29] [30] [31]
 Chapter 6.
-[30
+[32
 
-] [31] [32] [33] [34]
+] [33] [34] [35]
 Chapter 7.
-
-LaTeX Font Warning: Font shape `OT1/cmss/m/it' in size <10.95> not available
-(Font)              Font shape `OT1/cmss/m/sl' tried instead on input line 843.
-
-
-<images/10downingcollage.png, id=1157, 597.23125pt x 353.32pt>
+<images/10downingcollage.png, id=1187, 597.23125pt x 353.32pt>
 File: images/10downingcollage.png Graphic file (type png)
 
 <use images/10downingcollage.png>
-Package pdftex.def Info: images/10downingcollage.png used on input line 853.
+Package pdftex.def Info: images/10downingcollage.png used on input line 866.
 (pdftex.def)             Requested size: 435.32422pt x 257.53868pt.
- [35
+ [36
 
-] [36 <./images/10downingcollage.png>]
-[37] <images/turboboosting-001.png, id=1183, 728.7225pt x 382.42876pt>
+] [37 <./images/10downingcollage.png>]
+[38] <images/turboboosting-001.png, id=1210, 728.7225pt x 382.42876pt>
 File: images/turboboosting-001.png Graphic file (type png)
 
 <use images/turboboosting-001.png>
-Package pdftex.def Info: images/turboboosting-001.png used on input line 919.
+Package pdftex.def Info: images/turboboosting-001.png used on input line 932.
 (pdftex.def)             Requested size: 435.32422pt x 228.45532pt.
 
-<images/turboboosting-002.png, id=1184, 803.0pt x 682.55pt>
+<images/turboboosting-002.png, id=1211, 803.0pt x 682.55pt>
 File: images/turboboosting-002.png Graphic file (type png)
 
 <use images/turboboosting-002.png>
-Package pdftex.def Info: images/turboboosting-002.png used on input line 921.
+Package pdftex.def Info: images/turboboosting-002.png used on input line 934.
 (pdftex.def)             Requested size: 435.32422pt x 370.02959pt.
- [38] [39] [40 <./images/turboboosting-001.png> <./images/turboboosting-002.png
->]
+ [39]
+<images/turbograph.pdf, id=1253, 489.88893pt x 390.62206pt>
+File: images/turbograph.pdf Graphic file (type pdf)
+
+<use images/turbograph.pdf>
+Package pdftex.def Info: images/turbograph.pdf used on input line 947.
+(pdftex.def)             Requested size: 241.84843pt x 192.84293pt.
+ [40] [41] [42 <./images/turboboosting-001.png> <./images/turboboosting-002.png
+>] [43 <./images/turbograph.pdf>]
 Chapter 8.
-[41
+[44
+
+] [45] [46
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 965.
- [42
-
-]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 965.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1068.
+ [47]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1068.
  (./4yp.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 965.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 965.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1068.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1068.
+
 Package rerunfilecheck Info: File `4yp.out' has not changed.
-(rerunfilecheck)             Checksum: 29A34A5DD11A024D4EC97859243A5CCE;1842.
+(rerunfilecheck)             Checksum: 8177FF47978EE0AA75F31A971AB1B174;1840.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
@@ -739,13 +746,13 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 965.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1068.
  ) 
 Here is how much of TeX's memory you used:
- 10289 strings out of 493633
- 150906 string characters out of 3143377
- 351910 words of memory out of 3000000
- 13071 multiletter control sequences out of 15000+200000
+ 10323 strings out of 493633
+ 151480 string characters out of 3143377
+ 358506 words of memory out of 3000000
+ 13087 multiletter control sequences out of 15000+200000
  20618 words of font info for 78 fonts, out of 3000000 for 9000
  831 hyphenation exceptions out of 8191
  36i,10n,49p,1280b,1738s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -767,10 +774,10 @@ ive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texli
 ve/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive
 /2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/
 2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on 4yp.pdf (44 pages, 5679710 bytes).
+Output written on 4yp.pdf (49 pages, 5705065 bytes).
 PDF statistics:
- 1386 PDF objects out of 1440 (max. 8388607)
- 1149 compressed objects within 12 object streams
- 375 named destinations out of 1000 (max. 500000)
- 366 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1455 PDF objects out of 1728 (max. 8388607)
+ 1209 compressed objects within 13 object streams
+ 392 named destinations out of 1000 (max. 500000)
+ 371 words of extra memory for PDF output out of 10000 (max. 10000000)
 
