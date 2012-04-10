@@ -929,10 +929,18 @@ The process inflates the the visual word vector used for spatial verification on
 
 \begin{figure}[htb]
 \centering 
-\subfloat[]{\label{fig:turbodownload}\includegraphics[width=0.9\textwidth]{images/turboboosting-001.png}}
+\subfloat[Model images]{\label{fig:turbomodelimages}\includegraphics[width=0.35\textwidth]{images/wiki_tower_bridge.png}}
+~
+\subfloat[Turbo images]{\label{fig:turboturboimages}\includegraphics[width=0.35\textwidth]{images/bing_tower_bridge.png}}
 \\
-\subfloat[]{\label{fig:turboaugment}\includegraphics[width=0.9\textwidth]{images/turboboosting-002.png}}
-\caption{The turboboosting process [I NEED TO MAKE THIS MUCH BETTER].}
+\subfloat[Model image words]{\label{fig:turbomodelimage}\includegraphics[width=0.35\textwidth]{images/c_im_words.pdf}}
+~
+\subfloat[Turbo image words]{\label{fig:turboturboimage}\includegraphics[width=0.35\textwidth]{images/f_im_words.pdf}}
+\\
+\subfloat[The turbo image is spatially verified with the model image]{\label{fig:turbomatch}\includegraphics[width=0.7\textwidth]{images/tower_matches.pdf}}
+\\
+\subfloat[The words in the spatially verified region are used to augment the model image]{\label{fig:turboaugment}\includegraphics[width=0.7\textwidth]{images/augmentation.png}}
+\caption{The turboboosting process.}
 \label{fig:turboboosting}
 \end{figure}
 
@@ -944,7 +952,7 @@ Overall, turbo-boosting increases the performance by 75\% with respect to the ba
 
 \begin{figure}[hbtp]
 \centering 
-\includegraphics[width=0.5\textwidth]{images/turbograph.pdf}
+\includegraphics[width=0.7\textwidth]{images/turbograph.pdf}
 \caption{The effect on yield by increasing the number of turbo images downloaded.}
 \label{fig:turbograph}
 \end{figure}
@@ -996,7 +1004,7 @@ A novel method was developed called turbo-boosting to further build upon the bas
 
 The results of the project show that a user friendly object tagging website can be built with a maximum yield performance achieved of 31.7\%. This is good considering the noisiness of the Wikipedia dataset and the range of query images used for validation.
 
-Further work would aim to increase the yield and scale the size of the database. Better filtering of the Wikipedia dataset could be done, as well as the removal of distracting features that do not uniquely define a class \cite{turcot09}. The labelling of objects could also be done in a more probabilistic way - instead of simply defining the object found by the class of the first image that is spatially verified, use some algorithm to determine the most likely object given the top spatially verified images, with some uncertainty score.
+Further work would aim to increase the yield and scale the size of the database. Better filtering of the Wikipedia dataset could be done, as well as the removal of distracting features that do not uniquely define a class \cite{turcot09}. Also a general class representation of the model images could be created, so that initial matching is done on a class level, and subsequently on an image level, thus reducing the amount of in memory data required. The labelling of objects could also be done in a more probabilistic way - instead of simply defining the object found by the class of the first image that is spatially verified, use some algorithm to determine the most likely object given the top spatially verified images, with some uncertainty score.
 
 
 [APPENDIX ON VALIDATION PROCESS??]
