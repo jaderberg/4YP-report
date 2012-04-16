@@ -122,7 +122,17 @@ The state of the art as described in \cite{philbin2007} is used as the basis for
 %-------------------------------
 \chapter{Data}
 \label{chpt:data}
-There are three main datasets used by the application: the images from Wikipedia used to build the database of objects (Section~\ref{sec:modelimages}), the images from Microsoft Bing used for the augmentation improvements (Section~\ref{sec:turboimages}) and the images from Google Images used for validation and testing (Section~\ref{sec:validationimages}). All images that are used are resized so that their larger dimension does not exceed 1000 pixels to reduce storage space and provide homogeneity. This chapter describes the various datasets and how they are acquired. Table~\ref{tbl:data} gives an overview of the data used.
+There are three main datasets used by the application:
+
+\begin{itemize}
+\item The images from Wikipedia used to build the database of objects (Section~\ref{sec:modelimages}). These are referred to as \emph{model images} and are used in Chapter~\ref{chpt:system} when creating the baseline system.
+
+\item The images from Microsoft Bing that are used for the augmentation improvements. A description of this dataset is found in Section~\ref{sec:turboimages}, and their usage is in Chapter~\ref{chpt:turboboosting}.
+
+\item Validation images gathered from Google Images, described in Section~\ref{sec:validationimages} and used in Section~\ref{sec:validation}.
+\end{itemize}
+
+Table~\ref{tbl:data} gives an overview of the data used. All images that are used are resized so that their larger dimension does not exceed 1000 pixels to reduce storage space and provide homogeneity. This chapter describes the various datasets and how they are acquired. 
 
 \begin{table}[hbtp]
 \begin{center}
@@ -148,6 +158,21 @@ The model comprises of a dataset of images that depict the objects that are to b
 
 Each page of Wikipedia that contains images represents an object which can be matched. The database of images which is used to build the model is simply created by visiting each page on Wikipedia for the objects desired and downloading the relevant images contained on the web page, labelling those images as being associated with the object. A script automates this process of building the model database.
 
+The subset of Wikipedia articles used in this project are the articles linked to by the ``List of Structures in London'' page \cite{listofstructures}. This results in 732 unique objects for the database comprising of 3923 images (on average 6 images per class). The images are pulled directly from the articles for the objects.
+
+Figure~\ref{fig:classes} illustrates some of the object classes and the model images downloaded for them.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.95\textwidth]{images/modelimages.png}
+\caption{A selection of some object classes with the model images associated with them.}
+\label{fig:classes}
+\end{figure}
+
+\subsection{Data Acquisition}
+
+To automate the downloading of object images from Wikipedia, Python\footnote{\url{http://www.python.org}} is used. Wikipedia offers a public application programming interface (API) over HTTP to access its data, as it is built on the MediaWiki framework\footnote{The MediaWiki framework was originally developed for Wikipedia and provides an API over HTTP as standard. \url{http://www.mediawiki.org/wiki/API} provides documentation for the API.}. However it is cumbersome and not easy to consume. Instead, a web crawler was written to explore Wikipedia pages and extract the relevant images. 
+
 \begin{figure}[htb]
 \centering 
 \subfloat[]{\includegraphics[width=0.5\textwidth]{images/wikipedia-article1.png}}
@@ -155,8 +180,6 @@ Each page of Wikipedia that contains images represents an object which can be ma
 \caption{The Wikipedia page for ``Tower Bridge''. Note the images contained are those used in the model to represent this object.}
 \label{fig:wikipage}
 \end{figure}
-
-To automate the downloading of object images from Wikipedia, Python\footnote{\url{http://www.python.org}} is used. WIkipedia offers a public application programming interface (API) over HTTP to access its data, as it is built on the MediaWiki framework\footnote{The MediaWiki framework was originally developed for Wikipedia and provides an API over HTTP as standard. \url{http://www.mediawiki.org/wiki/API} provides documentation for the API.}. However it is cumbersome and not easy to consume. Instead, a web crawler was written to explore Wikipedia pages and extract the relevant images. 
 
 A crawler object in Python finds all the images and notes the URLs of them for subsequent download. Firstly, the HTML of the Wikipedia page must be downloaded, as it appears to a web browser. However, Wikipedia does not allow crawlers and automated bots to access its web pages. To overcome this, the HTTP header\footnote{\url{http://www.w3.org/Protocols/rfc2616/rfc2616.html} describes the Hyper Text Transport Protocol and the various header fields.} of the crawler is edited to emulate that of a browser. This is implemented using the urllib2 library\footnote{\url{http://docs.python.org/library/urllib2.html}}. The code shown in Listing~\ref{lst:crawler} shows an example of how to read the HTML of the main Wikipedia homepage. The HTML document for each Wikipedia page is parsed using the BeautifulSoup library\footnote{\url{http://www.crummy.com/software/BeautifulSoup/}}. All the anchor elements are found and stored for further crawling. The images contained within the HTML are also found by looking within the part of the HTML document that is unique to the specific Wikipedia page (see Listing~\ref{lst:beautifulsoup}).
 
@@ -208,12 +231,21 @@ The output of the crawler is a CSV file of the image URLs and the object class t
 
 The images mentioned in the CSV file produced by the crawler are then downloaded to local storage. Each image that appears on Wikipedia has a ``file page'' which displays the image along with properties and metadata on the image\footnote{For an example see \url{http://en.wikipedia.org/wiki/File:Tower_bridge_London_Twilight_-_November_2006.jpg}}. This ``file page'' is visited for each image, and the page is parsed to extract the storage URL of the image as well as its file format and original size. As the application resizes all images that exceed 1000 pixels to 1000 pixels, it is a waste of time and storage space to download the original image and later resize it. Instead, Wikipedia's inbuilt thumbnail engine is exploited, which resizes the image on Wikipedia's servers and allows you to download a thumbnail of a user selected width\footnote{\url{http://www.algorithm.co.il/blogs/programming/wikipedia-images/} describes how this is exploited}. Therefore if the original image on Wikipedia exceeds 1000 pixels, the 1000 pixel thumbnail version is downloaded instead. The images downloaded are saved in a folder named after it's class. The result is a directory containing a folder for each class, within which are the images for that class.
 
-This process creates a structured dataset of model images from the Wikipedia pages visited. For the List of Structures in London dataset used, there are 732 classes which had 3963 images associated with them (on average 6 images per class).
-
 
 \section{Augmentation Images}
 \label{sec:turboimages}
 To achieve effective augmentation, many additional images are needed to supplement the model images acquired from Wikipedia. Microsoft Bing is used as the source of the augmentation images. For each class, 25 additional images are downloaded to boost that class.
+
+Overall, the dataset contains 18273 images distributed over the 732 object classes. A selection of the augmentation images dataset is shown in Figure~\ref{fig:augimages}.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.95\textwidth]{images/augmentationimages.png}
+\caption{A selection of the augmentation images for some object classes.}
+\label{fig:augimages}
+\end{figure}
+
+\subsection{Data Acquisition}
 
 Bing offers a public API that can be used to perform image searches programmatically. After obtaining an application ID from Bing for authentication, complex search requests can be made over HTTP, with the results returned in JavaScript Object Notation (JSON) format\footnote{JSON is an alternative to XML for representing structured data. \url{http://www.json.org/} provides more information.}.
 
@@ -294,6 +326,17 @@ The downloaded images are resized if larger than 1000 pixels and stored in a fol
 \label{sec:validationimages}
 
 Images are needed to test and validate the yield performance of the object recognition system. Therefore a separate dataset of images with their ground truth classes is needed. Ideally all classes would be tested and each test image should be a fair representation of the object of that class. Google image search was used first to automatically download 8 images for each class. The images were then checked manually to refine the dataset.
+
+The resulting dataset contains labelled images for 294 of the object classes comprising of a total of 701 images, a selection of which are shown in Figure~\ref{fig:validationimages}.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.95\textwidth]{images/validationimages.png}
+\caption{A selection of some of the validation images for objects.}
+\label{fig:validationimages}
+\end{figure}
+
+\subsection{Data Acquisition}
 
 Google image search is very similar to Bing image search described in the previous section. However the results are markedly different, providing another set of images that are perfect for testing. Google offers an API over HTTP that can be used to search based on a text query and, as with Bing, filters can be applied. The result is returned in JSON format.
 
@@ -690,7 +733,7 @@ The object recognition engine runs in MATLAB, however the web application runs i
 Some solutions already exist for this purpose\footnote{See \url{http://claymore.engineer.gvsu.edu/~steriana/Python/pymat.html} for an example.} however these all involve starting an instance of MATLAB for each function call. As the system should be fast and scalable, this is not a desirable solution, as there will be a 5-10 second overhead for each MATLAB function call while MATLAB starts up.
 
 \lstset{language=Matlab}
-Instead, a Python-MATLAB bridge was developed using MATLAB's Java runtime environment\footnote{This is open source and available at \url{https://github.com/jaderberg/python-matlab-bridge}}. Using some code written by D. Kroon (University of Twente), Java's TCP and socket libraries are used to create a TCP server to handle requests. This is run on a separate TCP port to the web application to avoid cross communication. This means that MATLAB needs to startup only once, after which function calls are issued with local HTTP requests. For example, to call the function \lstinline!test_connect()! in the file \lstinline!test_connect.m! with the MATLAB server running on port \lstinline!4000!, simply issue an HTTP request to \lstinline!http://localhost:4000/test_connect.m!. Arguments to the function can be added as query parameters to the HTTP request and decoded by the MATLAB function.
+Instead, a Python-MATLAB bridge was developed using MATLAB's Java runtime environment. This is open source and available from \cite{pymatbridge}. Using some code written by D. Kroon (University of Twente), Java's TCP and socket libraries are used to create a TCP server to handle requests. This is run on a separate TCP port to the web application to avoid cross communication. This means that MATLAB needs to startup only once, after which function calls are issued with local HTTP requests. For example, to call the function \lstinline!test_connect()! in the file \lstinline!test_connect.m! with the MATLAB server running on port \lstinline!4000!, simply issue an HTTP request to \lstinline!http://localhost:4000/test_connect.m!. Arguments to the function can be added as query parameters to the HTTP request and decoded by the MATLAB function.
 
 A MATLAB function \lstinline!web_feval! with a supporting function \lstinline!run_dot_m! simplifies this process so any MATLAB function can be called (whether it be on MATLAB's path or not) with any number of arguments, with the results returned as JSON structures. A Python class \lstinline!Matlab! abstracts this on the Python side - any locally stored MATLAB function can be run, with arguments, and the results are returned as a Python dictionary. Listing~\ref{lst:pymat} shows how a MATLAB function is called with the created class. The \lstinline!run()! function takes two arguments: the location of the function and a dictionary of arguments to be passed in to the function.
  
@@ -1091,6 +1134,12 @@ retrieval with large vocabularies and fast spatial matching.
 		J. Knopp, J. Sivic and T. Pajdla.
 		Avoiding confusing features in place recognition.
 		2010.
+		
+	\bibitem{listofstructures}
+		\url{http://en.wikipedia.org/wiki/List_of_structures_in_London}
+		
+	\bibitem{pymatbridge}
+		\url{https://github.com/jaderberg/python-matlab-bridge}
 	  
 \end{thebibliography}
 
