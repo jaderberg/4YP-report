@@ -395,6 +395,20 @@ As with the augmentation images, the downloaded Google images are resized if lar
 
 After automatic download of potential test images for each class, the dataset was checked over manually. Images that appear in the model dataset, as well as images that do not fairly depict the class they are to test are removed from the test set. 
 
+\subsection{Performance Measure}
+\label{sub:performance}
+
+The validation images are used to measure the performance of the system. This is done by performing a validation routine. For each validation image, a query is issued to try and match one object. If the matched object is the same as the label of the validation image, a true positive is recorded, if not, a false positive. If no object is found then the image is recorded as unrecognised.
+
+The measure used to assess and compare the performance of the system is the \emph{yield} - this is defined as the percentage of true positive matches to total validation images, Equation~\ref{eqn:yield}, where $N_{true}$ is the number of true positive matches and $N$ is the number of validation images (701 in this case). For example, a yield of 30\% means that 210 of the 701 validation image were annotated correctly.
+
+\begin{equation}
+yield = N_{true}/N
+\label{eqn:yield}
+\end{equation}
+
+
+
 %-------------------------------
 % Baseline system
 %-------------------------------
@@ -562,32 +576,6 @@ This method allows any number of objects to be recognised within a single image.
 
 A number of modifications to the baseline system were explored to increase the matching performance of the object recognition system. These improvements are using the NOSAC algorithm in place of RANSAC (Section~\ref{sec:nosac}), using a different feature detector and transformation estimation algorithm based on affine invariant feature regions (Section~\ref{sec:affine}), and modifying the descriptors to improve conditioning (Section~\ref{sec:rootsift}).
 
-Recalled from Chapter~\ref{chpt:system}, the baseline system uses RANSAC to estimate an affine transformation between the query image and model images for spatial verification. If the number of corresponding features that conform to this transformation exceeds a threshold, the inlier threshold, the match is said to be spatially verified. Table~\ref{tbl:improvements} shows the impact on yield (the percent of objects in validation images successfully recognised) by implementing these improvements and varying the inlier threshold.
-
-\begin{table}[hbtp]
-\begin{center}
-\begin{tabular}{c|c|c|c|c|}
-\cline{2-5}
- & \multicolumn{4}{|c|}{Inlier Threshold} \\ 
- \cline{2-5}
- & 4 & 5 & 7 & 9 \\
- \cline{2-5}
- \cline{1-5}
-\multicolumn{1}{|c|}{RANSAC} & \texttt{12.0\%} & \texttt{14.1\%} & \textcolor{red}{\texttt{18.1\%}} & \texttt{14.3\%} \\  
-\cline{1-5}
-\multicolumn{1}{|c|}{NOSAC} & \texttt{20.7\%} & \textcolor{red}{\texttt{20.8\%}} & \texttt{17.7\%} & \texttt{16.1\%} \\  
-\cline{1-5}
-\multicolumn{1}{|c|}{Affine} & \textcolor{red}{\texttt{22.5\%}} & \texttt{22.3\%} &  \texttt{17.4\%} & \texttt{13.8\%} \\  
-\cline{1-5}
-\multicolumn{1}{|c|}{Affine RootSIFT} & \textcolor{red}{\texttt{24.5\%}} & \texttt{22.6\%} &  \texttt{18.0\%} & \texttt{15.5\%} \\  
-\cline{1-5}
-\end{tabular}
-\end{center}
-\caption{The yield acheived for each improvement method with different thresholds for the number of RANSAC inliers required for a match.}
-\label{tbl:improvements}
-\end{table}
-
-
 \section{NOSAC}
 \label{sec:nosac}
 To estimate an affine transformation between two images, six variables must be estimated ($a$, $b$, $c$, $d$, $t_x$, and $t_y$ in Equation~\ref{eqn:affine}). 
@@ -694,6 +682,38 @@ root_sift = sqrt(sift/sum(sift));
 
 The effect of using RootSIFT is to reduce the larger SIFT dimensions in relation to the smaller ones. This prevents the Euclidean distance being dominated by these large values, which could be noisy. By using RootSIFT space with the affine invariant detector, matching performance is increased 35\% compared to the baseline system
 
+\section{Results}
+The results of these geometric improvements is shown in Table~\ref{tbl:improvements}. 
+
+Recalled from Chapter~\ref{chpt:system}, the baseline system uses RANSAC to estimate an affine transformation between the query image and model images for spatial verification. If the number of corresponding features that conform to this transformation exceeds a threshold, the inlier threshold, the match is said to be spatially verified. Table~\ref{tbl:improvements} shows the impact on yield (see Subsection~\ref{sub:performance}) by implementing these improvements and varying the inlier threshold.
+
+It is easy to see that implementing the affine invariant detector with the RootSIFT mapping results in the best performance. This is due to the increase in matching accuracy, allowing a lower inlier threshold to be used and so more matches to be made.
+
+\begin{table}[hbtp]
+\begin{center}
+\begin{tabular}{c|c|c|c|c|}
+\cline{2-5}
+ & \multicolumn{4}{|c|}{Inlier Threshold} \\ 
+ \cline{2-5}
+ & 4 & 5 & 7 & 9 \\
+ \cline{2-5}
+ \cline{1-5}
+\multicolumn{1}{|c|}{RANSAC} & \texttt{12.0\%} & \texttt{14.1\%} & \textcolor{red}{\texttt{18.1\%}} & \texttt{14.3\%} \\  
+\cline{1-5}
+\multicolumn{1}{|c|}{NOSAC} & \texttt{20.7\%} & \textcolor{red}{\texttt{20.8\%}} & \texttt{17.7\%} & \texttt{16.1\%} \\  
+\cline{1-5}
+\multicolumn{1}{|c|}{Affine} & \textcolor{red}{\texttt{22.5\%}} & \texttt{22.3\%} &  \texttt{17.4\%} & \texttt{13.8\%} \\  
+\cline{1-5}
+\multicolumn{1}{|c|}{Affine RootSIFT} & \textcolor{red}{\texttt{24.5\%}} & \texttt{22.6\%} &  \texttt{18.0\%} & \texttt{15.5\%} \\  
+\cline{1-5}
+\end{tabular}
+\end{center}
+\caption{The yield acheived for each improvement method with different thresholds for the number of RANSAC inliers required for a match.}
+\label{tbl:improvements}
+\end{table}
+
+
+
 
 %-------------------------------
 % Turbo-boosting
@@ -720,8 +740,6 @@ WIthout more images of the same object, viewpoints, environmental conditions, ob
 \section{Database Augmentation}
 
 Existing work addresses this problem by including a process known as database augmentation. This database-side feature augmentation works by including the visual words present in other images of the same object for an image of an object. For each model image, a query using the baseline system is issued and all the spatially verified matches are collected. In the original database augmentation technique described in \cite{turcot09}, the visual words of the model image used as the query are augmented with all the visual words of the spatially verified database matches. Further work such as \cite{rootsift12} shows that instead of incorporating the entire vector of visual words from database matches, only the visual words contained within the regions in the database matches that correspond spatially are augmented. 
-
-[Figure of database-side augmentation?]
 
 The process of querying the baseline system with each model image creates what is known as an image graph - the interconnection of matches between images. Each edge of the image graph infers that the two images connected share (at least part of) the same object. An image graph is not needed in this project, as the absolute classes of each image are already known, and it is assumed that overlap between classes does not exist\footnote{This is a contentious point. Due to the nature of images from Wikipedia, there is a fair amount of overlap between images between classes. For example, a picture of Big Ben may well be included in the corpus of images for Palace of Westminster. This is an issue that produces false positives. Methods to remedy this issue can be employed, such as querying the baseline system with each model image, and if a false positive match is made, remove the image. However, this is beyond the scope of this report.}. In the dataset of model images used in this project, the lack of multiple images of the same object means that the amount of augmentation that occurs is negligible, so the gains of database-side spatial feature augmentation is non-existant.
 
@@ -1043,7 +1061,7 @@ Figure~\ref{fig:anotations} shows various results outputted by the implemented s
 \begin{figure}[htb]
 \centering 
 \includegraphics[width=1.0\textwidth]{images/anotatedimages}
-\caption{A selection of annotated images. Clockwise from top left: London Central Mosque, Abbey Mills Pumping Station, Bloomsbury Square, St James's Church Piccadilly, Victoria and Albert Museum, University of Greenwich.}
+\caption{A selection of annotated images. Clockwise from top left: London Central Mosque, Abbey Mills Pumping Station, Bloomsbury Square, University of Greenwich, Victoria and Albert Museum, and St Jame's Church, Piccadilly.}
 \label{fig:anotations}
 \end{figure}
 
