@@ -16,21 +16,21 @@
 \contentsline {section}{\numberline {4.5}Multiple Object Matching}{24}{section.4.5}
 \contentsline {chapter}{\numberline {5}Geometric and Descriptor Improvements}{27}{chapter.5}
 \contentsline {section}{\numberline {5.1}NOSAC}{27}{section.5.1}
-\contentsline {section}{\numberline {5.2}Affine Invariant Detector}{28}{section.5.2}
-\contentsline {section}{\numberline {5.3}RootSIFT}{30}{section.5.3}
-\contentsline {section}{\numberline {5.4}Results}{30}{section.5.4}
-\contentsline {chapter}{\numberline {6}Augmentation Improvements}{32}{chapter.6}
-\contentsline {section}{\numberline {6.1}Motivation}{32}{section.6.1}
-\contentsline {section}{\numberline {6.2}Database Augmentation}{33}{section.6.2}
-\contentsline {section}{\numberline {6.3}Turbo-boosting}{34}{section.6.3}
-\contentsline {chapter}{\numberline {7}Implementation}{40}{chapter.7}
-\contentsline {section}{\numberline {7.1}Object Recognition Engine}{41}{section.7.1}
-\contentsline {subsection}{\numberline {7.1.1}Database}{41}{subsection.7.1.1}
-\contentsline {subsection}{\numberline {7.1.2}Image Processing}{42}{subsection.7.1.2}
-\contentsline {subsection}{\numberline {7.1.3}Distributed Pre-computation}{42}{subsection.7.1.3}
-\contentsline {section}{\numberline {7.2}Web Application}{43}{section.7.2}
-\contentsline {subsection}{\numberline {7.2.1}Front-end}{45}{subsection.7.2.1}
-\contentsline {subsection}{\numberline {7.2.2}Back-end}{46}{subsection.7.2.2}
-\contentsline {section}{\numberline {7.3}Python-MATLAB Bridge}{47}{section.7.3}
-\contentsline {section}{\numberline {7.4}Results}{48}{section.7.4}
-\contentsline {chapter}{\numberline {8}Summary}{49}{chapter.8}
+\contentsline {section}{\numberline {5.2}Affine Invariant Detector}{29}{section.5.2}
+\contentsline {section}{\numberline {5.3}RootSIFT}{31}{section.5.3}
+\contentsline {section}{\numberline {5.4}Results}{32}{section.5.4}
+\contentsline {chapter}{\numberline {6}Augmentation Improvements}{33}{chapter.6}
+\contentsline {section}{\numberline {6.1}Motivation}{33}{section.6.1}
+\contentsline {section}{\numberline {6.2}Database Augmentation}{34}{section.6.2}
+\contentsline {section}{\numberline {6.3}Turbo-boosting}{35}{section.6.3}
+\contentsline {chapter}{\numberline {7}Implementation}{41}{chapter.7}
+\contentsline {section}{\numberline {7.1}Object Recognition Engine}{42}{section.7.1}
+\contentsline {subsection}{\numberline {7.1.1}Database}{42}{subsection.7.1.1}
+\contentsline {subsection}{\numberline {7.1.2}Image Processing}{43}{subsection.7.1.2}
+\contentsline {subsection}{\numberline {7.1.3}Distributed Pre-computation}{43}{subsection.7.1.3}
+\contentsline {section}{\numberline {7.2}Web Application}{44}{section.7.2}
+\contentsline {subsection}{\numberline {7.2.1}Front-end}{46}{subsection.7.2.1}
+\contentsline {subsection}{\numberline {7.2.2}Back-end}{47}{subsection.7.2.2}
+\contentsline {section}{\numberline {7.3}Python-MATLAB Bridge}{48}{section.7.3}
+\contentsline {section}{\numberline {7.4}Results}{49}{section.7.4}
+\contentsline {chapter}{\numberline {8}Summary}{50}{chapter.8}

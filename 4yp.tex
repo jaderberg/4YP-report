@@ -581,6 +581,15 @@ A number of modifications to the baseline system were explored to increase the m
 To estimate an affine transformation between two images, six variables must be estimated ($a$, $b$, $c$, $d$, $t_x$, and $t_y$ in Equation~\ref{eqn:affine}). 
 Each feature point that is computed for an image contains four data points: the $x$ coordinate, $y$ coordinate, scale $s$, and rotation $\theta$ of the feature. The baseline RANSAC method randomly selects three correspondences and uses the $x$ and $y$ coordinates to yield two equations for each correspondence. For three correspondences, that means there are six equations, so the transformation can be solved. The best transformation (the one with the most inliers) over all the iterations of sampling is then used as a basis for the overall affine transformation.
 
+\begin{figure}[htb]
+\centering 
+\subfloat[RANSAC]{\includegraphics[width=0.7\textwidth]{images/ransacmatch.pdf}}
+\\
+\subfloat[NOSAC]{\includegraphics[width=0.7\textwidth]{images/nosacmatch.pdf}}
+\caption{The difference in matching by using NOSAC compared to RANSAC}
+\label{fig:ransacnosac}
+\end{figure}
+
 This method works well, however it is based on random sampling so either accuracy or speed is sacrificed. Instead, a new estimation method is used called NOSAC. 
 
 Rather than selecting three correspondences, only one correspondence is needed to estimate a transformation. Initially, it is assumed the only components of the transformation are scaling and translation, as shown in Equation~\ref{eqn:scaleaffine}. There are therefore only three unknown variables - $a$, $t_x$, and $t_y$. The scaling factor $a$ is estimated from the relative scales of the feature points, and the translation from the coordinates. An estimation is done for every correspondence. The inliers of the best estimation of the transformation are then used to compute the full six degree of freedom affine transformation\footnote{This is done using \lstinline$vgg_Haffine_from_x_MLE$ by Andrew Zisserman found on \url{http://www.robots.ox.ac.uk/~vgg}}. 
@@ -618,6 +627,15 @@ As an estimation is performed on every correspondence, there is no randomness to
 \section{Affine Invariant Detector}
 \label{sec:affine}
 An alternative feature detector is used as an improvement. The Hessian affine region detector detects regions similar to the SIFT detector of the baseline system. However, the features detected are affine invariant - the detector will detect the same features and describe them in the same way even if the viewpoint has changed. This has the advantage of allowing matching of features even when the viewpoint of the object is markedly different.
+
+\begin{figure}[h!tb]
+\centering 
+\subfloat[NOSAC]{\includegraphics[width=0.7\textwidth]{images/nosacmatch2.pdf}}
+\\
+\subfloat[Affine Invariant]{\includegraphics[width=0.7\textwidth]{images/affinematch.pdf}}
+\caption{The difference in matching by using the affine invariant feature detector compared to NOSAC.}
+\label{fig:affinenosac}
+\end{figure}
 
 The feature points are now six-dimensional rather than four-dimensional, with each feature region being described by its $x$ and $y$ position, orientation\footnote{In practice, no useful interpretation of the orientation has been found.} $\theta$ and the ellipse representing the region, given by three parameters $a$, $b$ and $c$ such that the ellipse is described by Equation~\ref{eqn:ellipse}.
 
@@ -665,9 +683,19 @@ the unknown affine transformation $\mathbf{H}$ can be found by solving
 
 As with NOSAC, this is done for every correspondence and the inliers from the best estimation used to compute a final estimate for the transformation. The process is faster than RANSAC and results in a 24\% increase in yield.
 
+
 \section{RootSIFT}
 \label{sec:rootsift}
 To measure the similarity between two features, the Euclidean distance between the SIFT descriptors is used in the baseline system. However, a recent publication \cite{rootsift12} notes that using a different distance measure can increase performance.
+
+\begin{figure}[h!tb]
+\centering 
+\subfloat[Affine Invariant SIFT]{\includegraphics[width=0.7\textwidth]{images/affinematch2.pdf}}
+\\
+\subfloat[Affine Invariant RootSIFT]{\includegraphics[width=0.7\textwidth]{images/rootaffinematch.pdf}}
+\caption{The difference in matching by using RootSIFT descriptors as compared vanilla SIFT.}
+\label{fig:affinerootaffine}
+\end{figure}
 
 The Hellinger kernel is used in place of the standard Euclidean kernel for computing distance. This change can be performed by simply mapping the descriptors from SIFT space to RootSIFT space - the RootSIFT descriptor is an element wise square root of the L1 normalised SIFT vector. Computing the Euclidean distance between two RootSIFT vectors is equivalent to using the Hellinger kernel for comparing the original SIFT descriptors. Listing~\ref{lst:rootsift} shows the conversion of the SIFT descriptor \lstinline!sift! to RootSIFT space.
 
@@ -681,6 +709,8 @@ root_sift = sqrt(sift/sum(sift));
 
 
 The effect of using RootSIFT is to reduce the larger SIFT dimensions in relation to the smaller ones. This prevents the Euclidean distance being dominated by these large values, which could be noisy. By using RootSIFT space with the affine invariant detector, matching performance is increased 35\% compared to the baseline system
+
+
 
 \section{Results}
 The results of these geometric improvements is shown in Table~\ref{tbl:improvements}. 
