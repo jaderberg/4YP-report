@@ -189,51 +189,7 @@ To automate the downloading of object images from Wikipedia, Python\footnote{\ur
 \label{fig:wikipage}
 \end{figure}
 
-A crawler object in Python finds all the images and notes the URLs of them for subsequent download. Firstly, the HTML of the Wikipedia page must be downloaded, as it appears to a web browser. However, Wikipedia does not allow crawlers and automated bots to access its web pages. To overcome this, the HTTP header\footnote{\url{http://www.w3.org/Protocols/rfc2616/rfc2616.html} describes the Hyper Text Transport Protocol and the various header fields.} of the crawler is edited to emulate that of a browser. This is implemented using the urllib2 library\footnote{\url{http://docs.python.org/library/urllib2.html}}. The code shown in Listing~\ref{lst:crawler} shows an example of how to read the HTML of the main Wikipedia homepage. The HTML document for each Wikipedia page is parsed using the BeautifulSoup library\footnote{\url{http://www.crummy.com/software/BeautifulSoup/}}. All the anchor elements are found and stored for further crawling. The images contained within the HTML are also found by looking within the part of the HTML document that is unique to the specific Wikipedia page (see Listing~\ref{lst:beautifulsoup}).
-
-\linespread{1} % single line spacing
-\lstset{language=Python,caption=The code used to gain access to Wikipedia's content using a crawler by emulating a browser.,label=lst:crawler}
-\begin{lstlisting}[frame=single]
-## Python
-import urllib2
-# Emulate the user agent as that of a browser
-user_agent = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en-US; rv:1.8.1.7) Gecko/2007091417 Firefox/2.0.0.7"
-headers = {"User-Agent": user_agent}
-# Request the webpage
-req = urllib2.Request("http://en.wikipedia.org", headers=headers)
-resp=urllib2.urlopen(req)
-# Read the HTML of the response
-html = resp.read()
-\end{lstlisting}
-\linespread{2} % double line spacing
-
-
-
-\linespread{1} % single line spacing
-\lstset{language=Python,caption=Parsing the Wikipedia article HTML document to find the relevent images.,label=lst:beautifulsoup}
-\begin{lstlisting}[frame=single]
-## Python
-def _get_content_body(self, soup):
-        main_content = soup.find('div', {"class": "mw-content-ltr"})
-        if main_content is None:
-            return None
-        # remove navboxes
-        navboxes = main_content.findAll('table', {'class': 'navbox'})
-        [navbox.extract() for navbox in navboxes]
-        return main_content
-
-def _get_image_links(self, soup):
-	return soup.findAll('a', {'class': 'image'})
-	
-# Parse the HTML
-soup = BeautifulSoup(html)
-# Get the main article body
-soup = _get_content_body(soup)
-# Get a list of image links
-image_links = _get_image_links(soup)
-\end{lstlisting}
-\linespread{2} % double line spacing
-
+A crawler object in Python finds all the images and notes the URLs of them for subsequent download. Firstly, the HTML of the Wikipedia page must be downloaded, as it appears to a web browser. However, Wikipedia does not allow crawlers and automated bots to access its web pages. To overcome this, the HTTP header\footnote{\url{http://www.w3.org/Protocols/rfc2616/rfc2616.html} describes the Hyper Text Transport Protocol and the various header fields.} of the crawler is edited to emulate that of a browser. This is implemented using the urllib2 library\footnote{\url{http://docs.python.org/library/urllib2.html}}. The HTML document for each Wikipedia page is parsed using the BeautifulSoup library\footnote{\url{http://www.crummy.com/software/BeautifulSoup/}}. All the anchor elements are found and stored for further crawling. The images contained within the HTML are also found by looking within the part of the HTML document that is unique to the specific Wikipedia page.
 
 The output of the crawler is a CSV file of the image URLs and the object class the images belong to. The object class is simply named from the URL of the Wikipedia page (for example all images appearing on \url{http://en.wikipedia.org/wiki/Tower_Bridge} will have class \lstinline!Tower_Bridge!).
 
@@ -289,44 +245,7 @@ resp_struct = parse_json(response);
 \end{lstlisting}
 \linespread{2} % double line spacing
 
-Using MATLAB's inbuilt \lstinline!urlread! function, the search results are requested and returned in JSON format. The JSON result is then parsed and converted into a MATLAB structure object for reading. An example JSON response is shown in Listing~\ref{lst:bingjson}. Each element in the array \lstinline!Results! is an image result. Each image is then downloaded from its \lstinline!MediaUrl! field using a modified version of the \lstinline!imread! function which allows for request timeouts, as some image resources may have expired since their submission to the Bing database.
-
-\linespread{1} % single line spacing
-\lstset{language=Java,caption=A Bing image search response in JSON format. The ``Results'' array is truncated to one element.,label=lst:bingjson}
-\begin{lstlisting}[frame=single]
-// JSON
-{
-   "SearchResponse":{
-      "Version":"2.0",
-      "Query":{
-         "SearchTerms":"Tower Bridge"
-      },
-      "Image":{
-         "Total":780000,
-         "Offset":0,
-         "Results":[
-            {
-               "Title":"Tower Bridge - London Photo (551176) - Fanpop",
-               "MediaUrl":"http://images.fanpop.com/images/image_uploads/Tower-Bridge.jpg",
-               "Url":"http://www.fanpop.com/spots/london/images/551176/title/tower-bridge",
-               "DisplayUrl":"http://www.fanpop.com/spots/london/images/title/tower-bridge",
-               "Width":1600,
-               "Height":1200,
-               "FileSize":761104,
-               "Thumbnail":{
-                  "Url":"http://ts3.mm.bing.net/images/thumbnail.aspx?q=4757...",
-                  "ContentType":"image/jpeg",
-                  "Width":160,
-                  "Height":120,
-                  "FileSize":3274
-               }
-            }, ...
-         ]
-      }
-   }
-}
-\end{lstlisting}
-\linespread{2} % double line spacing
+Using MATLAB's inbuilt \lstinline!urlread! function, the search results are requested and returned in JSON format. The JSON result is then parsed and converted into a MATLAB structure object for reading. Each element in the array \lstinline!Results! is an image result. Each image is then downloaded from its \lstinline!MediaUrl! field using a modified version of the \lstinline!imread! function which allows for request timeouts, as some image resources may have expired since their submission to the Bing database.
 
 The downloaded images are resized if larger than 1000 pixels and stored in a folder named after its class. As with the model images, the result is a directory containing a folder for each class, within which are the augmentation images for that class.
 
@@ -366,38 +285,7 @@ resp_struct = parse_json(response);
 \end{lstlisting}
 \linespread{2} % double line spacing
 
-Listing~\ref{lst:googleapi} shows the formulation and request of a Google search API request. As with the Bing requests, the search term is the URL encoded class name. The JSON response (Listing~\ref{lst:googlejson}) is parsed into a MATLAB object and the \lstinline!url! field is used to download the image.
-
-\linespread{1} % single line spacing
-\lstset{language=Java,caption=A Google image search response in JSON format. The ``results'' array is truncated to one element.,label=lst:googlejson}
-\begin{lstlisting}[frame=single]
-// JSON
-{
-   "responseData":{
-      "results":[
-         {
-            "GsearchResultClass":"GimageSearch",
-            "width":"1024",
-            "height":"819",
-            "imageId":"ANd9GcSTU9Qv93OE3Q5kjo0h5Dcsl6sYBGURxSlmw8tfUbISx6heecXcY9VKkquZ",
-            "tbWidth":"150",
-            "tbHeight":"120",
-            "unescapedUrl":"http://www2.hiren.info/desktopwallpapers/natural/the-tower-...",
-            "url":"http://www2.hiren.info/desktopwallpapers/natural/the-tower-bridge.jpg",
-            "visibleUrl":"www.hiren.info",
-            "title":"Desktop Wallpapers È Natural Backgrounds È The \u003cb\u003eTower Bridge\u003c/b\u003e \u003cb\u003e...\u003c/b\u003e",
-            "titleNoFormatting":"Desktop Wallpapers È Natural Backgrounds È The Tower Bridge ...",
-            "originalContextUrl":"http://www.hiren.info/desktop-wallpapers/natural-pic...",
-            "content":"The \u003cb\u003eTower Bridge\u003c/b\u003e, London,",
-            "contentNoFormatting":"The Tower Bridge, London,",
-            "tbUrl":"http://t1.gstatic.com/images?q\u003dtbn:ANd9GcSTU9Qv93OE3Q5kjo..."
-         }, ...
-      ], ...
-   "responseDetails":null,
-   "responseStatus":200
-}
-\end{lstlisting}
-\linespread{2} % double line spacing
+Listing~\ref{lst:googleapi} shows the formulation and request of a Google search API request. As with the Bing requests, the search term is the URL encoded class name. The JSON response is parsed into a MATLAB object and the \lstinline!url! field is used to download the image.
 
 As with the augmentation images, the downloaded Google images are resized if larger than 1000 pixels and stored in a folder named after its class. Again, the result is a directory containing a folder for each class, within which are the validation images for that class.
 
@@ -428,7 +316,7 @@ There are two separate processes forming the project. The first is the pre-compu
 
 \begin{figure}[htb]
 \centering 
-\includegraphics[width=0.6\textwidth]{images/PrecomputeProcess.pdf}
+\includegraphics[width=0.9\textwidth]{images/PrecomputeProcess.pdf}
 \caption{The flow diagram for the basic pre-computation process.}
 \label{fig:precompprocess}
 \end{figure}
@@ -487,22 +375,20 @@ The term frequency-inverse document frequency\footnote{This is a practice develo
 
 \begin{figure}[htb]
 \centering 
-\subfloat[Tower Bridge image 1]{\includegraphics[width=0.4\textwidth]{images/tb_city_hall.jpg}}
+\subfloat[Tower Bridge image 1]{\includegraphics[width=0.3\textwidth]{images/tb_city_hall.jpg}}
 ~
-\subfloat[Tower Bridge image 2]{\includegraphics[width=0.4\textwidth]{images/tb_twilight.jpg}}
+\subfloat[Raw histogram for image 1]{\label{fig:rawhist1}\includegraphics[width=0.3\textwidth]{images/tb_city_hall.pdf}}
+~
+\subfloat[Weighted histogram for image 1]{\includegraphics[width=0.3\textwidth]{images/tb_city_hall_weighted.pdf}}
 \\
-\subfloat[Raw histogram for image 1]{\label{fig:rawhist1}\includegraphics[width=0.4\textwidth]{images/tb_city_hall.pdf}}
+\subfloat[Tower Bridge image 2]{\includegraphics[width=0.3\textwidth]{images/tb_twilight.jpg}}
 ~
-\subfloat[Raw histogram for image 2]{\label{fig:rawhist2}\includegraphics[width=0.4\textwidth]{images/tb_twilight.pdf}}
-\\
-\subfloat[Weighted histogram for image 1]{\includegraphics[width=0.4\textwidth]{images/tb_city_hall_weighted.pdf}}
+\subfloat[Raw histogram for image 2]{\label{fig:rawhist2}\includegraphics[width=0.3\textwidth]{images/tb_twilight.pdf}}
 ~
-\subfloat[Weighted histogram for image 2]{\includegraphics[width=0.4\textwidth]{images/tb_twilight_weighted.pdf}}
+\subfloat[Weighted histogram for image 2]{\includegraphics[width=0.3\textwidth]{images/tb_twilight_weighted.pdf}}
 \caption{Two images for the class \lstinline!Tower_Bridge! with their raw histograms and tf-idf weighted histograms}
 \label{fig:histograms}
 \end{figure}
-
-\clearpage
 
 Each model image therefore has a histogram that is used for matching. All the histograms are packaged into a matrix (each column being an image's histogram) that is used as the index for query matching.
 
@@ -545,13 +431,11 @@ y \\
 \label{eqn:affine}
 \end{equation} 
 
-The random sample consensus algorithm\footnote{\url{http://en.wikipedia.org/wiki/RANSAC}} (RANSAC) is used to estimate an affine transformation between the two images, using the corresponding visual words in each image. All duplicate visual words are removed from the spatial verification process, as these duplicates often cause inaccurate estimations. The result of the RANSAC spatial verification is the number of visual words in the query image that map to the correct positions in the model image (within some tolerance region). Matches that have enough inliers under the transformation are said to be spatially verified - that is the estimated affine transformation is accurate and both images depict the same rigid bodied object.
-
-Figure~\ref{fig:spatialverification} shows the result of spatial verification on matched SIFT features. Note the disregarding of some matches after RANSAC as these matches do not conform with the estimated affine transformation.
+The random sample consensus algorithm (RANSAC) is used to estimate an affine transformation between the two images, using the corresponding visual words in each image. All duplicate visual words are removed from the spatial verification process, as these duplicates often cause inaccurate estimations. The result of the RANSAC spatial verification is the number of visual words in the query image that map to the correct positions in the model image (within some tolerance region). Matches that have enough inliers under the transformation are said to be spatially verified - that is the estimated affine transformation is accurate and both images depict the same rigid bodied object.
 
 \begin{figure}[h!tb]
 \centering 
-\subfloat[Big Ben image 1]{\includegraphics[width=0.3\textwidth]{images/bigben.jpg}}
+\subfloat[Big Ben image 1]{\includegraphics[width=0.22\textwidth]{images/bigben.jpg}}
 ~
 \subfloat[Big Ben image 2]{\includegraphics[width=0.3\textwidth]{images/bigben2.jpeg}}
 \\
@@ -560,6 +444,8 @@ Figure~\ref{fig:spatialverification} shows the result of spatial verification on
 \caption{RANSAC spatial verification performed on two images of Big Ben.}
 \label{fig:spatialverification}
 \end{figure}
+
+Figure~\ref{fig:spatialverification} shows the result of spatial verification on matched SIFT features. Note the disregarding of some matches after RANSAC as these matches do not conform with the estimated affine transformation.
 
 Spatial verification is performed on each model image in descending order of the tf-idf histogram matching score. The first model image to be successfully spatially verified is deemed to be an accurate match and the process is terminated, with the class the model image represents being the object found. The region of the query image that is labelled as the object is the bounding box of visual words that spatially match the model image.
 
@@ -791,7 +677,7 @@ The process is exactly that of spatially verified database expansion \cite{roots
 
 Take, for example, the image in Figure~\ref{fig:turbomodelimage} as the first model image to be turbo-boosted. Each turbo image is tested to see if it matches the model image. In this example, the turbo image in Figure~\ref{fig:turboturboimage} matches against the model image, with the match being shown in Figure~\ref{fig:turbomatch}. The matched region is the bounding rectangle of the spatially verified visual words, with a slight margin. \emph{All} of the visual words contained with the matched region of the turbo image are projected onto the model image, as in Figure~\ref{fig:turboaugment}. The model image has now been augmented with the visual words of the turbo image.
 
-This is repeated for every turbo image, for each model image of each class. If no match can be reasonably made with a turbo image, no augmentation occurs and the process continues with trying the next turbo image. Listing~\ref{lst:turboboost} shows the high level MATLAB code that outlines the implementation of turbo-boosting.
+This is repeated for every turbo image, for each model image of each class. If no match can be reasonably made with a turbo image, no augmentation occurs and the process continues with trying the next turbo image.
 
 \begin{figure}[htb]
 \centering 
@@ -812,46 +698,7 @@ This is repeated for every turbo image, for each model image of each class. If n
 
 \clearpage
 
-\linespread{1} % single line spacing
-\lstset{language=Matlab,caption=High level MATLAB code to outline the augmentation stage of the turbo-boosting process.,label=lst:turboboost}
-\begin{lstlisting}[frame=single]
-%% MATLAB
-% Get a list of classes
-classes = get_class_names(db);   % db is the database of model images
-for i=1:length(classes)
-    class = classes(i);
-    % Download images from an external source for that class
-    turbo_images = download_images(class);
-    % Get the model images for that class
-    model_images = get_images_by_class(class, db);
-    for j=1:length(model_images)
-        model_image = model_images(j);
-        model_im_words = get_words(model_image, vocab);
-        for k=1:length(turbo_images)
-            turbo_image = turbo_images(k);
-            turbo_im_words = get_words(turbo_image, vocab);
-            % Get corresponding visual words
-            correspondences = get_corresponding_words(model_im_words, turbo_im_words);
-            % Spatially verify correspondences
-            verified, verified_model_words, verified_turbo_words, affine_transformation = spatially_verify(correspondences);
-            if verified
-                % Get the region within the turbo_image that contains
-                % words
-                bounding_rectangle = get_bounding_box(verified_turbo_words);
-                verified_turbo_words = words_within_rectangle(bounding_rectange, verified_turbo_words);
-                % Map the verified turbo words within the bounding
-                % rectangle onto the model image and augment these words
-                model_im_words = augment_words(model_im_words, verified_turbo_words, affine_transformation);
-            end
-        end
-        % Save the fully augmented word vector for the model image
-        save_augmented_words(model_im_words);
-    end
-end
-\end{lstlisting}
-\linespread{2} % double line spacing
 
-%The process inflates the the visual word vector used for spatial verification on the fly - as the for-loop continues with each subsequent turbo image to boost a model image, the model image's visual word vector gets larger and so there is more chance for further spatial verification and therefore augmentation.
 
 Once the turbo-boosting for every model image in every class has completed, the weighted histograms and new turbo-boosted index is created, just as for the baseline system (see Section~\ref{sec:histograms}). Matching is then performed just as with the baseline system, except that the turbo-boosted index and visual word vectors are used.
 
@@ -861,7 +708,7 @@ Overall, turbo-boosting increases the performance by 75\% with respect to the ba
 
 \begin{figure}[hbtp]
 \centering 
-\includegraphics[width=0.7\textwidth]{images/turbograph.pdf}
+\includegraphics[width=0.4\textwidth]{images/turbograph.pdf}
 \caption{The effect on yield by increasing the number of turbo images downloaded.}
 \label{fig:turbograph}
 \end{figure}
@@ -892,6 +739,10 @@ Turbo-boosting works by increasing the information content of the model images. 
 \item Some augmented features will be duplicates - a duplicate feature being one that is common to both the turbo image and the model image and is described by the same visual word in both cases. This means that after turbo-boosting, the model image will contain  multiple identical visual words for the same feature. This effectively gives the feature more weight for matching.
 \end{itemize}
 
+Figure~\ref{fig:turboresult} shows a case where the query image Figure~\ref{fig:turboresultqueryimage} cannot be matched to any model images. However, the model image Figure~\ref{fig:turboresultmodelimage} can be turbo-boosted, leading to the augmentation of the words in the matched region of the turbo image Figure~\ref{fig:turboresultturboimage}. The turbo-boosted model image now matches against the query, as shown in Figure~\ref{fig:turboresultmatch}.
+
+Turbo-boosting is a completely general strategy for increasing the yield/recall - any labelled dataset can use this technique. The only draw backs are the increase in pre-computation time due to the turbo-boosting routine, which is $O(N_c\overline{N}_mN_t)$ where $N_c$ is the number of classes, $\overline{N}_m$ is the average number of model images of each class, and $N_t$ is the number of turbo images that are downloaded. The increase in pre-computation time can be overcome as the process is easily parallelised - the inner loop on each class is completely independent. Another disadvantage is the slight increase in storage needed. The downloaded turbo images can be deleted as they are only needed temporarily, however due to the increase of visual words in each model's vector and the fact that the histograms will be generally less sparse after augmentation, the byte size of these structures increases.
+
 \begin{figure}[htb]
 \centering 
 \subfloat[Query image]{\label{fig:turboresultqueryimage}\includegraphics[width=0.3\textwidth]{images/turboquery.jpg}}
@@ -905,11 +756,6 @@ Turbo-boosting works by increasing the information content of the model images. 
 \label{fig:turboresult}
 \end{figure}
 
-Figure~\ref{fig:turboresult} shows a case where the query image Figure~\ref{fig:turboresultqueryimage} cannot be matched to any model images. However, the model image Figure~\ref{fig:turboresultmodelimage} can be turbo-boosted, leading to the augmentation of the words in the matched region of the turbo image Figure~\ref{fig:turboresultturboimage}. The turbo-boosted model image now matches against the query, as shown in Figure~\ref{fig:turboresultmatch}.
-
-Turbo-boosting is a completely general strategy for increasing the yield/recall - any labelled dataset can use this technique. The only draw backs are the increase in pre-computation time due to the turbo-boosting routine, which is $O(N_c\overline{N}_mN_t)$ where $N_c$ is the number of classes, $\overline{N}_m$ is the average number of model images of each class, and $N_t$ is the number of turbo images that are downloaded. The increase in pre-computation time can be overcome as the process is easily parallelised - the inner loop on each class is completely independent. Another disadvantage is the slight increase in storage needed. The downloaded turbo images can be deleted as they are only needed temporarily, however due to the increase of visual words in each model's vector and the fact that the histograms will be generally less sparse after augmentation, the byte size of these structures increases.
-
-
 %-------------------------------
 % Implementation
 %-------------------------------
@@ -919,7 +765,7 @@ While Chapter~\ref{chpt:system} outlines the processes involved with the object 
 
 \begin{figure}[htb]
 \centering 
-\includegraphics[width=0.7\textwidth]{images/SystemArchitecture.pdf}
+\includegraphics[width=0.5\textwidth]{images/SystemArchitecture.pdf}
 \caption{An overview of the system architecture.}
 \label{fig:architecture}
 \end{figure}
@@ -975,22 +821,7 @@ The pre-computation process takes a long time to complete, as every image of the
 
 A room of computers in the Engineering Science Department is used for the parallel pre-computation. These Linux machines are accessed via SSH\footnote{\url{http://en.wikipedia.org/wiki/Secure_Shell}}. In total there are around 30 machines that are used.
 
-The distributed pre-computation is conducted by a Python script using the Fabric library\footnote{\url{http://docs.fabfile.org/en/1.4.0/index.html}} for simplifying the SSH tasks. The current build is zipped up locally and deployed to the remote shared disk. The Python script then distributes the jobs across all the hosts that can be connected to. All jobs generate a finished flag so the pre-computation script can keep track of the dispatched jobs and synchronise the process.
-
-\linespread{1} % single line spacing
-\lstset{language=bash,caption=The bash script used to start MATLAB.,label=lst:distmatlab}
-\begin{lstlisting}[frame=single]
-#!/bin/bash
-unset DISPLAY
-nohup matlab -nodesktop -nosplash -nodisplay -r "try,$1($2,$3,'$4','$5'),catch err, f=fopen('error_logs/$2-$1-error.txt','w'); fprintf(f,err.message); fclose(f); exit, end, exit" -logfile matlab_logs/matlab_log$2.txt > nohup_logs/nohup$2.out 2>&1 &
-
-# Example usage for machine 11 out of 28:
-sh dist_matlab_suppress.sh dist_compute_features 11 28 engs-station41.eng.ox.ac.uk engs-station51.eng.ox.ac.uk
-\end{lstlisting}
-\linespread{2} % double line spacing
-
-\lstset{language=Matlab}
-Listing~\ref{lst:distmatlab} shows the script used to launch a MATLAB job. The MATLAB function must take four arguments: \lstinline!n_split, N_split, first_host, this_host!. These describe the current machine's number, the total number of machines, the address of the first machine and the address of the current machine. These are required for the splitting of the data and to connect to the MongoDB server which is always run on the first machine.
+The distributed pre-computation is conducted by a Python script using the Fabric library\footnote{\url{http://docs.fabfile.org/en/1.4.0/index.html}} for simplifying the SSH tasks. The current build is zipped up locally and deployed to the remote shared disk. The Python script then distributes the jobs across all the hosts that can be connected to, each host launching a MATLAB process and executing a particular function. All jobs generate a finished flag so the pre-computation script can keep track of the dispatched jobs and synchronise the process.
 
 Using the distributed system for pre-computation and validation results in a far quicker process, reducing the time from 15-20 hours for some jobs to around 1 hour.
 
@@ -1036,26 +867,6 @@ The goal of the website is to appear smooth and responsive, therefore all reques
 The website consists of the four stages described above, and there is an HTML  \lstinline!div! (a container element) for each stage. The CSS styles these to look indented in the page to provide a point of focus for the user. The four containers for each stage are all included in the initial HTML. However, only the stage that is currently active is shown by adding the following attribute to the other containers: \lstinline!style="display: none;"!. 
 
 Initially, the user is presented with an image upload form (see Figure~\ref{fig:uploadform}). Once an image has been selected, a Javascript event is fired, prompting the automatic asynchronous upload of the image. The server responds with HTML to display the image which is inserted in the next container and shown (Figure~\ref{fig:tagimage}).
-
-\linespread{1} % single line spacing
-\lstset{language=HTML,caption=The HTML code first stage container which includes the image upload form.,label=lst:distmatlab}
-\begin{lstlisting}[frame=single]
-<!--HTML-->
-<div id="upload-box" class="smooth-box">
-	<div style="height: 70px;">
-		<img id="upload-img" src="/img/down_arrow.png">
-		<h1>Upload an image...</h1>
-	</div>
-	<div class="clearit"></div>
-	<div class="form-holder">
-		<form method="post" action="/upload" enctype="multipart/form-data">
-                    <input type="file" name="image">
-                    <input type="submit" style="display: none;">
-                </form>
-	</div>
-</div>
-\end{lstlisting}
-\linespread{2} % double line spacing
 
 Upon clicking the ``Tag Image'' button, the real-time log is displaying informing the user of the progress of the matching process (Figure~\ref{fig:log}). The real-time log is achieved by the MATLAB process writing a log file and the Javascript app periodically asking the web server for the contents of the latest version of that file.
 
