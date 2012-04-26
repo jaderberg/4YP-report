@@ -92,13 +92,13 @@ Recognising a wide range of objects in an image is not a trivial problem. For su
 \item Ensure matching can be done quickly on a database of millions of objects.
 \end{itemize}
 
-To recognise vast corpus of objects, reference images are needed to create a model to match against. From the outset, Wikipedia\footnote{\url{http://en.wikipedia.org}} is used as the primary model data source. Wikipedia is a crowd-sourced online encyclopaedia with many images contained within the articles, and is considered an accurate source of information. In the system, each Wikipedia page defines an object, with the images in the article being used to provide the data to match against. The content of the Wikipedia article is used to give the user further information about the object. A web crawler is used to extract the relevant images of desired Wikipedia pages and create the image database. Filtering is also performed to ensure only useful images are included in the database. The data sources are fully explained in Chapter~\ref{chpt:data}.
+To recognise vast corpus of objects, reference images are needed to create a model to match against. From the outset, Wikipedia \cite{wikipedia} is used as the primary model data source. Wikipedia is a crowd-sourced online encyclopaedia with many images contained within the articles, and is considered an accurate source of information. In the system, each Wikipedia page defines an object, with the images in the article being used to provide the data to match against. The content of the Wikipedia article is used to give the user further information about the object. A web crawler is used to extract the relevant images of desired Wikipedia pages and create the image database. Filtering is also performed to ensure only useful images are included in the database. The data sources are fully explained in Chapter~\ref{chpt:data}.
 
 Object retrieval uses a method employing a bag-of-words model. This builds upon the work presented in Chapter~\ref{chpt:background}, namely the bag-of-words model. The visual words in the image database from Wikipedia are precomputed. At run time, the words in the query image are computed and searched against the database of precomputed words to find the top image matches. The top matches are spatially verified, with the first verified image being the result. Subsequent improvements to the base line system (described fully in Chapter~\ref{chpt:system}) are made, including geometric improvements to the spatial verification and descriptors used to increase speed and accuracy of spatial verification, as well as matching improvements through augmentation of independent data sources. The geometric improvements and augmentation improvements are reported in Chapter~\ref{chpt:geoimprovements} and Chapter~\ref{chpt:turboboosting} respectively.
 
-Finally a website was developed to provide a front end interface for the system. A user can simply navigate to the website and upload an image. They then start the automatic tagging process, during which a realtime log of the process is displayed. After the query is complete, the intelligent image is displayed, which the user can interact with, see the names of the objects contained within the image, and click on the object to go to it's Wikipedia page. The software architecture of the website and the backend systems is explored in Chapter~\ref{chpt:architecture}. The result is a realtime automatic tagging system that is able to recognise, for example, all the buildings in a tourist's photo album of London in seconds.
+Finally a website was developed to provide a front end interface for the system. A user can simply navigate to the website and upload an image. The automatic tagging process is then started, during which a realtime log of the process is displayed. After the query is complete, the intelligent image is displayed, which the user can interact with, see the names of the objects contained within the image, and click on the object to go to it's Wikipedia page. The software architecture of the website and the backend systems is explored in Chapter~\ref{chpt:architecture}. The result is a realtime automatic tagging system that is able to recognise, for example, all the buildings in a tourist's photo album of London in seconds.
 
-The aim of the project is to work towards recognising every object on Wikipedia, however due to time restraints a subset of objects was used for development and testing of the project. The subset of objects chosen are the pages that appear on the Wikipedia page ``List of Structures in London''\footnote{\url{http://en.wikipedia.org/wiki/List_of_structures_in_London}}.
+The aim of the project is to work towards recognising every object on Wikipedia, however due to time restraints a subset of objects was used for development and testing of the project. The subset of objects chosen are the pages that appear on the Wikipedia page ``List of Structures in London'' \cite{listofstructures}.
 	
 
 
@@ -113,13 +113,13 @@ There is no general algorithm to determine whether a query image\footnote{A quer
 
 To be able to query images, a representation of images needs to be computed such that some evaluation of similarity can be applied. All current methods use the notion of detecting salient regions of an image, \emph{features}, and describing them by some vector, a \emph{descriptor}, then using the distance between feature descriptors as a measure of similarity. Basic feature detectors could be corner detectors (such as the Harris detector) and a descriptor could simply be a vector of the local grayscale values, however a method like this is prone to variance due to changes in viewpoints and lighting. It is the work on SIFT descriptors \cite{lowe1999} that is used in this project, as this detector and descriptor is invariant to many of the distortions that occur in images of the same object.
 
-The standard method for image retrieval that is used is the bag-of-words method described in \cite{recognitiontree2006,videogoogle2003}. The approach by Zisserman \emph{et al.} in \cite{videogoogle2003} is closely followed and described fully in Chapter~\ref{chpt:system}. This method involves quantisation of descriptors into ``visual words''\footnote{The term ``words'' in the context of image retrieval will refer to this notion of ``visual words''.} that are used for matching. The paper also describes the influence of work done on web search engines in retrieving useful web pages - the established methods for document retrieval from text queries described in \cite{searchengines2003,googlearchitecture2003} are adapted for use with visual words. A weighting is applied to each visual words to signify their importance in retrieval (the tf-idf weighting), and inverted file structures are used to provide fast lookup and filtering of corpus images.
+The standard method for image retrieval that is used is the bag-of-words method described in \cite{recognitiontree2006,videogoogle2003}. The approach by Zisserman \emph{et al.} in \cite{videogoogle2003} is closely followed and described fully in Chapter~\ref{chpt:system}. This method involves quantisation of descriptors into ``visual words''\footnote{The term ``words'' in the context of image retrieval will refer to this notion of ``visual words''.} that are used for matching. The paper also describes the influence of work done on web search engines in retrieving useful web pages - the established methods for document retrieval from text queries described in \cite{searchengines2003,googlearchitecture2003} are adapted for use with visual words. A weighting is applied to each visual words to signify their importance in retrieval (the tf-idf weighting), and inverted file structures are used to provide fast lookup and filtering of the images in the corpus.
 
 Systems such as \cite{philbin2007} have improved recognition performance by making use of the spatial information associated with visual words. Philbin's system performs a re-ranking of the matches based on visual word similarity by estimating an affine transformation between the features in the images of matches and the query image. This ensures that that the objects in a proposed match are structurally similar - an object in an image is in essence defined not only by the visual words it exhibits, but the positions and scale of those visual words within an object's image. Making use of spatial information was shown to consistently improve performance by 5\%.
 
-Other improvements in image retrieval have come from advancements in clustering methods. Early systems \cite{videogoogle2003} used a flat k-means clustering on feature descriptors to create the visual words, but this is difficult to scale. Cluster hierarchies \cite{hierarchies2006} allow the size of vocabularies to be greatly increased, and using approximate nearest neighbours and a random forest algorithm \cite{randomforest2005}, far superior performance using very large vocabularies (100K words and greater) can be achieved.
+Other improvements in image retrieval have come from advancements in clustering methods. Early systems \cite{videogoogle2003} used a flat k-means clustering on feature descriptors to create the visual words, but this is difficult to scale. Cluster hierarchies \cite{hierarchies2006} allow the size of vocabularies to be greatly increased, and \cite{philbin2007} demonstrates that an approximate nearest neighbours method works best. Traditional k-means uses a vast amount of computational power on calculating the nearest neighbours between points and cluster centres, however an approximate method can be used instead by employing a k-d tree and a random forest algorithm \cite{randomforest2005,randomforest1,randomforest2}. The result is that far superior performance can be achieved using very large vocabularies (100K words and greater).
 
-The paper by Quack \emph{et al.} \cite{quack09} describes the application of a state of the art system to provide automatic annotation of landmarks in images. A database of images with associated metadata is built by crawling Wikipedia and other internet sources. Clustering of images is performed on the database to create representations and generate the labels of the specific objects that are to be matched. Retrieval is then performed using the bag-of-words approach with spatial verification. However, the system used a method of identifying the useful features in an object cluster to determine the bounding box of the object, as well as to be able to reduce the size of the database index.
+The paper by Quack \emph{et al.} \cite{quack09} describes the application of a state-of-the art system to provide automatic annotation of landmarks in images. A database of images with associated metadata is built by crawling Wikipedia and other internet sources. This is built from the content of a previous paper \cite{quack08}, where photos are mined by geographic proximity from a photo sharing website. The resulting database is clustered into objects, and the images from Wikipedia articles are used for verifying the cluster assignments and provide the labelling. Retrieval is then performed using the bag-of-words approach with spatial verification. However, the system uses a method of identifying the useful features in an object cluster, allowing the bounding box of the object to be determined as well as facilitating the reduction in the size of the database.
 
 There are other improvements that have been developed, such as database-side feature augmentation. This method described in \cite{turcot09} is a way of  increasing recognition performance by disseminating the visual word information across the database images. For each image in the database, a query is issued and the spatially verified matches are collected. The visual words of the matches are then augmented with the visual words of the database query image. Further work such as \cite{rootsift12} shows that instead of incorporating the entire vector of visual words from database matches, only the visual words contained within the regions in the database matches that correspond spatially are augmented. 
 
@@ -969,6 +969,11 @@ Further work would aim to increase the yield and scale the size of the database.
 		Better matching with fewer features: The selection of useful features in large database recognition problems.
 		In \emph{WS-LAVD, ICCV}, 2009.
 		
+	\bibitem{randomforest2}
+		C. Silpa-Anan and R. Hartley.
+		Localization using an image-map.
+		In \emph{Proc. ACRA}, 2004.
+		
 	\bibitem{rootsift12}
 		R. Arandjelovi\'{c} and A. Zisserman.
 		Three things everyone should know to improve object retrieval.  
@@ -987,7 +992,12 @@ Further work would aim to increase the yield and scale the size of the database.
 	\bibitem{recognitiontree2006}
 		D. Nist\'{e}r and H. Stew\'{e}nius.
 		Scalable recognition with a vocabulary tree.
-		In \emph{Porc. CVPR}, 2006.
+		In \emph{Proc. CVPR}, 2006.
+	
+	\bibitem{randomforest1}
+		Y. Amit and D. Geman. 
+		Shape quantization and recognition with randomized trees. 
+		In \emph{Neural Computing, 9(7):1545Ð1588}, 1997.
 	
 	\bibitem{videogoogle2003}
 		J. Sivic and A. Zisserman.
@@ -1030,11 +1040,22 @@ retrieval with large vocabularies and fast spatial matching.
 		Avoiding confusing features in place recognition.
 		2010.
 		
+	\bibitem{quack08}
+		T. Quack, B. Leibe and L. Van Gool.
+		World-scale Mining of Objects and Events from Community Photo Collections.
+		In \emph{CIVR}, 2008.
+		
 	\bibitem{listofstructures}
 		\url{http://en.wikipedia.org/wiki/List_of_structures_in_London}
 		
 	\bibitem{pymatbridge}
 		\url{https://github.com/jaderberg/python-matlab-bridge}
+		
+	\bibitem{wikipedia}
+		\url{http://en.wikipedia.org}
+		
+	\bibitem{listofstructures}
+		\url{http://en.wikipedia.org/wiki/List_of_structures_in_London}
 	  
 \end{thebibliography}
 
