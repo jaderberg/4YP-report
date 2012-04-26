@@ -1,4 +1,4 @@
-% 4yp.tex - 4th Year project report
+% 4yp.tex -- 4th Year project report
 % Max Jaderberg 2012
 
 %-------------------------------
@@ -54,9 +54,9 @@
 
 \begin{abstract}
 
-In this report, a large-scale object retrieval system is presented. It allows the user to supply a query image via a web interface, and the web site returns the \emph{intelligent image} - the objects in the image are automatically labelled and can be clicked for more information.
+In this report, a large-scale object retrieval system is presented. It allows the user to supply a query image via a web interface, and the web site returns the \emph{intelligent image} -- the objects in the image are automatically labelled and can be clicked for more information.
 
-The system builds upon the state-of-the art in visual object retrieval from large databases - that is allowing objects to be recognised by searching against millions of images. This notion is explored by using the images contained on the web pages of an online encyclopaedia as the object database. The resulting system can automatically annotate multiple objects within query images, such as the landmarks in a holiday photo. We demonstrated that the system can be implemented with a front end web user interface for interaction. A number of improvements to the base line system are investigated, including a novel method for increasing the matching performance by external database augmentation.
+The system builds upon the state-of-the art in visual object retrieval from large databases -- that is allowing objects to be recognised by searching against millions of images. This notion is explored by using the images contained on the web pages of an online encyclopaedia as the object database. The resulting system can automatically annotate multiple objects within query images, such as the landmarks in a holiday photo. We demonstrated that the system can be implemented with a front end web user interface for interaction. A number of improvements to the base line system are investigated, including a novel method for increasing the matching performance by external database augmentation.
 
 This work is done with the view to scaling up to the database to a corpus of millions of images and objects.
 
@@ -83,7 +83,7 @@ There are a large number of applications that would benefit from having detailed
 \label{fig:intimage}
 \end{figure}
 
-The result of the project is that a query image is inputted, the objects contained within the image are recognised, and the image is returned with the recognised objects \emph{tagged} i.e. the region of the object in the image is outlined and it can be clicked to give relevant information. In this way the standard image has been transformed into the \emph{intelligent image} - one that knows about the contained scene and can offer up information to the consumer about it's contents.
+The result of the project is that a query image is inputted, the objects contained within the image are recognised, and the image is returned with the recognised objects \emph{tagged} i.e. the region of the object in the image is outlined and it can be clicked to give relevant information. In this way the standard image has been transformed into the \emph{intelligent image} -- one that knows about the contained scene and can offer up information to the consumer about it's contents.
 
 Recognising a wide range of objects in an image is not a trivial problem. For such a system to be useful the following must be taken into account:
 \begin{itemize}
@@ -109,13 +109,13 @@ The aim of the project is to work towards recognising every object on Wikipedia,
 \label{chpt:background}
 This project builds upon the vast amount of previous work done on large scale image retrieval and automatic image annotation.
 
-There is no general algorithm to determine whether a query image\footnote{A query image is one that contains a depiction of an object that is to be identified.} contains the same object as an image in a dataset - the variation in viewpoint, lighting, environment and noise is so large that this task can even be a struggle for humans. However, despite this absence there has been a large amount of work devoted to creating applicable solutions to this problem \cite{quack09,rootsift12,recognitiontree2006,videogoogle2003,philbin2007}. Types of recognition range from scene classification \cite{sceneclass06} to geo-location recognition \cite{knopp10}, however it is specific object annotation that this project aims to achieve.
+There is no general algorithm to determine whether a query image\footnote{A query image is one that contains a depiction of an object that is to be identified.} contains the same object as an image in a dataset -- the variation in viewpoint, lighting, environment and noise is so large that this task can even be a struggle for humans. However, despite this absence there has been a large amount of work devoted to creating applicable solutions to this problem \cite{quack09,rootsift12,recognitiontree2006,videogoogle2003,philbin2007}. Types of recognition range from scene classification \cite{sceneclass06} to geo-location recognition \cite{knopp10}, however it is specific object annotation that this project aims to achieve.
 
 To be able to query images, a representation of images needs to be computed such that some evaluation of similarity can be applied. All current methods use the notion of detecting salient regions of an image, \emph{features}, and describing them by some vector, a \emph{descriptor}, then using the distance between feature descriptors as a measure of similarity. Basic feature detectors could be corner detectors (such as the Harris detector) and a descriptor could simply be a vector of the local grayscale values, however a method like this is prone to variance due to changes in viewpoints and lighting. It is the work on SIFT descriptors \cite{lowe1999} that is used in this project, as this detector and descriptor is invariant to many of the distortions that occur in images of the same object.
 
-The standard method for image retrieval that is used is the bag-of-words method described in \cite{recognitiontree2006,videogoogle2003}. The approach by Zisserman \emph{et al.} in \cite{videogoogle2003} is closely followed and described fully in Chapter~\ref{chpt:system}. This method involves quantisation of descriptors into ``visual words''\footnote{The term ``words'' in the context of image retrieval will refer to this notion of ``visual words''.} that are used for matching. The paper also describes the influence of work done on web search engines in retrieving useful web pages - the established methods for document retrieval from text queries described in \cite{searchengines2003,googlearchitecture2003} are adapted for use with visual words. A weighting is applied to each visual words to signify their importance in retrieval (the tf-idf weighting), and inverted file structures are used to provide fast lookup and filtering of the images in the corpus.
+The standard method for image retrieval that is used is the bag-of-words method described in \cite{recognitiontree2006,videogoogle2003}. The approach by Zisserman \emph{et al.} in \cite{videogoogle2003} is closely followed and described fully in Chapter~\ref{chpt:system}. This method involves quantisation of descriptors into ``visual words''\footnote{The term ``words'' in the context of image retrieval will refer to this notion of ``visual words''.} that are used for matching. The paper also describes the influence of work done on web search engines in retrieving useful web pages -- the established methods for document retrieval from text queries described in \cite{searchengines2003,googlearchitecture2003} are adapted for use with visual words. A weighting is applied to each visual words to signify their importance in retrieval (the tf-idf weighting), and inverted file structures are used to provide fast lookup and filtering of the images in the corpus.
 
-Systems such as \cite{philbin2007} have improved recognition performance by making use of the spatial information associated with visual words. Philbin's system performs a re-ranking of the matches based on visual word similarity by estimating an affine transformation between the features in the images of matches and the query image. This ensures that that the objects in a proposed match are structurally similar - an object in an image is in essence defined not only by the visual words it exhibits, but the positions and scale of those visual words within an object's image. Making use of spatial information was shown to consistently improve performance by 5\%.
+Systems such as \cite{philbin2007} have improved recognition performance by making use of the spatial information associated with visual words. Philbin's system performs a re-ranking of the matches based on visual word similarity by estimating an affine transformation between the features in the images of matches and the query image. This ensures that that the objects in a proposed match are structurally similar -- an object in an image is in essence defined not only by the visual words it exhibits, but the positions and scale of those visual words within an object's image. Making use of spatial information was shown to consistently improve performance by 5\%.
 
 Other improvements in image retrieval have come from advancements in clustering methods. Early systems \cite{videogoogle2003} used a flat k-means clustering on feature descriptors to create the visual words, but this is difficult to scale. Cluster hierarchies \cite{hierarchies2006} allow the size of vocabularies to be greatly increased, and \cite{philbin2007} demonstrates that an approximate nearest neighbours method works best. Traditional k-means uses a vast amount of computational power on calculating the nearest neighbours between points and cluster centres, however an approximate method can be used instead by employing a k-d tree and a random forest algorithm \cite{randomforest2005,randomforest1,randomforest2}. The result is that far superior performance can be achieved using very large vocabularies (100K words and greater).
 
@@ -213,7 +213,7 @@ Overall, the dataset contains 18273 images distributed over the 732 object class
 
 Bing offers a public API that can be used to perform image searches programmatically. After obtaining an application ID from Bing for authentication, complex search requests can be made over HTTP, with the results returned in JavaScript Object Notation (JSON) format\footnote{JSON is an alternative to XML for representing structured data. \url{http://www.json.org/} provides more information.}.
 
-Bing image search takes a number of keywords - the query - and returns a list of images from web pages related to the query. Filters can be applied to further narrow down the search to the most relevant images. This is shown in Figure~\ref{fig:bingimages} on the website version of Bing. The ``Style'' and ``Size'' filters are especially useful in this application, as all images should be photographs for the List of Structures in London dataset, and large images are preferable so as to include as much detail as possible. Setting these filters precludes many instances of graphics and logos which are not suitable for augmentation.
+Bing image search takes a number of keywords -- the query -- and returns a list of images from web pages related to the query. Filters can be applied to further narrow down the search to the most relevant images. This is shown in Figure~\ref{fig:bingimages} on the website version of Bing. The ``Style'' and ``Size'' filters are especially useful in this application, as all images should be photographs for the List of Structures in London dataset, and large images are preferable so as to include as much detail as possible. Setting these filters precludes many instances of graphics and logos which are not suitable for augmentation.
 
 \begin{figure}[t!]
 \centering 
@@ -337,7 +337,7 @@ The remainder of this chapter describes further details of the parts of the proc
 \label{sec:featuredetection}
 The feature detection and description methods used are the original scale-invariant feature transform (SIFT) algorithms. The advantages of using SIFT are that the detected features and their descriptors are invariant to image translation, scaling, and rotation, partially invariant to illumination changes and robust to local geometric distortion. This is essential to be able to match the same object features across varied sources of images.
 
-The SIFT features are defined as maxima and minima of the result of difference of Gaussians function\footnote{\url{http://en.wikipedia.org/wiki/Difference_of_Gaussians}} applied in scale-space to a series of smoothed and resampled images. Low contrast candidate points and edge response points along an edge are discarded. These features are then described by the SIFT feature descriptor - a 128-dimensional vector.
+The SIFT features are defined as maxima and minima of the result of difference of Gaussians function\footnote{\url{http://en.wikipedia.org/wiki/Difference_of_Gaussians}} applied in scale-space to a series of smoothed and resampled images. Low contrast candidate points and edge response points along an edge are discarded. These features are then described by the SIFT feature descriptor -- a 128-dimensional vector.
 
 The result of the SIFT feature detection and description algorithm are two matrices. The first is a matrix of feature points or frames, 
 \begin{equation}
@@ -398,7 +398,7 @@ To find the most similar images to a query image, a dot product is performed bet
 \end{array}\right]
 \label{eqn:tfidfscore}
 \end{equation} 
-where $\mathbf{h_{query}}$ is the tf-idf weighted histogram of the query image and $\mathbf{h_i}$ is the tf-idf weighted histogram of model image $i$. $\mathbf{scores}$ is a $N\times1$ array with the result of the dot product with each model image's histogram in each element. The matches are ranked in decreasing order of their score - the model image with the highest score is said to be the most similar to the query image.
+where $\mathbf{h_{query}}$ is the tf-idf weighted histogram of the query image and $\mathbf{h_i}$ is the tf-idf weighted histogram of model image $i$. $\mathbf{scores}$ is a $N\times1$ array with the result of the dot product with each model image's histogram in each element. The matches are ranked in decreasing order of their score -- the model image with the highest score is said to be the most similar to the query image.
 
 
 \section{Spatial Verification}
@@ -429,7 +429,7 @@ y \\
 \label{eqn:affine}
 \end{equation} 
 
-The random sample consensus algorithm (RANSAC) is used to estimate an affine transformation between the two images, using the corresponding visual words in each image. All duplicate visual words are removed from the spatial verification process, as these duplicates often cause inaccurate estimations. The result of the RANSAC spatial verification is the number of visual words in the query image that map to the correct positions in the model image (within some tolerance region). Matches that have enough inliers under the transformation are said to be spatially verified - that is the estimated affine transformation is accurate and both images depict the same rigid bodied object.
+The random sample consensus algorithm (RANSAC) is used to estimate an affine transformation between the two images, using the corresponding visual words in each image. All duplicate visual words are removed from the spatial verification process, as these duplicates often cause inaccurate estimations. The result of the RANSAC spatial verification is the number of visual words in the query image that map to the correct positions in the model image (within some tolerance region). Matches that have enough inliers under the transformation are said to be spatially verified -- that is the estimated affine transformation is accurate and both images depict the same rigid bodied object.
 
 \begin{figure}[h!tb]
 \centering 
@@ -486,7 +486,7 @@ Each feature point that is computed for an image contains four data points: the 
 
 This method works well, however it is based on random sampling so either accuracy or speed is sacrificed. Instead, a new estimation method is used called NOSAC. 
 
-Rather than selecting three correspondences, only one correspondence is needed to estimate a transformation. Initially, it is assumed the only components of the transformation are scaling and translation, as shown in Equation~\ref{eqn:scaleaffine}. There are therefore only three unknown variables - $a$, $t_x$, and $t_y$. The scaling factor $a$ is estimated from the relative scales of the feature points, and the translation from the coordinates. An estimation is done for every correspondence. The inliers of the best estimation of the transformation are then used to compute the full six degree of freedom affine transformation\footnote{This is done using \lstinline$vgg_Haffine_from_x_MLE$ by Andrew Zisserman found on \url{http://www.robots.ox.ac.uk/~vgg}}. 
+Rather than selecting three correspondences, only one correspondence is needed to estimate a transformation. Initially, it is assumed the only components of the transformation are scaling and translation, as shown in Equation~\ref{eqn:scaleaffine}. There are therefore only three unknown variables -- $a$, $t_x$, and $t_y$. The scaling factor $a$ is estimated from the relative scales of the feature points, and the translation from the coordinates. An estimation is done for every correspondence. The inliers of the best estimation of the transformation are then used to compute the full six degree of freedom affine transformation\footnote{This is done using \lstinline$vgg_Haffine_from_x_MLE$ by Andrew Zisserman found on \url{http://www.robots.ox.ac.uk/~vgg}}. 
 
 \begin{equation}
 \mathbf{x'}=
@@ -520,7 +520,7 @@ As an estimation is performed on every correspondence, there is no randomness to
 
 \section{Affine Invariant Detector}
 \label{sec:affine}
-An alternative feature detector is used as an improvement. The Hessian affine region detector detects regions similar to the SIFT detector of the baseline system. However, the features detected are affine invariant - the detector will detect the same features and describe them in the same way even if the viewpoint has changed. This has the advantage of allowing matching of features even when the viewpoint of the object is markedly different.
+An alternative feature detector is used as an improvement. The Hessian affine region detector detects regions similar to the SIFT detector of the baseline system. However, the features detected are affine invariant -- the detector will detect the same features and describe them in the same way even if the viewpoint has changed. This has the advantage of allowing matching of features even when the viewpoint of the object is markedly different.
 
 \begin{figure}[h!tb]
 \centering 
@@ -591,7 +591,7 @@ As with NOSAC, this is done for every correspondence and the inliers from the be
 
 To measure the similarity between two features, the Euclidean distance between the SIFT descriptors is used in the baseline system. However, a recent publication \cite{rootsift12} notes that using a different distance measure can increase performance.
 
-The Hellinger kernel is used in place of the standard Euclidean kernel for computing distance. This change can be performed by simply mapping the descriptors from SIFT space to RootSIFT space - the RootSIFT descriptor is an element wise square root of the L1 normalised SIFT vector. Computing the Euclidean distance between two RootSIFT vectors is equivalent to using the Hellinger kernel for comparing the original SIFT descriptors. Listing~\ref{lst:rootsift} shows the conversion of the SIFT descriptor \lstinline!sift! to RootSIFT space.
+The Hellinger kernel is used in place of the standard Euclidean kernel for computing distance. This change can be performed by simply mapping the descriptors from SIFT space to RootSIFT space -- the RootSIFT descriptor is an element wise square root of the L1 normalised SIFT vector. Computing the Euclidean distance between two RootSIFT vectors is equivalent to using the Hellinger kernel for comparing the original SIFT descriptors. Listing~\ref{lst:rootsift} shows the conversion of the SIFT descriptor \lstinline!sift! to RootSIFT space.
 
 \linespread{1} % single line spacing
 \lstset{language=Matlab,caption=Mapping of SIFT descriptors to RootSIFT space.,label=lst:rootsift}
@@ -650,7 +650,7 @@ This chapter describes the improvements made using a technique to inflate the vi
 
 The performance of the baseline system with the improvements described in the previous chapter is good. However, it can be argued that the yield the object recognition engine can achieve is limited by the amount of accurate image data. 
 
-A data source such as Wikipedia is very good at providing labelled images - at least one of the images on an article page will depict the object of the article. However, the other images may be related to esoteric aspects of the article and may not actually depict the object in question. This is advantageous in one aspect as it allows esoteric matching of the object. Unfortunately, this also results in the amount of specific image data for an object being very low. In many cases there are only one or two images of the actual object in question. For example, for the object \lstinline!10_Downing_Street!, there are 16 images in total, though only two show the front facade of the building. All the validation images are of the front facade of 10 Downing Street, as that is what one would associate most with that object. 
+A data source such as Wikipedia is very good at providing labelled images -- at least one of the images on an article page will depict the object of the article. However, the other images may be related to esoteric aspects of the article and may not actually depict the object in question. This is advantageous in one aspect as it allows esoteric matching of the object. Unfortunately, this also results in the amount of specific image data for an object being very low. In many cases there are only one or two images of the actual object in question. For example, for the object \lstinline!10_Downing_Street!, there are 16 images in total, though only two show the front facade of the building. All the validation images are of the front facade of 10 Downing Street, as that is what one would associate most with that object. 
 
 \begin{figure}[htb]
 \centering 
@@ -665,7 +665,7 @@ WIthout more images of the same object, viewpoints, environmental conditions, ob
 
 Existing work addresses this problem by including a process known as database augmentation, the background of which is given in Chapter~\ref{chpt:background}.
 
-The database-side feature augmentation process of querying the baseline system with each model image creates what is known as an image graph - the interconnection of matches between images. Each edge of the image graph infers that the two images connected share (at least part of) the same object. An image graph is not needed in this project, as the absolute ground truth classes of each image are already known, and it is assumed that overlap between classes does not exist\footnote{This is a contentious point. Due to the nature of images from Wikipedia, there is a fair amount of overlap between images between classes. For example, a picture of Big Ben may well be included in the corpus of images for Palace of Westminster. This is an issue that produces false positives. Methods to remedy this issue can be employed, such as querying the baseline system with each model image, and if a false positive match is made, remove the image. However, this is beyond the scope of this report.}. In the dataset of model images used in this project, the lack of multiple images of the same object means that the amount of augmentation that occurs is negligible, so the gains of database-side spatial feature augmentation are non-existent.
+The database-side feature augmentation process of querying the baseline system with each model image creates what is known as an image graph -- the interconnection of matches between images. Each edge of the image graph infers that the two images connected share (at least part of) the same object. An image graph is not needed in this project, as the absolute ground truth classes of each image are already known, and it is assumed that overlap between classes does not exist\footnote{This is a contentious point. Due to the nature of images from Wikipedia, there is a fair amount of overlap between images between classes. For example, a picture of Big Ben may well be included in the corpus of images for Palace of Westminster. This is an issue that produces false positives. Methods to remedy this issue can be employed, such as querying the baseline system with each model image, and if a false positive match is made, remove the image. However, this is beyond the scope of this report.}. In the dataset of model images used in this project, the lack of multiple images of the same object means that the amount of augmentation that occurs is negligible, so the gains of database-side spatial feature augmentation are non-existent.
 
 \section{Turbo-boosting}
 
@@ -702,7 +702,7 @@ Once the turbo-boosting for every model image in every class has completed, the 
 
 \section{Results and Analysis}
 
-Including turbo-boosting in the pre-computation process dramatically increases the yield performance of the object recognition system. Table~\ref{tbl:turboresults} shows the yield performance of the system when turbo-boosting was included. The number of turbo images that are downloaded was varied. The results (shown in Table~\ref{tbl:turboresults} and Figure~\ref{fig:turbograph}) show that increasing the number of turbo images downloaded increases the yield, however this effect flattens out above 25 images. This is because downloading additional turbo images will not bring in many new features to augment the model images - the model images become saturated with data.
+Including turbo-boosting in the pre-computation process dramatically increases the yield performance of the object recognition system. Table~\ref{tbl:turboresults} shows the yield performance of the system when turbo-boosting was included. The number of turbo images that are downloaded was varied. The results (shown in Table~\ref{tbl:turboresults} and Figure~\ref{fig:turbograph}) show that increasing the number of turbo images downloaded increases the yield, however this effect flattens out above 25 images. This is because downloading additional turbo images will not bring in many new features to augment the model images -- the model images become saturated with data.
 
 \begin{table}[hbtp]
 \begin{center}
@@ -736,16 +736,16 @@ Turbo-boosting works by increasing the information content of the model images. 
 \begin{itemize}
 \item There may be features that were detected in the turbo image that were not detected in the model image. When these visual words are added to the model image from turbo-boosting, this creates a more detailed description of the object in the model image.
 \item Some features common to both images may be described by different visual words due to noise. After turbo-boosting, both visual words will therefore be in the same position in the model image describing the same feature. This increases the robustness to noise.
-\item Some augmented features will be duplicates - a duplicate feature being one that is common to both the turbo image and the model image and is described by the same visual word in both cases. This means that after turbo-boosting, the model image will contain  multiple identical visual words for the same feature. This effectively gives the feature more weight for matching.
+\item Some augmented features will be duplicates -- a duplicate feature being one that is common to both the turbo image and the model image and is described by the same visual word in both cases. This means that after turbo-boosting, the model image will contain  multiple identical visual words for the same feature. This effectively gives the feature more weight for matching.
 \end{itemize}
 
-Figure~\ref{fig:turboresult} shows a case where the query image Figure~\ref{fig:turboresultqueryimage} cannot be matched to any model images. However, the model image Figure~\ref{fig:turboresultmodelimage} can be turbo-boosted, leading to the augmentation of the words in the matched region of the turbo image Figure~\ref{fig:turboresultturboimage}. The turbo-boosted model image now matches against the query, as shown in Figure~\ref{fig:turboresultmatch}. There are many examples of cases similar to this one, where -- where the model image is perfectly representative of the object, but does not have enough stable visual words to match reliably. However, due to the large number of turbo images, some augmentation occurs which pulls in better stable visual words.
+Figure~\ref{fig:turboresult} shows a case where the query image Figure~\ref{fig:turboresultqueryimage} cannot be matched to any model images. However, the model image Figure~\ref{fig:turboresultmodelimage} can be turbo-boosted, leading to the augmentation of the words in the matched region of the turbo image Figure~\ref{fig:turboresultturboimage}. The turbo-boosted model image now matches against the query, as shown in Figure~\ref{fig:turboresultmatch}. There are many examples of cases similar to this one -- where the model image is perfectly representative of the object, but does not have enough stable visual words to match reliably. However, due to the large number of turbo images, some augmentation occurs which pulls in better stable visual words.
 
 %temple bar london is a good example
 
-There are cases where turbo-boosting makes no difference to the recognition of an object. This is mainly due to there being no turbo images which match to the model images, so no augmentation occurs. This is an issue which is unavoidable due to low number of model images for some objects. 
+There are cases where turbo-boosting makes no difference to the recognition of an object. This is mainly due to there being no turbo images which match to the model images, so no augmentation occurs. This is an issue which is unavoidable due to low number of representative model images for some objects. 
 
-Turbo-boosting is a completely general strategy for increasing the yield/recall - any labelled dataset can use this technique. The only draw backs are the increase in pre-computation time due to the turbo-boosting routine, which is $O(N_c\overline{N}_mN_t)$ where $N_c$ is the number of classes, $\overline{N}_m$ is the average number of model images of each class, and $N_t$ is the number of turbo images that are downloaded. The increase in pre-computation time can be overcome as the process is easily parallelised - the inner loop on each class is completely independent. Another disadvantage is the slight increase in storage needed. The downloaded turbo images can be deleted as they are only needed temporarily, however due to the increase of visual words in each model's vector and the fact that the histograms will be generally less sparse after augmentation, the byte size of these structures increases.
+Turbo-boosting is a completely general strategy for increasing the yield/recall -- any labelled dataset can use this technique. The only draw backs are the increase in pre-computation time due to the turbo-boosting routine, which is $O(N_c\overline{N}_mN_t)$ where $N_c$ is the number of classes, $\overline{N}_m$ is the average number of model images of each class, and $N_t$ is the number of turbo images that are downloaded. The increase in pre-computation time can be overcome as the process is easily parallelised -- the inner loop on each class is completely independent. Another disadvantage is the slight increase in storage needed. The downloaded turbo images can be deleted as they are only needed temporarily, however due to the increase of visual words in each model's vector and the fact that the histograms will be generally less sparse after augmentation, the byte size of these structures increases.
 
 \begin{figure}[t!]
 \centering 
@@ -788,7 +788,7 @@ The resulting interface is a MATLAB function \lstinline!get_objects()! that take
 
 A filesystem is used for the storage of model images (see Chapter~\ref{chpt:data}), however a working record is needed of the dataset for book keeping and quick searching. For this, MongoDB\footnote{\url{http://www.mongodb.org}} is used. 
 
-MongoDB is a NoSQL\footnote{NoSQL is a family of databases that does not require fixed table schemas, and are sometimes known as ``structured storage''.} database application that stores data in the form of documents - data structures similar to JSON objects. The data is unstructured, and provides a simple way of storing data without dealing with the complexities of tables and relationships that come with relational databases (e.g. SQL). Listing~\ref{lst:bson} shows a model image stored in the MongoDB database. The fields of the documents (i.e. \lstinline!"_id", "name", "path", "class", "size"!) are fully searchable and can be indexed for faster lookup\footnote{By deafault, the \lstinline!"_id"! field is indexed for fast lookup by ID.}. 
+MongoDB is a NoSQL\footnote{NoSQL is a family of databases that does not require fixed table schemas, and are sometimes known as ``structured storage''.} database application that stores data in the form of documents -- data structures similar to JSON objects. The data is unstructured, and provides a simple way of storing data without dealing with the complexities of tables and relationships that come with relational databases (e.g. SQL). Listing~\ref{lst:bson} shows a model image stored in the MongoDB database. The fields of the documents (i.e. \lstinline!"_id", "name", "path", "class", "size"!) are fully searchable and can be indexed for faster lookup\footnote{By deafault, the \lstinline!"_id"! field is indexed for fast lookup by ID.}. 
 
 
 \linespread{1} % single line spacing
@@ -837,13 +837,13 @@ The web application is divided in to two parts, the front-end application that i
 
 \begin{figure}[htb]
 \centering 
-\subfloat[Stage 1 - initial view]{\label{fig:uploadform}\includegraphics[width=0.4\textwidth]{images/stage1.png}}
+\subfloat[Stage 1 -- initial view]{\label{fig:uploadform}\includegraphics[width=0.4\textwidth]{images/stage1.png}}
 ~
-\subfloat[Stage 2 - start matching process]{\label{fig:tagimage}\includegraphics[width=0.4\textwidth]{images/stage2.png}}
+\subfloat[Stage 2 -- start matching process]{\label{fig:tagimage}\includegraphics[width=0.4\textwidth]{images/stage2.png}}
 \\
-\subfloat[Stage 3 - log of matching process]{\label{fig:log}\includegraphics[width=0.4\textwidth]{images/log.png}}
+\subfloat[Stage 3 -- log of matching process]{\label{fig:log}\includegraphics[width=0.4\textwidth]{images/log.png}}
 ~
-\subfloat[Stage 4 - the intelligent image]{\label{fig:taggedimage}\includegraphics[width=0.4\textwidth]{images/stage3.png}}
+\subfloat[Stage 4 -- the intelligent image]{\label{fig:taggedimage}\includegraphics[width=0.4\textwidth]{images/stage3.png}}
 \\
 \caption{Screenshots showcasing the web application's functionality.}
 \label{fig:webapp}
@@ -861,7 +861,7 @@ Figure~\ref{fig:webapp} shows the steps for a user using the website which, are 
 
 \subsection{Front-end}
 \label{subsec:front}
-The front-end is a web page viewed in a web browser. It consists of three components: the HTML code that defines the structure and layout of the web site, the CSS\footnote{Cascading style sheers - more information at \url{http://www.w3schools.com/css/}} that defines the styling and the Javascript that provides the logic for the website.
+The front-end is a web page viewed in a web browser. It consists of three components: the HTML code that defines the structure and layout of the web site, the CSS\footnote{Cascading style sheets -- more information at \url{http://www.w3schools.com/css/}} that defines the styling and the Javascript that provides the logic for the website.
 
 The Javascript scripts make heavy use of the JQuery library\footnote{\url{http://jquery.com}}. JQuery abstracts and simplifies manipulation of HTML elements on the page as well as providing built in animation and HTTP request functions. 
 
@@ -907,7 +907,7 @@ Some solutions already exist for this purpose\footnote{See \url{http://claymore.
 \lstset{language=Matlab}
 Instead, a Python-MATLAB bridge was developed using MATLAB's Java runtime environment. This is open source and available from \cite{pymatbridge}. Using some code written by D. Kroon (University of Twente), Java's TCP and socket libraries are used to create a TCP server to handle requests. This is run on a separate TCP port to the web application to avoid cross communication. This means that MATLAB needs to startup only once, after which function calls are issued with local HTTP requests. For example, to call the function \lstinline!test_connect()! in the file \lstinline!test_connect.m! with the MATLAB server running on port \lstinline!4000!, simply issue an HTTP request to \lstinline!http://localhost:4000/test_connect.m!. Arguments to the function can be added as query parameters to the HTTP request and decoded by the MATLAB function.
 
-A MATLAB function \lstinline!web_feval! with a supporting function \lstinline!run_dot_m! simplifies this process so any MATLAB function can be called (whether it be on MATLAB's path or not) with any number of arguments, with the results returned as JSON structures. A Python class \lstinline!Matlab! abstracts this on the Python side - any locally stored MATLAB function can be run, with arguments, and the results are returned as a Python dictionary. Listing~\ref{lst:pymat} shows how a MATLAB function is called with the created class. The \lstinline!run()! function takes two arguments: the location of the function and a dictionary of arguments to be passed in to the function.
+A MATLAB function \lstinline!web_feval! with a supporting function \lstinline!run_dot_m! simplifies this process so any MATLAB function can be called (whether it be on MATLAB's path or not) with any number of arguments, with the results returned as JSON structures. A Python class \lstinline!Matlab! abstracts this on the Python side -- any locally stored MATLAB function can be run, with arguments, and the results are returned as a Python dictionary. Listing~\ref{lst:pymat} shows how a MATLAB function is called with the created class. The \lstinline!run()! function takes two arguments: the location of the function and a dictionary of arguments to be passed in to the function.
  
 \linespread{1} % single line spacing
 \lstset{language=Python,caption=Python code to run the object matching MATLAB function.,label=lst:pymat}
@@ -951,11 +951,11 @@ A  baseline system was built to incorporate all the functionality desired. A MAT
 
 A number of extensions to the baseline system were researched and implemented to improve performance. Alternative geometric models were explored such as NOSAC, and an affine invariant feature detector was used. In conjunction with mapping the feature descriptors from SIFT space to RootSIFT space, these improvements helped increase the recognition performance by a maximum of 35\%.
 
-A novel method was developed called turbo-boosting to further build upon the baseline system in an independent way to the geometric improvements. The turbo-boosting process augments the model images with images gathered from Bing. The turbo-boosting, combined with the geometric improvements, dramatically increases the performance of the system - recognition increased by 75\% compared to the baseline system.
+A novel method was developed called turbo-boosting to further build upon the baseline system in an independent way to the geometric improvements. The turbo-boosting process augments the model images with images gathered from Bing. The turbo-boosting, combined with the geometric improvements, dramatically increases the performance of the system -- recognition increased by 75\% compared to the baseline system.
 
 The results of the project show that a user friendly object tagging website can be built with a maximum yield performance achieved of 31.7\%. This is good considering the noisiness of the Wikipedia dataset and the range of query images used for validation.
 
-Further work would aim to increase the yield and scale the size of the database. Better filtering of the Wikipedia dataset could be done, as well as the removal of distracting features that do not uniquely define a class \cite{turcot09}. Also a general class representation of the model images could be created, so that initial matching is done on a class level, and subsequently on an image level, thus reducing the amount of in memory data required. The labelling of objects could also be done in a more probabilistic way - instead of simply defining the object found by the class of the first image that is spatially verified, use some algorithm to determine the most likely object given the top spatially verified images, with some uncertainty score.
+Further work would aim to increase the yield and scale the size of the database. Better filtering of the Wikipedia dataset could be done, as well as the removal of distracting features that do not uniquely define a class \cite{turcot09}. Also a general class representation of the model images could be created, so that initial matching is done on a class level, and subsequently on an image level, thus reducing the amount of in memory data required. The labelling of objects could also be done in a more probabilistic way -- instead of simply defining the object found by the class of the first image that is spatially verified, use some algorithm to determine the most likely object given the top spatially verified images, with some uncertainty score.
 
 
 %-------------------------------
@@ -1048,9 +1048,6 @@ retrieval with large vocabularies and fast spatial matching.
 		T. Quack, B. Leibe and L. Van Gool.
 		World-scale Mining of Objects and Events from Community Photo Collections.
 		In \emph{CIVR}, 2008.
-		
-	\bibitem{listofstructures}
-		\url{http://en.wikipedia.org/wiki/List_of_structures_in_London}
 		
 	\bibitem{pymatbridge}
 		\url{https://github.com/jaderberg/python-matlab-bridge}
