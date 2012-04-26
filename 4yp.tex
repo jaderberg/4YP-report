@@ -202,7 +202,7 @@ To achieve effective augmentation, many additional images are needed to suppleme
 
 Overall, the dataset contains 18273 images distributed over the 732 object classes. A selection of the augmentation images dataset is shown in Figure~\ref{fig:augimages}.
 
-\begin{figure}[!h]
+\begin{figure}[t]
 \centering
 \includegraphics[width=0.95\textwidth]{images/augmentationimages.png}
 \caption{A selection of the augmentation images for some object classes.}
@@ -215,7 +215,7 @@ Bing offers a public API that can be used to perform image searches programmatic
 
 Bing image search takes a number of keywords - the query - and returns a list of images from web pages related to the query. Filters can be applied to further narrow down the search to the most relevant images. This is shown in Figure~\ref{fig:bingimages} on the website version of Bing. The ``Style'' and ``Size'' filters are especially useful in this application, as all images should be photographs for the List of Structures in London dataset, and large images are preferable so as to include as much detail as possible. Setting these filters precludes many instances of graphics and logos which are not suitable for augmentation.
 
-\begin{figure}[htb]
+\begin{figure}[t!]
 \centering 
 \includegraphics[width=0.9\textwidth]{images/bing-images.png}
 \caption{The browser interface of Bing image search which is replicated in the API query URL. Note the filters in the left column.}
@@ -256,7 +256,7 @@ Images are needed to test and validate the yield performance of the object recog
 
 The resulting dataset contains labelled images for 294 of the object classes comprising of a total of 701 images, a selection of which are shown in Figure~\ref{fig:validationimages}.
 
-\begin{figure}[!h]
+\begin{figure}[t!]
 \centering
 \includegraphics[width=0.95\textwidth]{images/validationimages.png}
 \caption{A selection of some of the validation images for objects.}
@@ -294,15 +294,14 @@ After automatic download of potential test images for each class, the dataset wa
 \subsection{Performance Measure}
 \label{sub:performance}
 
-The validation images are used to measure the performance of the system. This is done by performing a validation routine. For each validation image, a query is issued to try and match one object. If the matched object is the same as the label of the validation image, a true positive is recorded, if not, a false positive. If no object is found then the image is recorded as unrecognised.
-
-The measure used to assess and compare the performance of the system is the \emph{yield} - this is defined as the percentage of true positive matches to total validation images, Equation~\ref{eqn:yield}, where $N_{true}$ is the number of true positive matches and $N$ is the number of validation images (701 in this case). For example, a yield of 30\% means that 210 of the 701 validation image were annotated correctly.
-
+The validation images are used to measure the performance of the system. A query is issued for every validation image and the label assigned by the system is compared to the ground truth object label of the validation image. The performance is measured simply as the ratio of validation images that are correctly labelled by the system, to the total number of validation images, expressed as a percentage. This is defined as the \emph{yield}, and is described by 
 \begin{equation}
 yield = N_{true}/N
 \label{eqn:yield}
 \end{equation}
+where $N_{true}$ is the number of correctly labelled validation images and $N$ is the total number of validation images (701 in this case). For example, a yield of 30\% means that 210 of the 701 validation image were annotated correctly.
 
+With this measure of performance, the performance of the baseline system (Chapter~\ref{chpt:system}) can be quantified, and the effects of the improvements described in Chapter~\ref{chpt:geoimprovements} and Chapter~\ref{chpt:turboboosting} can inpterpreted.
 
 
 %-------------------------------
@@ -340,8 +339,7 @@ The feature detection and description methods used are the original scale-invari
 
 The SIFT features are defined as maxima and minima of the result of difference of Gaussians function\footnote{\url{http://en.wikipedia.org/wiki/Difference_of_Gaussians}} applied in scale-space to a series of smoothed and resampled images. Low contrast candidate points and edge response points along an edge are discarded. These features are then described by the SIFT feature descriptor - a 128-dimensional vector.
 
-The result of the SIFT feature detection and description algorithm are two matrices. The first is a matrix of feature points or frames, Equation~\ref{eqn:frames}, where each column describes the position $(x_i, y_i)$ in the image, the scale $s_i$ and orientation $\theta_i$ for feature $i$. Corresponding to the frames matrix is a descriptor matrix, Equation~\ref{eqn:descrs}, where each column is the 128-D vector $\mathbf{d_i}$ that describes feature $i$.
-
+The result of the SIFT feature detection and description algorithm are two matrices. The first is a matrix of feature points or frames, 
 \begin{equation}
 \left[ \begin{array}{ccccc}
 x_1 & x_2 & \cdots & x_{N-1} & x_N \\
@@ -351,11 +349,11 @@ s_1 & s_2 & \cdots & s_{N-1} & s_N \\
 \end{array}\right]
 \label{eqn:frames}
 \end{equation}
-
+where each column describes the position $(x_i, y_i)$ in the image, the scale $s_i$ and orientation $\theta_i$ for feature $i$. Corresponding to the frames matrix is a descriptor matrix, where each column is the 128-D vector $\mathbf{d_i}$ that describes feature $i$:
 \begin{equation}
 \left[ \begin{array}{ccccc}
 \mathbf{d_1} & \mathbf{d_2} & \cdots & \mathbf{d_{N-1}} & \mathbf{d_N} 
-\end{array}\right]
+\end{array}\right].
 \label{eqn:descrs}
 \end{equation}
 
@@ -392,8 +390,7 @@ The term frequency-inverse document frequency\footnote{This is a practice develo
 
 Each model image therefore has a histogram that is used for matching. All the histograms are packaged into a matrix (each column being an image's histogram) that is used as the index for query matching.
 
-To find the most similar images to a query image, a dot product is performed between each of the model image histograms and the query image histogram. This is shown in Equation~\ref{eqn:tfidfscore}, where $\mathbf{h_{query}}$ is the tf-idf weighted histogram of the query image and $\mathbf{h_i}$ is the tf-idf weighted histogram of model image $i$. $\mathbf{scores}$ is a $N\times1$ array with the result of the dot product with each model image's histogram in each element. The matches are ranked in decreasing order of their score - the model image with the highest score is said to be the most similar to the query image.
-
+To find the most similar images to a query image, a dot product is performed between each of the model image histograms and the query image histogram,
 \begin{equation}
 \mathbf{scores}= \mathbf{h_{query}^T}
 \left[ \begin{array}{ccccc}
@@ -401,6 +398,7 @@ To find the most similar images to a query image, a dot product is performed bet
 \end{array}\right]
 \label{eqn:tfidfscore}
 \end{equation} 
+where $\mathbf{h_{query}}$ is the tf-idf weighted histogram of the query image and $\mathbf{h_i}$ is the tf-idf weighted histogram of model image $i$. $\mathbf{scores}$ is a $N\times1$ array with the result of the dot product with each model image's histogram in each element. The matches are ranked in decreasing order of their score - the model image with the highest score is said to be the most similar to the query image.
 
 
 \section{Spatial Verification}
@@ -533,8 +531,7 @@ An alternative feature detector is used as an improvement. The Hessian affine re
 \label{fig:affinenosac}
 \end{figure}
 
-The feature points are now six-dimensional rather than four-dimensional, with each feature region being described by its $x$ and $y$ position, orientation\footnote{In practice, no useful interpretation of the orientation has been found.} $\theta$ and the ellipse representing the region, given by three parameters $a$, $b$ and $c$ such that the ellipse is described by Equation~\ref{eqn:ellipse}.
-
+The feature points are now six-dimensional rather than four-dimensional, with each feature region being described by its $x$ and $y$ position, orientation\footnote{In practice, no useful interpretation of the orientation has been found.} $\theta$ and the ellipse representing the region, given by three parameters $a$, $b$ and $c$ such that the ellipse is described by 
 \begin{equation}
 ax^2 + 2bxy + cy^2 = 
 \left[ \begin{array}{cc}
@@ -550,7 +547,7 @@ y
 \end{array}\right]
 =
 \mathbf{x^T}\mathbf{S}\mathbf{x}
-= 0
+= 0.
 \label{eqn:ellipse}
 \end{equation} 
 
@@ -573,7 +570,7 @@ related by
 \end{equation} 
 the unknown affine transformation $\mathbf{H}$ can be found by solving
 \begin{equation}
-\mathbf{S_1} = \mathbf{H^T}\mathbf{S_2}\mathbf{H}
+\mathbf{S_1} = \mathbf{H^T}\mathbf{S_2}\mathbf{H}.
 \label{eqn:elaffine}
 \end{equation} 
 
@@ -582,9 +579,8 @@ As with NOSAC, this is done for every correspondence and the inliers from the be
 
 \section{RootSIFT}
 \label{sec:rootsift}
-To measure the similarity between two features, the Euclidean distance between the SIFT descriptors is used in the baseline system. However, a recent publication \cite{rootsift12} notes that using a different distance measure can increase performance.
 
-\begin{figure}[h!tb]
+\begin{figure}[h!]
 \centering 
 \subfloat[Affine Invariant SIFT]{\includegraphics[width=0.7\textwidth]{images/affinematch2.pdf}}
 \\
@@ -592,6 +588,8 @@ To measure the similarity between two features, the Euclidean distance between t
 \caption{The difference in matching by using RootSIFT descriptors as compared vanilla SIFT.}
 \label{fig:affinerootaffine}
 \end{figure}
+
+To measure the similarity between two features, the Euclidean distance between the SIFT descriptors is used in the baseline system. However, a recent publication \cite{rootsift12} notes that using a different distance measure can increase performance.
 
 The Hellinger kernel is used in place of the standard Euclidean kernel for computing distance. This change can be performed by simply mapping the descriptors from SIFT space to RootSIFT space - the RootSIFT descriptor is an element wise square root of the L1 normalised SIFT vector. Computing the Euclidean distance between two RootSIFT vectors is equivalent to using the Hellinger kernel for comparing the original SIFT descriptors. Listing~\ref{lst:rootsift} shows the conversion of the SIFT descriptor \lstinline!sift! to RootSIFT space.
 
@@ -702,16 +700,9 @@ This is repeated for every turbo image, for each model image of each class. If n
 
 Once the turbo-boosting for every model image in every class has completed, the weighted histograms and new turbo-boosted index is created, just as for the baseline system (see Section~\ref{sec:histograms}). Matching is then performed just as with the baseline system, except that the turbo-boosted index and visual word vectors are used.
 
+\section{Results and Analysis}
+
 Including turbo-boosting in the pre-computation process dramatically increases the yield performance of the object recognition system. Table~\ref{tbl:turboresults} shows the yield performance of the system when turbo-boosting was included. The number of turbo images that are downloaded was varied. The results (shown in Table~\ref{tbl:turboresults} and Figure~\ref{fig:turbograph}) show that increasing the number of turbo images downloaded increases the yield, however this effect flattens out above 25 images. This is because downloading additional turbo images will not bring in many new features to augment the model images - the model images become saturated with data.
-
-Overall, turbo-boosting increases the performance by 75\% with respect to the baseline system, and 29\% compared to the best possible configurations without turbo-boosting.
-
-\begin{figure}[hbtp]
-\centering 
-\includegraphics[width=0.4\textwidth]{images/turbograph.pdf}
-\caption{The effect on yield by increasing the number of turbo images downloaded.}
-\label{fig:turbograph}
-\end{figure}
 
 \begin{table}[hbtp]
 \begin{center}
@@ -731,6 +722,15 @@ Overall, turbo-boosting increases the performance by 75\% with respect to the ba
 \end{table}
  
 
+Overall, turbo-boosting increases the performance by 75\% with respect to the baseline system, and 29\% compared to the best possible configurations without turbo-boosting.
+
+\begin{figure}[hbtp]
+\centering 
+\includegraphics[width=0.5\textwidth]{images/turbograph.pdf}
+\caption{The effect on yield by increasing the number of turbo images downloaded.}
+\label{fig:turbograph}
+\end{figure}
+
 Turbo-boosting works by increasing the information content of the model images. When a turbo image is spatially verified with a model image, it may be verified on a minimum of seven visual words. However, many hundreds of words can be added to the model image's visual word vector, as all the words contained within the bounding box of the few spatially verified visual words are added. These added words help matching in three ways:
 
 \begin{itemize}
@@ -739,17 +739,21 @@ Turbo-boosting works by increasing the information content of the model images. 
 \item Some augmented features will be duplicates - a duplicate feature being one that is common to both the turbo image and the model image and is described by the same visual word in both cases. This means that after turbo-boosting, the model image will contain  multiple identical visual words for the same feature. This effectively gives the feature more weight for matching.
 \end{itemize}
 
-Figure~\ref{fig:turboresult} shows a case where the query image Figure~\ref{fig:turboresultqueryimage} cannot be matched to any model images. However, the model image Figure~\ref{fig:turboresultmodelimage} can be turbo-boosted, leading to the augmentation of the words in the matched region of the turbo image Figure~\ref{fig:turboresultturboimage}. The turbo-boosted model image now matches against the query, as shown in Figure~\ref{fig:turboresultmatch}.
+Figure~\ref{fig:turboresult} shows a case where the query image Figure~\ref{fig:turboresultqueryimage} cannot be matched to any model images. However, the model image Figure~\ref{fig:turboresultmodelimage} can be turbo-boosted, leading to the augmentation of the words in the matched region of the turbo image Figure~\ref{fig:turboresultturboimage}. The turbo-boosted model image now matches against the query, as shown in Figure~\ref{fig:turboresultmatch}. There are many examples of cases similar to this one, where -- where the model image is perfectly representative of the object, but does not have enough stable visual words to match reliably. However, due to the large number of turbo images, some augmentation occurs which pulls in better stable visual words.
+
+%temple bar london is a good example
+
+There are cases where turbo-boosting makes no difference to the recognition of an object. This is mainly due to there being no turbo images which match to the model images, so no augmentation occurs. This is an issue which is unavoidable due to low number of model images for some objects. 
 
 Turbo-boosting is a completely general strategy for increasing the yield/recall - any labelled dataset can use this technique. The only draw backs are the increase in pre-computation time due to the turbo-boosting routine, which is $O(N_c\overline{N}_mN_t)$ where $N_c$ is the number of classes, $\overline{N}_m$ is the average number of model images of each class, and $N_t$ is the number of turbo images that are downloaded. The increase in pre-computation time can be overcome as the process is easily parallelised - the inner loop on each class is completely independent. Another disadvantage is the slight increase in storage needed. The downloaded turbo images can be deleted as they are only needed temporarily, however due to the increase of visual words in each model's vector and the fact that the histograms will be generally less sparse after augmentation, the byte size of these structures increases.
 
-\begin{figure}[htb]
+\begin{figure}[t!]
 \centering 
-\subfloat[Query image]{\label{fig:turboresultqueryimage}\includegraphics[width=0.3\textwidth]{images/turboquery.jpg}}
+\subfloat[Query image]{\label{fig:turboresultqueryimage}\includegraphics[width=0.25\textwidth]{images/turboquery.jpg}}
 ~
-\subfloat[Model image]{\label{fig:turboresultmodelimage}\includegraphics[width=0.3\textwidth]{images/turbomodelimage.pdf}}
+\subfloat[Model image]{\label{fig:turboresultmodelimage}\includegraphics[width=0.2\textwidth]{images/turbomodelimage.pdf}}
 ~
-\subfloat[Turbo image]{\label{fig:turboresultturboimage}\includegraphics[width=0.3\textwidth]{images/turbomatch.pdf}}
+\subfloat[Turbo image]{\label{fig:turboresultturboimage}\includegraphics[width=0.25\textwidth]{images/turbomatch.pdf}}
 \\
 \subfloat[The match achieved due to turbo-boosting]{\label{fig:turboresultmatch}\includegraphics[width=0.5\textwidth]{images/turbomatchresult.pdf}}
 \caption{The query image Figure~\ref{fig:turboresultqueryimage} will not be identified unless model image Figure~\ref{fig:turboresultmodelimage} is augmented with the words of Figure~\ref{fig:turboresultturboimage}.}

@@ -76,13 +76,13 @@
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {}}}{11}{subfigure.3.2.1}}
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {}}}{11}{subfigure.3.2.2}}
 \newlabel{fig:wikipage}{{3.2}{11}{The Wikipedia page for ``Tower Bridge''. Note the images contained are those used in the model to represent this object.\relax \relax }{figure.caption.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.2}Augmentation Images}{12}{section.3.2}}
-\newlabel{sec:turboimages}{{3.2}{12}{Augmentation Images\relax }{section.3.2}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces A selection of the augmentation images for some object classes.\relax }}{12}{figure.caption.6}}
 \newlabel{fig:augimages}{{3.3}{12}{A selection of the augmentation images for some object classes.\relax \relax }{figure.caption.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Data Acquisition}{13}{subsection.3.2.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}Augmentation Images}{12}{section.3.2}}
+\newlabel{sec:turboimages}{{3.2}{12}{Augmentation Images\relax }{section.3.2}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces The browser interface of Bing image search which is replicated in the API query URL. Note the filters in the left column.\relax }}{13}{figure.caption.7}}
 \newlabel{fig:bingimages}{{3.4}{13}{The browser interface of Bing image search which is replicated in the API query URL. Note the filters in the left column.\relax \relax }{figure.caption.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Data Acquisition}{13}{subsection.3.2.1}}
 \newlabel{lst:bingapi}{{3.1}{14}{A Bing image search API request}{lstlisting.3.1}{}}
 \@writefile{lol}{\contentsline {lstlisting}{\numberline {3.1}A Bing image search API request.}{14}{lstlisting.3.1}}
 \@writefile{toc}{\contentsline {section}{\numberline {3.3}Validation Images}{14}{section.3.3}}
@@ -111,6 +111,7 @@
 \newlabel{sec:visualwords}{{4.2}{19}{Visual Words\relax }{section.4.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4.3}Histograms and Index}{20}{section.4.3}}
 \newlabel{sec:histograms}{{4.3}{20}{Histograms and Index\relax }{section.4.3}{}}
+\newlabel{eqn:tfidfscore}{{4.3}{20}{Histograms and Index\relax }{equation.4.3.3}{}}
 \newlabel{fig:rawhist1}{{4.3b}{21}{Subfigure 4 4.3b\relax }{subfigure.4.3.2}{}}
 \newlabel{sub@fig:rawhist1}{{(b)}{b}{Subfigure 4 4.3b\relax }{subfigure.4.3.2}{}}
 \newlabel{fig:rawhist2}{{4.3e}{21}{Subfigure 4 4.3e\relax }{subfigure.4.3.5}{}}
@@ -123,7 +124,6 @@
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(e)}{\ignorespaces {Raw histogram for image 2}}}{21}{subfigure.4.3.5}}
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(f)}{\ignorespaces {Weighted histogram for image 2}}}{21}{subfigure.4.3.6}}
 \newlabel{fig:histograms}{{4.3}{21}{Two images for the class \lstinline !Tower_Bridge! with their raw histograms and tf-idf weighted histograms\relax \relax }{figure.caption.11}{}}
-\newlabel{eqn:tfidfscore}{{4.3}{21}{Histograms and Index\relax }{equation.4.3.3}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4.4}Spatial Verification}{21}{section.4.4}}
 \newlabel{sec:spatialverification}{{4.4}{21}{Spatial Verification\relax }{section.4.4}{}}
 \newlabel{eqn:affine}{{4.4}{22}{Spatial Verification\relax }{equation.4.4.4}{}}
@@ -153,7 +153,6 @@
 \@writefile{toc}{\contentsline {section}{\numberline {5.2}Affine Invariant Detector}{26}{section.5.2}}
 \newlabel{sec:affine}{{5.2}{26}{Affine Invariant Detector\relax }{section.5.2}{}}
 \newlabel{eqn:ellipse}{{5.2}{26}{Affine Invariant Detector\relax }{equation.5.2.2}{}}
-\citation{rootsift12}
 \@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces The difference in matching by using the affine invariant feature detector compared to NOSAC.\relax }}{27}{figure.caption.15}}
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {NOSAC}}}{27}{subfigure.5.2.1}}
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Affine Invariant}}}{27}{subfigure.5.2.2}}
@@ -162,6 +161,7 @@
 \newlabel{eqn:ellipse2}{{5.4}{27}{Affine Invariant Detector\relax }{equation.5.2.4}{}}
 \newlabel{eqn:elaffine}{{5.5}{27}{Affine Invariant Detector\relax }{equation.5.2.5}{}}
 \newlabel{eqn:elaffine}{{5.6}{27}{Affine Invariant Detector\relax }{equation.5.2.6}{}}
+\citation{rootsift12}
 \@writefile{toc}{\contentsline {section}{\numberline {5.3}RootSIFT}{28}{section.5.3}}
 \newlabel{sec:rootsift}{{5.3}{28}{RootSIFT\relax }{section.5.3}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces The difference in matching by using RootSIFT descriptors as compared vanilla SIFT.\relax }}{28}{figure.caption.16}}
@@ -203,10 +203,11 @@
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(e)}{\ignorespaces {The turbo image is spatially verified with the model image}}}{33}{subfigure.6.2.5}}
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(f)}{\ignorespaces {The words in the spatially verified region are used to augment the model image}}}{33}{subfigure.6.2.6}}
 \newlabel{fig:turboboosting}{{6.2}{33}{The turboboosting process.\relax \relax }{figure.caption.19}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.3}{\ignorespaces The effect on yield by increasing the number of turbo images downloaded.\relax }}{34}{figure.caption.20}}
-\newlabel{fig:turbograph}{{6.3}{34}{The effect on yield by increasing the number of turbo images downloaded.\relax \relax }{figure.caption.20}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {6.1}{\ignorespaces The yields achieved using different levels of turbo-boosting with the Affine RootSIFT configuration and an inlier threshold of 5.\relax }}{34}{table.caption.21}}
-\newlabel{tbl:turboresults}{{6.1}{34}{The yields achieved using different levels of turbo-boosting with the Affine RootSIFT configuration and an inlier threshold of 5.\relax \relax }{table.caption.21}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.4}Results and Analysis}{34}{section.6.4}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.1}{\ignorespaces The yields achieved using different levels of turbo-boosting with the Affine RootSIFT configuration and an inlier threshold of 5.\relax }}{34}{table.caption.20}}
+\newlabel{tbl:turboresults}{{6.1}{34}{The yields achieved using different levels of turbo-boosting with the Affine RootSIFT configuration and an inlier threshold of 5.\relax \relax }{table.caption.20}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.3}{\ignorespaces The effect on yield by increasing the number of turbo images downloaded.\relax }}{35}{figure.caption.21}}
+\newlabel{fig:turbograph}{{6.3}{35}{The effect on yield by increasing the number of turbo images downloaded.\relax \relax }{figure.caption.21}{}}
 \newlabel{fig:turboresultqueryimage}{{6.4a}{36}{Subfigure 6 6.4a\relax }{subfigure.6.4.1}{}}
 \newlabel{sub@fig:turboresultqueryimage}{{(a)}{a}{Subfigure 6 6.4a\relax }{subfigure.6.4.1}{}}
 \newlabel{fig:turboresultmodelimage}{{6.4b}{36}{Subfigure 6 6.4b\relax }{subfigure.6.4.2}{}}

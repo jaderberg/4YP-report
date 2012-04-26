@@ -23,14 +23,15 @@
 \BOOKMARK [1][-]{section.6.1}{Motivation}{chapter.6}% 23
 \BOOKMARK [1][-]{section.6.2}{Database Augmentation}{chapter.6}% 24
 \BOOKMARK [1][-]{section.6.3}{Turbo-boosting}{chapter.6}% 25
-\BOOKMARK [0][-]{chapter.7}{Implementation}{}% 26
-\BOOKMARK [1][-]{section.7.1}{Object Recognition Engine}{chapter.7}% 27
-\BOOKMARK [2][-]{subsection.7.1.1}{Database}{section.7.1}% 28
-\BOOKMARK [2][-]{subsection.7.1.2}{Image Processing}{section.7.1}% 29
-\BOOKMARK [2][-]{subsection.7.1.3}{Distributed Pre-computation}{section.7.1}% 30
-\BOOKMARK [1][-]{section.7.2}{Web Application}{chapter.7}% 31
-\BOOKMARK [2][-]{subsection.7.2.1}{Front-end}{section.7.2}% 32
-\BOOKMARK [2][-]{subsection.7.2.2}{Back-end}{section.7.2}% 33
-\BOOKMARK [1][-]{section.7.3}{Python-MATLAB Bridge}{chapter.7}% 34
-\BOOKMARK [1][-]{section.7.4}{Results}{chapter.7}% 35
-\BOOKMARK [0][-]{chapter.8}{Summary}{}% 36
+\BOOKMARK [1][-]{section.6.4}{Results and Analysis}{chapter.6}% 26
+\BOOKMARK [0][-]{chapter.7}{Implementation}{}% 27
+\BOOKMARK [1][-]{section.7.1}{Object Recognition Engine}{chapter.7}% 28
+\BOOKMARK [2][-]{subsection.7.1.1}{Database}{section.7.1}% 29
+\BOOKMARK [2][-]{subsection.7.1.2}{Image Processing}{section.7.1}% 30
+\BOOKMARK [2][-]{subsection.7.1.3}{Distributed Pre-computation}{section.7.1}% 31
+\BOOKMARK [1][-]{section.7.2}{Web Application}{chapter.7}% 32
+\BOOKMARK [2][-]{subsection.7.2.1}{Front-end}{section.7.2}% 33
+\BOOKMARK [2][-]{subsection.7.2.2}{Back-end}{section.7.2}% 34
+\BOOKMARK [1][-]{section.7.3}{Python-MATLAB Bridge}{chapter.7}% 35
+\BOOKMARK [1][-]{section.7.4}{Results}{chapter.7}% 36
+\BOOKMARK [0][-]{chapter.8}{Summary}{}% 37

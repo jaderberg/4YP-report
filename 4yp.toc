@@ -23,6 +23,7 @@
 \contentsline {section}{\numberline {6.1}Motivation}{30}{section.6.1}
 \contentsline {section}{\numberline {6.2}Database Augmentation}{31}{section.6.2}
 \contentsline {section}{\numberline {6.3}Turbo-boosting}{32}{section.6.3}
+\contentsline {section}{\numberline {6.4}Results and Analysis}{34}{section.6.4}
 \contentsline {chapter}{\numberline {7}Implementation}{37}{chapter.7}
 \contentsline {section}{\numberline {7.1}Object Recognition Engine}{38}{section.7.1}
 \contentsline {subsection}{\numberline {7.1.1}Database}{38}{subsection.7.1.1}
