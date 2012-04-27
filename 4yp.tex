@@ -296,10 +296,10 @@ After automatic download of potential test images for each class, the dataset wa
 
 The validation images are used to measure the performance of the system. A query is issued for every validation image and the label assigned by the system is compared to the ground truth object label of the validation image. The performance is measured simply as the ratio of validation images that are correctly labelled by the system, to the total number of validation images, expressed as a percentage. This is defined as the \emph{yield}, and is described by 
 \begin{equation}
-yield = N_{true}/N
+yield = \frac{1}{N}\sum_{i=1}^{N} [y_i=f(x_i)]
 \label{eqn:yield}
 \end{equation}
-where $N_{true}$ is the number of correctly labelled validation images and $N$ is the total number of validation images (701 in this case). For example, a yield of 30\% means that 210 of the 701 validation image were annotated correctly.
+where $y_i$ is the ground truth class of image $x_i$, $f(x_i)$ is the class given by the system, and $N$ is the total number of validation images (701 in this case). For example, a yield of 30\% means that 210 of the 701 validation image were annotated correctly.
 
 With this measure of performance, the performance of the baseline system (Chapter~\ref{chpt:system}) can be quantified, and the effects of the improvements described in Chapter~\ref{chpt:geoimprovements} and Chapter~\ref{chpt:turboboosting} can inpterpreted.
 

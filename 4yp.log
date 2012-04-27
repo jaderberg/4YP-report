@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2012.3.10)  27 APR 2012 11:42
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2012.3.10)  27 APR 2012 12:29
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -336,6 +336,9 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 (./4yp.aux
 
+LaTeX Warning: Label `eqn:yield' multiply defined.
+
+
 LaTeX Warning: Label `eqn:elaffine' multiply defined.
 
 )
@@ -561,14 +564,14 @@ Package pdftex.def Info: images/validationimages.png used on input line 261.
 (pdftex.def)             Requested size: 459.51054pt x 177.13898pt.
  [15 <./images/validationimages.png>] [16]
 Chapter 4.
-<images/PrecomputeProcess.pdf, id=450, 455.0811pt x 143.74384pt>
+<images/PrecomputeProcess.pdf, id=452, 455.0811pt x 143.74384pt>
 File: images/PrecomputeProcess.pdf Graphic file (type pdf)
 
 <use images/PrecomputeProcess.pdf>
 Package pdftex.def Info: images/PrecomputeProcess.pdf used on input line 318.
 (pdftex.def)             Requested size: 435.32422pt x 137.50777pt.
 
-<images/SearchProcess.pdf, id=451, 495.69034pt x 284.26453pt>
+<images/SearchProcess.pdf, id=453, 495.69034pt x 284.26453pt>
 File: images/SearchProcess.pdf Graphic file (type pdf)
 
 <use images/SearchProcess.pdf>
@@ -907,7 +910,7 @@ ive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texli
 ve/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive
 /2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/
 2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on 4yp.pdf (50 pages, 16065380 bytes).
+Output written on 4yp.pdf (50 pages, 16065717 bytes).
 PDF statistics:
  1702 PDF objects out of 1728 (max. 8388607)
  1367 compressed objects within 14 object streams
