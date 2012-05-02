@@ -87,7 +87,7 @@ The result of the project is that a query image is inputted, the objects contain
 
 The tagging process works by matching a section of the query image with an image of an object from a database. The query image is then said to contain this object within the region that matches. To be able to recognise a vast corpus of objects, a large collection of reference images is needed to be available to match against. The database of images of objects is created from Wikipedia \cite{wikipedia} -- a crowd-sourced online encyclopaedia with many images contained within the articles. Each Wikipedia article defines an object, and the images that appear in the article are downloaded to the database. If a query image matches a Wikipedia image in the database, the query image is tagged as the object defined by the article from where the Wikipedia image was downloaded.
 
-Images need to be able to be represented in some way to allow a similarity comparison to be performed between them -- very similar images or regions of images are then potential matches. The images are represented by a bag of visual words, with each \emph{visual word} being an interesting feature of the image (e.g. a particular texture). A query image's visual words can then be compared to all the database images' visual words to find potential matches. The query image is assigned the object of the database image that is the best match, and is spatially verified to ensure the spatial structure of the query image and database image are aligned.
+Images need to be able to be represented in some way to allow a similarity comparison to be performed between them -- very similar images, or regions of images, are then potential matches. The images are represented by a bag of visual words, with each \emph{visual word} being an interesting feature of the image (e.g. a particular texture). A query image's visual words can then be compared to all the database images' visual words to find potential matches. The query image is assigned the object of the database image that is the best match, and is spatially verified to ensure the spatial structure of the query image and database image are aligned.
 
 After creating this baseline system, further research uncovered methods to improve the object recognition performance. Improvements to the spatial verification stage were made and new feature detectors were implemented. These increased the speed and accuracy of matching. Another novel method was developed to further improve matching performance by augmenting the images in the database with those of an external source.
 
@@ -314,7 +314,7 @@ With this measure of performance, the performance of the baseline system (Chapte
 %-------------------------------
 \chapter{Baseline system}
 \label{chpt:system}
-The base line system draws upon the research and literature mentioned in Chapter~\ref{chpt:background}. Upon starting the project, an application was provided that includes a basic database creation and image matching process based on a dataset of structures in Oxford. This application was expanded upon to create the current system.
+The baseline system draws upon the research and literature mentioned in Chapter~\ref{chpt:background}. Upon starting the project, an application was provided written in MATLAB and C. However it simply ranked the similarity of database images to a query image, and the database was one of structures in Oxford that has been well researched. There was therefore a very large amount of work to take the starter application forward to the full system proposed by this project.
 
 There are two separate processes forming the project. The first is the pre-computation process that creates the databases and data structures required for object recognition. The second is the object recognition process that takes a query image and returns the names and locations of the objects in the image. A summary of these two processes is described in Figure~\ref{fig:precompprocess} and Figure~\ref{fig:searchprocess} respectively.
 
@@ -438,12 +438,12 @@ The random sample consensus algorithm (RANSAC) is used to estimate an affine tra
 
 \begin{figure}[h!tb]
 \centering 
-\subfloat[Big Ben image 1]{\includegraphics[width=0.22\textwidth]{images/bigben.jpg}}
+\subfloat[Big Ben image 1]{\includegraphics[width=0.18\textwidth]{images/bigben.jpg}}
 ~
 \subfloat[Big Ben image 2]{\includegraphics[width=0.3\textwidth]{images/bigben2.jpeg}}
 \\
-\subfloat[Matches based purely on SIFT feature similarity]{\includegraphics[width=0.5\textwidth]{images/spatial_verification1.pdf}}
-\subfloat[Matches after RANSAC spatial verification]{\includegraphics[width=0.5\textwidth]{images/spatial_verification2.pdf}}
+\subfloat[Matches based purely on SIFT feature similarity]{\includegraphics[width=0.4\textwidth]{images/spatial_verification1.pdf}}
+\subfloat[Matches after RANSAC spatial verification]{\includegraphics[width=0.4\textwidth]{images/spatial_verification2.pdf}}
 \caption{RANSAC spatial verification performed on two images of Big Ben.}
 \label{fig:spatialverification}
 \end{figure}
@@ -461,11 +461,13 @@ This method allows any number of objects to be recognised within a single image.
 
 \begin{figure}[htb]
 \centering 
-\includegraphics[width=0.9\textwidth]{images/multimatch.png}
-\caption{Multiple matched objects in a single query image. Note: this example query image has been artificially created to include two objects.}
+\includegraphics[width=0.7\textwidth]{images/multimatch.png}
+\caption{An artificially created image showcasing multiple object matching.}
 \label{fig:multiplematching}
 \end{figure}
 
+\section{Performance}
+The baseline system was tested to obtain a measure of the object recognition performance. The best achievable yield (see Section~\ref{sub:performance}) was 18.1\%. This is fairly low for this sort of application. There are a number of limitations in the matching process, such as with the spatial verification, as well as the lack of representative images that are the root cause of this performance.
 
 %-------------------------------
 % Geometric Improvements
@@ -521,7 +523,7 @@ for i=1:n_correspondences
 end\end{lstlisting}
 \linespread{2} % double line spacing
 
-As an estimation is performed on every correspondence, there is no randomness to the process. Also, as the number of iterations is the number of correspondences, the NOSAC method is considerably faster than RANSAC. Matching performance is also increased by 15\%.
+As an estimation is performed on every correspondence, there is no randomness to the process. Also, as the number of iterations is the number of correspondences, the NOSAC method is considerably faster than RANSAC. Matching performance is increased by 15\% compared to that of the baseline system, to an absolute yield of 20.8\%.
 
 \section{Affine Invariant Detector}
 \label{sec:affine}
@@ -529,9 +531,9 @@ An alternative feature detector is used as an improvement. The Hessian affine re
 
 \begin{figure}[h!tb]
 \centering 
-\subfloat[NOSAC]{\includegraphics[width=0.7\textwidth]{images/nosacmatch2.pdf}}
+\subfloat[NOSAC]{\includegraphics[width=0.65\textwidth]{images/nosacmatch2.pdf}}
 \\
-\subfloat[Affine Invariant]{\includegraphics[width=0.7\textwidth]{images/affinematch.pdf}}
+\subfloat[Affine Invariant]{\includegraphics[width=0.65\textwidth]{images/affinematch.pdf}}
 \caption{The difference in matching by using the affine invariant feature detector compared to NOSAC.}
 \label{fig:affinenosac}
 \end{figure}
@@ -575,11 +577,12 @@ related by
 \end{equation} 
 the unknown affine transformation $\mathbf{H}$ can be found by solving
 \begin{equation}
-\mathbf{S_1} = \mathbf{H^T}\mathbf{S_2}\mathbf{H}.
+\mathbf{S_1} = \mathbf{H^T}\mathbf{S_2}\mathbf{H}
 \label{eqn:elaffine}
 \end{equation} 
+given the constraint that vertical is mapped to vertical (see Section~4.1 in \cite{philbin2007}).
 
-As with NOSAC, this is done for every correspondence and the inliers from the best estimation used to compute a final estimate for the transformation. The process is faster than RANSAC and results in a 24\% increase in yield.
+As with NOSAC, this is done for every correspondence and the inliers from the best estimation used to compute a final estimate for the transformation. The process is faster than RANSAC and also results in a 24\% increase in yield compared to the baseline system's yield, giving an absolute yield of 22.5\%.
 
 
 \section{RootSIFT}
@@ -607,7 +610,7 @@ root_sift = sqrt(sift/sum(sift));
 \linespread{2} % double line spacing
 
 
-The effect of using RootSIFT is to reduce the larger SIFT dimensions in relation to the smaller ones. This prevents the Euclidean distance being dominated by these large values, which could be noisy. By using RootSIFT space with the affine invariant detector, matching performance is increased 35\% compared to the baseline system
+The effect of using RootSIFT is to reduce the larger SIFT dimensions in relation to the smaller ones. This prevents the Euclidean distance being dominated by these large values, which could be noisy. By using RootSIFT space with the affine invariant detector, matching performance is increased 35\% compared to the baseline system, giving an absolute yield of 24.5\%
 
 
 
@@ -674,7 +677,7 @@ The database-side feature augmentation process of querying the baseline system w
 
 \section{Turbo-boosting}
 
-While database-side feature augmentation is not suited to this application, the overall idea of feature augmentation can still be used. Rather than the model images dataset being used for feature expansion, an independent source of images is used for augmentation. Turbo-boosting can be thought of as expanding the information content of a ground-truth image database using an external dataset.
+While database-side feature augmentation is not suited to this application, the overall idea of feature augmentation can still be used. Rather than the model images dataset being used for feature expansion, an independent source of images is used for augmentation. Turbo-boosting can be thought of as expanding the information content of a ground-truth image database using an external dataset. Each model image is turbo-boosted in turn, outputting a new, more informative model image, which is used in place of the original to create a turbo-boosted dataset.
 
 The process is exactly that of spatially verified database expansion \cite{rootsift12}, however rather than the model images being used for augmentation, labelled images from Microsoft's Bing image search are used. A number of images, called \emph{turbo images} are downloaded for each class, by issuing a query to the Bing search engine (see Section~\ref{sec:turboimages}). The turbo images for the class \lstinline!Tower_Bridge! are shown in Figure~\ref{fig:turboturboimages}. Each model image of a class is then tried to be augmented with the turbo images.
 
@@ -932,9 +935,9 @@ result = resp['result']
 
 With this bridge, running any MATLAB function becomes trivial and so the web application can run the MATLAB matching process.
 
-\section{Results}
+\section{Examples}
 
-Figure~\ref{fig:anotations} shows various results and a video of the implemented system can be found at \cite{video}.
+Figure~\ref{fig:anotations} shows various example results and a video of the implemented system can be found at \cite{video}.
 
 \begin{figure}[htb]
 \centering 
@@ -952,16 +955,15 @@ This project aimed to perform large scale image retrieval to provide automatic o
 
 The image data for the model was crawled from Wikipedia, while the turbo-boosting images and test images were gathered from Bing and Google respectively.  
 
-A  baseline system was built to incorporate all the functionality desired. A MATLAB object recognition engine can recognise and tag multiple objects in a single image using the Wikipedia data, and this communicates with a Python web application to allow users to interact with the system over the internet.
+A baseline system was built to incorporate all the functionality desired. The resulting MATLAB object recognition engine can recognise and tag multiple objects in a single image using the Wikipedia data, and this communicates with a Python web application to allow users to interact with the system over the internet. The performance achieved by this baseline system was a yield of 18.1\%, leaving a lot of room for improvements.
 
-A number of extensions to the baseline system were researched and implemented to improve performance. Alternative geometric models were explored such as NOSAC, and an affine invariant feature detector was used. In conjunction with mapping the feature descriptors from SIFT space to RootSIFT space, these improvements helped increase the recognition performance by a maximum of 35\%.
+A number of extensions to the baseline system were researched and implemented to improve the performance. Alternative geometric models were explored such as NOSAC, and an affine invariant feature detector was used. In conjunction with mapping the feature descriptors from SIFT space to RootSIFT space, these improvements helped increase the recognition performance by a maximum of 35\% compared to the baseline system, to a yield of 24.5\%.
 
-A novel method was developed called turbo-boosting to further build upon the baseline system in an independent way to the geometric improvements. The turbo-boosting process augments the model images with images gathered from Bing. The turbo-boosting, combined with the geometric improvements, dramatically increases the performance of the system -- recognition increased by 75\% compared to the baseline system.
+A novel method was developed called turbo-boosting to further build upon the baseline system in an independent way to the geometric improvements. The turbo-boosting process augments the model images with images gathered from Microsoft's Bing. The turbo-boosting, combined with the geometric improvements, dramatically increases the performance of the system -- recognition increased by 75\% compared to the baseline system, giving a yield of 31.7\%.
 
-The results of the project show that a user friendly object tagging website can be built with a maximum yield performance achieved of 31.7\%. This is good considering the noisiness of the Wikipedia dataset and the range of query images used for testing.
+The results of the project show that a user friendly object tagging website can be built with a maximum yield performance achieved of 31.7\%. This is good, but still leaves many objects unrecognised. The images that were not able to be recognised are generally where the image shows a very different viewpoint, or focuses on a different aspect of the object, which does not appear in the database of model images. This is to be expected, as the dataset used to create the database, the images from Wikipedia, is very noisy and sparse when it comes to representative images. Images from Wikipedia may only contain one or two images of an object, and so do not cover the range of views that, for example, an inquisitive tourist may capture. While methods like turbo-boosting help in bolstering the Wikipedia dataset, the overall lack of representative ground truth images is thought to be the main limiting factor.
 
-Further work would aim to increase the yield and scale the size of the database. Better filtering of the Wikipedia dataset could be done, as well as the removal of distracting features that do not uniquely define a class \cite{turcot09}. Also a general class representation of the model images could be created, so that initial matching is done on a class level, and subsequently on an image level, thus reducing the amount of in memory data required. The labelling of objects could also be done in a more probabilistic way -- instead of simply defining the object found by the class of the first image that is spatially verified, use some algorithm to determine the most likely object given the top spatially verified images, with some uncertainty score.
-
+Further work would aim to increase the yield and scale the size of the database. For the yield, better filtering of the Wikipedia dataset could be done, as well as the removal of distracting features that do not uniquely define a class \cite{turcot09}. The textual content of Wikipedia articles could also be harnessed, together with the articles' images, to find more ground truth images to represent objects. Also a general class representation of the model images could be created, so that initial matching is done on a class level, and subsequently on an image level, thus reducing the amount of in memory data required. The labelling of objects could also be done in a more probabilistic way -- instead of simply defining the object found by the class of the first image that is spatially verified, use some algorithm to determine the most likely object given the top spatially verified images, with some uncertainty score.
 
 %-------------------------------
 % References

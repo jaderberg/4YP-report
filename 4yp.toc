@@ -14,6 +14,7 @@
 \contentsline {section}{\numberline {4.3}Histograms and Index}{21}{section.4.3}
 \contentsline {section}{\numberline {4.4}Spatial Verification}{22}{section.4.4}
 \contentsline {section}{\numberline {4.5}Multiple Object Matching}{24}{section.4.5}
+\contentsline {section}{\numberline {4.6}Performance}{24}{section.4.6}
 \contentsline {chapter}{\numberline {5}Geometric and Descriptor Improvements}{25}{chapter.5}
 \contentsline {section}{\numberline {5.1}NOSAC}{25}{section.5.1}
 \contentsline {section}{\numberline {5.2}Affine Invariant Detector}{27}{section.5.2}
@@ -33,5 +34,5 @@
 \contentsline {subsection}{\numberline {7.2.1}Front-end}{41}{subsection.7.2.1}
 \contentsline {subsection}{\numberline {7.2.2}Back-end}{43}{subsection.7.2.2}
 \contentsline {section}{\numberline {7.3}Python-MATLAB Bridge}{44}{section.7.3}
-\contentsline {section}{\numberline {7.4}Results}{45}{section.7.4}
+\contentsline {section}{\numberline {7.4}Examples}{45}{section.7.4}
 \contentsline {chapter}{\numberline {8}Summary}{46}{chapter.8}
