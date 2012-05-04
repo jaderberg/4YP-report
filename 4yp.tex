@@ -760,7 +760,7 @@ Turbo-boosting works by increasing the information content of the model images. 
 \item Some augmented features will be duplicates -- a duplicate feature being one that is common to both the turbo image and the model image and is described by the same visual word in both cases. This means that after turbo-boosting, the model image will contain  multiple identical visual words for the same feature. This effectively gives the feature more weight for matching.
 \end{itemize}
 
-Figure~\ref{fig:turboresult} shows a case where the query image Figure~\ref{fig:turboresultqueryimage} cannot be matched to any model images. However, the model image Figure~\ref{fig:turboresultmodelimage} can be turbo-boosted, leading to the augmentation of the words in the matched region of the turbo image Figure~\ref{fig:turboresultturboimage}. The turbo-boosted model image now matches against the query, as shown in Figure~\ref{fig:turboresultmatch}. There are many examples of cases similar to this one -- where the model image is perfectly representative of the object, but does not have enough stable visual words to match reliably. However, due to the large number of turbo images, some augmentation occurs which pulls in better stable visual words.
+Figure~\ref{fig:turboresult} shows a case where the query image Figure~\ref{fig:turboresultqueryimage} cannot be matched to any model images. The inlier threshold is set to 5 so the model image, Figure~\ref{fig:turboresultmodelimage}, does not match with the query image, as there are only 4 inliers (Figure~\ref{fig:turboresultvanilla}). However, the model image  can be turbo-boosted (due to the match in Figure~\ref{fig:turboresultturbomatch}), leading to the augmentation of the words in the matched region of the turbo image Figure~\ref{fig:turboresultturboimage}. The turbo-boosted model image now matches against the query, as shown in Figure~\ref{fig:turboresultturbo}. There are many examples of cases similar to this one -- where the model image is perfectly representative of the object, but does not have enough stable visual words to match reliably. However, due to the large number of turbo images, some augmentation occurs which pulls in better stable visual words.
 
 %temple bar london is a good example
 
@@ -776,7 +776,12 @@ Turbo-boosting is a completely general strategy for increasing the yield/recall 
 ~
 \subfloat[Turbo image]{\label{fig:turboresultturboimage}\includegraphics[width=0.25\textwidth]{images/turbomatch.pdf}}
 \\
-\subfloat[The match achieved due to turbo-boosting]{\label{fig:turboresultmatch}\includegraphics[width=0.5\textwidth]{images/turbomatchresult.pdf}}
+\subfloat[The match before turbo-boosting]{\label{fig:turboresultvanilla}\includegraphics[width=0.45\textwidth]{images/query_vanillamodel.pdf}}
+~
+\subfloat[The turbo image matching the model image]{\label{fig:turboresultturbomatch}\includegraphics[width=0.45\textwidth]{images/model_turbo.pdf}}
+\\
+\subfloat[The match after turbo-boosting]{\label{fig:turboresultturbo}\includegraphics[width=0.5\textwidth]{images/query_turbomodel.pdf}}
+
 \caption{The query image Figure~\ref{fig:turboresultqueryimage} will not be identified unless model image Figure~\ref{fig:turboresultmodelimage} is augmented with the words of Figure~\ref{fig:turboresultturboimage}.}
 \label{fig:turboresult}
 \end{figure}
