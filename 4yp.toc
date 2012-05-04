@@ -21,7 +21,7 @@
 \contentsline {chapter}{\numberline {5}Geometric and Descriptor Improvements}{25}{chapter.5}
 \contentsline {section}{\numberline {5.1}NOSAC}{25}{section.5.1}
 \contentsline {section}{\numberline {5.2}Affine Invariant Detector}{27}{section.5.2}
-\contentsline {section}{\numberline {5.3}RootSIFT}{29}{section.5.3}
+\contentsline {section}{\numberline {5.3}RootSIFT}{28}{section.5.3}
 \contentsline {section}{\numberline {5.4}Results}{30}{section.5.4}
 \contentsline {chapter}{\numberline {6}Augmentation Improvements}{31}{chapter.6}
 \contentsline {section}{\numberline {6.1}Motivation}{31}{section.6.1}

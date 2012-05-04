@@ -171,7 +171,7 @@ The model comprises of a dataset of images that depict the objects that are to b
 
 Each page of Wikipedia that contains images represents an object which can be matched. The database of images which is used to build the model is simply created by visiting each page on Wikipedia for the objects desired and downloading the relevant images contained on the web page, labelling those images as being associated with the object. A script automates this process of building the model database.
 
-The subset of Wikipedia articles used in this project are the articles linked to by the ``List of Structures in London'' page \cite{listofstructures}. This results in 732 unique objects for the database comprising of 3923 images (on average 6 images per class). The images are pulled directly from the articles for the objects.
+The subset of Wikipedia articles used in this project are the articles containing images linked to by the ``List of Structures in London'' page \cite{listofstructures}. This results in 732 unique objects for the database comprising of 3923 images (on average 6 images per class). The images are pulled directly from the articles for the objects. \cite{listofstructurespdf} is a list of all the classes used in the application.
 
 Figure~\ref{fig:classes} illustrates some of the object classes and the model images downloaded for them.
 
@@ -259,7 +259,7 @@ The downloaded images are resized if larger than 1000 pixels and stored in a fol
 \section{Test Images}
 \label{sec:validationimages}
 
-Images are needed to test and quantify the yield performance of the object recognition system (see Subsection~\ref{sub:performance}). Therefore a separate dataset of images with their ground truth classes is needed. Ideally all classes would be tested and each test image should be a fair representation of the object of that class.
+Images are needed to test and quantify the yield performance of the object recognition system (see Subsection~\ref{sub:performance}). Therefore a separate dataset of images with their ground-truth classes is needed. Ideally all classes would be tested and each test image should be a fair representation of the object of that class.
 
 Google image search is used first to automatically download 8 images for each class. However, many of the automatically downloaded test images are inaccurate representations of the object in question, or are completely unrelated due to a generic search term giving results that do not even show the object. For example, a search for the object ``Foyles'' (a book shop in London), gives some representative images of the shopfront, but there are also many images of logos, books, people and the inside of the store. As what is being tested is whether the \emph{structure} of Foyles book shop can be recognised, these other images should be discarded. Another example is the search for ``55 Broadway'' gives some images of the building 55 Broadway in New York City, rather than London. Therefore, after automatic download, the dataset is manually refined to remove unrepresentative images.
 
@@ -310,12 +310,12 @@ After automatic download of potential test images for each class, the dataset wa
 \subsection{Performance Measure}
 \label{sub:performance}
 
-The test images are used to measure the performance of the system. A query is issued for every test image and the label assigned by the system is compared to the ground truth object label of the test image. The performance is measured simply as the ratio of test images that are correctly labelled by the system, to the total number of test images, expressed as a percentage. This is defined as the \emph{yield}, and is described by 
+The test images are used to measure the performance of the system. A query is issued for every test image and the label assigned by the system is compared to the ground-truth object label of the test image. The performance is measured simply as the ratio of test images that are correctly labelled by the system, to the total number of test images, expressed as a percentage. This is defined as the \emph{yield}, and is described by 
 \begin{equation}
 yield = \frac{1}{N}\sum_{i=1}^{N} [y_i=f(x_i)]
 \label{eqn:yield}
 \end{equation}
-where $y_i$ is the ground truth class of image $x_i$, $f(x_i)$ is the class given by the system, and $N$ is the total number of test images (701 in this case). For example, a yield of 30\% means that 210 of the 701 test images were annotated correctly. It should be noted that each test image is only associated with one ground truth class\footnote{This means to say that a test image cannot contain multiple objects. There is however a problem during testing of some test images being matched accurately with model images, but their classes being different due to the labelling process. For example, a test image of Big Ben may be labelled as Houses of Parliament -- this would be recorded as a false positive label, even though this would be a perfectly acceptable label for the test image. The result is some false positive labelling which is not actually incorrect. Therefore the true yield performances are always slightly higher than given due to some incorrect false positive labelling during testing.}.
+where $y_i$ is the ground-truth class of image $x_i$, $f(x_i)$ is the class given by the system, and $N$ is the total number of test images (701 in this case). For example, a yield of 30\% means that 210 of the 701 test images were annotated correctly. It should be noted that each test image is only associated with one ground-truth class\footnote{This means to say that a test image cannot contain multiple objects. There is however a problem during testing of some test images being matched accurately with model images, but their classes being different due to the labelling process. For example, a test image of Big Ben may be labelled as Houses of Parliament -- this would be recorded as a false positive label, even though this would be a perfectly acceptable label for the test image. The result is some false positive labelling which is not actually incorrect. Therefore the true yield performances are always slightly higher than given due to some incorrect false positive labelling during testing.}.
 
 With this measure of performance, the performance of the baseline system (Chapter~\ref{chpt:system}) can be quantified, and the effects of the improvements described in Chapter~\ref{chpt:geoimprovements} and Chapter~\ref{chpt:turboboosting} can inpterpreted.
 
@@ -549,7 +549,7 @@ An alternative feature detector is used as an improvement. The Hessian affine re
 \label{fig:affinenosac}
 \end{figure}
 
-The feature points are now six-dimensional rather than four-dimensional, with each feature region being described by its $x$ and $y$ position, orientation\footnote{In practice, no useful interpretation of the orientation has been found.} $\theta$ and the ellipse representing the region, given by three parameters $a$, $b$ and $c$ such that the ellipse is described by 
+The feature points are now six-dimensional rather than four-dimensional, with each feature region being described by its $x$ and $y$ position, orientation $\theta$ and the ellipse representing the region, given by three parameters $a$, $b$ and $c$ such that the ellipse is described by 
 \begin{equation}
 ax^2 + 2bxy + cy^2 = 
 \left[ \begin{array}{cc}
@@ -684,17 +684,22 @@ WIthout more images of the same object, viewpoints, environmental conditions, ob
 
 Existing work addresses this problem by including a process known as database augmentation, the background of which is given in Chapter~\ref{chpt:background}.
 
-The database-side feature augmentation process of querying the baseline system with each model image creates what is known as an image graph -- the interconnection of matches between images. Each edge of the image graph infers that the two images connected share (at least part of) the same object. An image graph is not needed in this project, as the absolute ground truth classes of each image are already known, and it is assumed that overlap between classes does not exist\footnote{This is a contentious point. Due to the nature of images from Wikipedia, there is a fair amount of overlap between images between classes. For example, a picture of Big Ben may well be included in the corpus of images for Palace of Westminster. This is an issue that produces false positives. Methods to remedy this issue can be employed, such as querying the baseline system with each model image, and if a false positive match is made, remove the image. However, this is beyond the scope of this report.}. In the dataset of model images used in this project, the lack of multiple images of the same object means that the amount of augmentation that occurs is negligible, so the gains of database-side spatial feature augmentation are non-existent.
+The database-side feature augmentation process of querying the baseline system with each model image creates what is known as an image graph -- the interconnection of matches between images. Each edge of the image graph infers that the two images connected share (at least part of) the same object. An image graph is not needed in this project, as the absolute ground-truth classes of each image are already known, and it is assumed that overlap between classes does not exist\footnote{This is a contentious point. See the footnote in Subsection~\ref{sub:performance}.}. In the dataset of model images used in this project, the lack of multiple images of the same object means that the amount of augmentation that occurs is negligible, so the gains of database-side spatial feature augmentation are non-existent.
 
 \section{Turbo-boosting}
 
-While database-side feature augmentation is not suited to this application, the overall idea of feature augmentation can still be used. Rather than the model images dataset being used for feature expansion, an independent source of images is used for augmentation. Turbo-boosting can be thought of as expanding the information content of a ground-truth image database using an external dataset. Each model image is turbo-boosted in turn, outputting a new, more informative model image, which is used in place of the original to create a turbo-boosted dataset.
+While database-side feature augmentation is not suited to this application, the overall idea of feature augmentation can still be used, with a process called \emph{turbo-boosting}. 
 
-The process is exactly that of spatially verified database expansion \cite{rootsift12}, however rather than the model images being used for augmentation, labelled images from Microsoft's Bing image search are used. A number of images, called \emph{turbo images} are downloaded for each class, by issuing a query to the Bing search engine (see Section~\ref{sec:turboimages}). The turbo images for the class \lstinline!Tower_Bridge! are shown in Figure~\ref{fig:turboturboimages}. Each model image of a class is then tried to be augmented with the turbo images.
+Turbo-boosting is the augmentation of features from images of a completely independent dataset. The process is exactly that of spatially verified database expansion \cite{rootsift12}, however rather than the model images being used for augmentation, labelled images from Microsoft's Bing image search are used. A number of images, called \emph{turbo images} are downloaded for each class, by issuing a query to the Bing search engine (see Section~\ref{sec:turboimages}). For example, the turbo images for the class \lstinline!Tower_Bridge! are shown in Figure~\ref{fig:turboturboimages}. For each model image, if a turbo image matches it, the visual words of the turbo image are projected onto the model image.
+
 
 Take, for example, the image in Figure~\ref{fig:turbomodelimage} as the first model image to be turbo-boosted. Each turbo image is tested to see if it matches the model image. In this example, the turbo image in Figure~\ref{fig:turboturboimage} matches against the model image, with the match being shown in Figure~\ref{fig:turbomatch}. The matched region is the bounding rectangle of the spatially verified visual words, with a slight margin. \emph{All} of the visual words contained with the matched region of the turbo image are projected onto the model image, as in Figure~\ref{fig:turboaugment}. The model image has now been augmented with the visual words of the turbo image.
 
 This is repeated for every turbo image, for each model image of each class. If no match can be reasonably made with a turbo image, no augmentation occurs and the process continues with trying the next turbo image.
+
+Once the turbo-boosting for every model image in every class has completed, the weighted histograms and new turbo-boosted index is created, just as for the baseline system (see Section~\ref{sec:histograms}). Matching is then performed just as with the baseline system, except that the turbo-boosted index and visual word vectors are used.
+
+Turbo-boosting can be thought of as expanding the information content of the ground-truth image database (the model images) using an external dataset. Each model image is turbo-boosted in turn, outputting a new, more informative model image, which is used in place of the original to create a turbo-boosted dataset.
 
 \begin{figure}[htb]
 \centering 
@@ -715,9 +720,6 @@ This is repeated for every turbo image, for each model image of each class. If n
 
 \clearpage
 
-
-
-Once the turbo-boosting for every model image in every class has completed, the weighted histograms and new turbo-boosted index is created, just as for the baseline system (see Section~\ref{sec:histograms}). Matching is then performed just as with the baseline system, except that the turbo-boosted index and visual word vectors are used.
 
 \section{Results and Analysis}
 
@@ -972,9 +974,9 @@ A number of extensions to the baseline system were researched and implemented to
 
 A novel method was developed called turbo-boosting to further build upon the baseline system in an independent way to the geometric improvements. The turbo-boosting process augments the model images with images gathered from Microsoft's Bing. The turbo-boosting, combined with the geometric improvements, dramatically increases the performance of the system -- recognition increased by 75\% compared to the baseline system, giving a yield of 31.7\%.
 
-The results of the project show that a user friendly object tagging website can be built with a maximum yield performance achieved of 31.7\%. This is good, but still leaves many objects unrecognised. The images that were not able to be recognised are generally where the image shows a very different viewpoint, or focuses on a different aspect of the object, which does not appear in the database of model images. This is to be expected, as the dataset used to create the database, the images from Wikipedia, is very noisy and sparse when it comes to representative images. Images from Wikipedia may only contain one or two images of an object, and so do not cover the range of views that, for example, an inquisitive tourist may capture. While methods like turbo-boosting help in bolstering the Wikipedia dataset, the overall lack of representative ground truth images is thought to be the main limiting factor.
+The results of the project show that a user friendly object tagging website can be built with a maximum yield performance achieved of 31.7\%. This is good, but still leaves many objects unrecognised. The images that were not able to be recognised are generally where the image shows a very different viewpoint, or focuses on a different aspect of the object, which does not appear in the database of model images. This is to be expected, as the dataset used to create the database, the images from Wikipedia, is very noisy and sparse when it comes to representative images. Images from Wikipedia may only contain one or two images of an object, and so do not cover the range of views that, for example, an inquisitive tourist may capture. While methods like turbo-boosting help in bolstering the Wikipedia dataset, the overall lack of representative ground-truth images is thought to be the main limiting factor.
 
-Further work would aim to increase the yield and scale the size of the database. For the yield, better filtering of the Wikipedia dataset could be done, as well as the removal of distracting features that do not uniquely define a class \cite{turcot09}. The textual content of Wikipedia articles could also be harnessed, together with the articles' images, to find more ground truth images to represent objects. Also a general class representation of the model images could be created, so that initial matching is done on a class level, and subsequently on an image level, thus reducing the amount of in memory data required. The labelling of objects could also be done in a more probabilistic way -- instead of simply defining the object found by the class of the first image that is spatially verified, use some algorithm to determine the most likely object given the top spatially verified images, with some uncertainty score.
+Further work would aim to increase the yield and scale the size of the database. For the yield, better filtering of the Wikipedia dataset could be done, as well as the removal of distracting features that do not uniquely define a class \cite{turcot09}. The textual content of Wikipedia articles could also be harnessed, together with the articles' images, to find more ground-truth images to represent objects. Also a general class representation of the model images could be created, so that initial matching is done on a class level, and subsequently on an image level, thus reducing the amount of in memory data required. The labelling of objects could also be done in a more probabilistic way -- instead of simply defining the object found by the class of the first image that is spatially verified, use some algorithm to determine the most likely object given the top spatially verified images, with some uncertainty score.
 
 %-------------------------------
 % References
@@ -1053,14 +1055,14 @@ retrieval with large vocabularies and fast spatial matching.
 		Cambridge University PRess, ISBN: 0521540518, second edition, 2004.
 		
 	\bibitem{sceneclass06}
-		A. Bosch, A. Zisserman and X. Muuoz.
+		A. Bosch, A. Zisserman and X. Munoz.
 		Scene classification via pLSA.
-		2006.
+		In \emph{European Conference on Computer Vision}, 2006.
 		
 	\bibitem{knopp10}
 		J. Knopp, J. Sivic and T. Pajdla.
 		Avoiding confusing features in place recognition.
-		2010.
+		In \emph{European Conference on Computer Vision}, 2010.
 		
 	\bibitem{quack08}
 		T. Quack, B. Leibe and L. Van Gool.
@@ -1078,6 +1080,9 @@ retrieval with large vocabularies and fast spatial matching.
 		
 	\bibitem{video}
 		\url{http://www.youtube.com/watch?v=NFFOjgw7QhM}
+		
+	\bibitem{listofstructurespdf}
+		\url{https://www.dropbox.com/s/lbdcjd58bs1rmot/List%20of%20structures%20in%20London.pdf}
 	  
 \end{thebibliography}
 
