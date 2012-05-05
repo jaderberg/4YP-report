@@ -760,7 +760,7 @@ Turbo-boosting works by increasing the information content of the model images. 
 \item Some augmented features will be duplicates -- a duplicate feature being one that is common to both the turbo image and the model image and is described by the same visual word in both cases. This means that after turbo-boosting, the model image will contain  multiple identical visual words for the same feature. This effectively gives the feature more weight for matching.
 \end{itemize}
 
-Figure~\ref{fig:turboresult} shows a case where the query image Figure~\ref{fig:turboresultqueryimage} cannot be matched to any model images. The inlier threshold is set to 5 so the model image, Figure~\ref{fig:turboresultmodelimage}, does not match with the query image, as there are only 4 inliers (Figure~\ref{fig:turboresultvanilla}). However, the model image  can be turbo-boosted (due to the match in Figure~\ref{fig:turboresultturbomatch}), leading to the augmentation of the words in the matched region of the turbo image Figure~\ref{fig:turboresultturboimage}. The turbo-boosted model image now matches against the query, as shown in Figure~\ref{fig:turboresultturbo}. There are many examples of cases similar to this one -- where the model image is perfectly representative of the object, but does not have enough stable visual words to match reliably. However, due to the large number of turbo images, some augmentation occurs which pulls in better stable visual words.
+Figure~\ref{fig:turboresult} shows a case where the query image, Figure~\ref{fig:turboresultqueryimage}, cannot be matched to any model images. The inlier threshold is set to 5 so the model image, Figure~\ref{fig:turboresultmodelimage}, does not match with the query image as there are only 4 inliers (Figure~\ref{fig:turboresultvanilla}). However, the model image  can be turbo-boosted by the turbo image in Figure~\ref{fig:turboresultturboimage} due to the match made in Figure~\ref{fig:turboresultturbomatch}, leading to the augmentation of the words in the matched region of the turbo image. The turbo-boosted model image now matches against the query, as shown in Figure~\ref{fig:turboresultturbo}. There are many examples of cases similar to this one -- where the model image is perfectly representative of the object, but does not have enough stable visual words to match reliably. However, due to the large number of turbo images, some augmentation occurs which pulls in better stable visual words.
 
 %temple bar london is a good example
 
@@ -778,7 +778,7 @@ Turbo-boosting is a completely general strategy for increasing the yield/recall 
 \\
 \subfloat[The match before turbo-boosting]{\label{fig:turboresultvanilla}\includegraphics[width=0.45\textwidth]{images/query_vanillamodel.pdf}}
 ~
-\subfloat[The turbo image matching the model image]{\label{fig:turboresultturbomatch}\includegraphics[width=0.45\textwidth]{images/model_turbo.pdf}}
+\subfloat[The turbo image matching the model image, resulting in augmentation of the turbo image's visual words]{\label{fig:turboresultturbomatch}\includegraphics[width=0.45\textwidth]{images/model_turbo.pdf}}
 \\
 \subfloat[The match after turbo-boosting]{\label{fig:turboresultturbo}\includegraphics[width=0.5\textwidth]{images/query_turbomodel.pdf}}
 
@@ -808,7 +808,7 @@ The resulting product is a web site with an intuitive user interface. A user can
 \label{sec:engine}
 The object recognition engine performs the pre-computation and recognition processes described in Chapter~\ref{chpt:system}. This is all implemented using MATLAB. MATLAB was chosen due to its ease in image manipulation, rich toolboxes, and the provided starter application was written in MATLAB.
 
-The resulting interface is a MATLAB function \lstinline!get_objects()! that takes a single argument containing the location of the query image to recognise the objects in. The output is a structure of the object classes found and their bounding rectangles in the query image. The function takes around 5-10 seconds to run.
+The resulting interface is a MATLAB function \lstinline!get_objects()! that takes a single argument of the disk location of the query image to recognise the objects in. The output is a structure of the object classes found and their bounding rectangles in the query image. The function takes around five seconds to run.
 
 \subsection{Database}
 
@@ -838,10 +838,10 @@ MongoDB is run as a daemon and the location of the database's files is set to be
 
 The interface with MATLAB is done using the Java library provided by MongoDB\footnote{See \url{http://www.mongodb.org/display/DOCS/Java+Tutorial} for documentation.}. MATLAB has the ability to run Java inside it, so the Java MongoDB library can be consumed in a fairly natural way.
 
-The frames, descriptors, words and histograms for the model images are stored on disk as MATLAB binary files. They are associated to the database entries via their filename which includes the ID assigned by MongoDB to the image's document. For example, for the model image \lstinline!1222|10_Downing_Street.jpg! shown in Listing~\ref{lst:bson} the frames file will be stored in the frames directory with the filename \\ \lstinline!4f7317501b515eaa6f148c5d-frames.mat!.
+The frames, descriptors, words and histograms for the model images are stored on disk as MATLAB binary files. They are associated to the database entries via their filename which includes the ID assigned by MongoDB to the image's document. For example, for the model image \lstinline!1222|10_Downing_Street.jpg! shown in Listing~\ref{lst:bson} the frames file will be stored in the \lstinline{frames} directory with the filename \\ \lstinline!4f7317501b515eaa6f148c5d-frames.mat!.
 
 \subsection{Image Processing}
-The bulk of the image processing and processor intensive operations are outsourced to the VLFeat library\footnote{\url{http://www.vlfeat.org}}. VLFeat is an open source library implementing various computer vision algorithms in C. Being implemented in C means that the algorithms compute faster and more efficiently than if they were written in MATLAB. The VLFeat provides MATLAB wrappers to the functions which are use to interface with the MATLAB engine.
+The bulk of the image processing and processor intensive operations are outsourced to the VLFeat library\footnote{\url{http://www.vlfeat.org}}. VLFeat is an open source library implementing various computer vision algorithms in C. Being implemented in C means that the algorithms compute faster and more efficiently than if they were written in MATLAB. VLFeat provides MATLAB wrappers to the functions which are used to interface with the MATLAB engine.
 
 \lstset{language=Matlab}
 To enable VLFeat, \lstinline!run vlfeat/toolbox/vl_setup! is executed on startup, after which all the VLFeat functions can be used. \lstinline!vl_sift()! is used for SIFT feature detection and descriptor computation, and \lstinline!vl_kdtreebuild()! and \lstinline!vl_kdtreequery()! are used for efficient visual word creation and retrieval.
@@ -853,7 +853,7 @@ A room of computers in the Engineering Science Department is used for the parall
 
 The distributed pre-computation is conducted by a Python script using the Fabric library\footnote{\url{http://docs.fabfile.org/en/1.4.0/index.html}} for simplifying the SSH tasks. The current build is zipped up locally and deployed to the remote shared disk. The Python script then distributes the jobs across all the hosts that can be connected to, each host launching a MATLAB process and executing a particular function. All jobs generate a finished flag so the pre-computation script can keep track of the dispatched jobs and synchronise the process.
 
-Using the distributed system for pre-computation and testing results in a far quicker process, reducing the time from 15-20 hours for some jobs to around 1 hour.
+Using the distributed system for pre-computation and testing results in a far quicker process, reducing the time from 15-20 hours for some jobs to just one hour.
 
 \section{Web Application}
 \label{sec:webapp}
@@ -887,7 +887,7 @@ Figure~\ref{fig:webapp} shows the steps for a user using the website which, are 
 
 \subsection{Front-end}
 \label{subsec:front}
-The front-end is a web page viewed in a web browser. It consists of three components: the HTML code that defines the structure and layout of the web site, the CSS\footnote{Cascading style sheets -- more information at \url{http://www.w3schools.com/css/}} that defines the styling and the Javascript that provides the logic for the website.
+The front-end is a web page viewed in a web browser. It consists of three components: the HTML code that defines the structure and layout of the web site, the CSS\footnote{Cascading style sheets -- more information at \url{http://www.w3schools.com/css/}} that defines the styling, and the Javascript that provides the logic for the website.
 
 The Javascript scripts make heavy use of the JQuery library\footnote{\url{http://jquery.com}}. JQuery abstracts and simplifies manipulation of HTML elements on the page as well as providing built in animation and HTTP request functions. 
 
@@ -898,7 +898,7 @@ The website consists of the four stages described above, and there is an HTML  \
 
 Initially, the user is presented with an image upload form (see Figure~\ref{fig:uploadform}). Once an image has been selected, a Javascript event is fired, prompting the automatic asynchronous upload of the image. The server responds with HTML to display the image which is inserted in the next container and shown (Figure~\ref{fig:tagimage}).
 
-Upon clicking the ``Tag Image'' button, the real-time log is displaying informing the user of the progress of the matching process (Figure~\ref{fig:log}). The real-time log is achieved by the MATLAB process writing a log file and the Javascript app periodically asking the web server for the contents of the latest version of that file.
+Upon clicking the ``Tag Image'' button, the real-time log is informs the user of the progress of the matching process (Figure~\ref{fig:log}). The real-time log is achieved by the MATLAB process writing a log file and the Javascript app periodically asking the web server for the contents of the latest version of that file.
 
 Once the match process is complete, the intelligent image HTML (shown in Listing~\ref{lst:intimage}) is returned to the Javascript app. The image is shown with the tags for the objects overlaid. On hover over, the border of the tag becomes solid and the name of the object is shown (Figure~\ref{fig:taggedimage}). On click, the Wikipedia page for the object is opened. This is achieved purely with HTML and CSS.
 
@@ -931,7 +931,7 @@ The object recognition engine runs in MATLAB, however the web application runs i
 Some solutions already exist for this purpose\footnote{See \url{http://claymore.engineer.gvsu.edu/~steriana/Python/pymat.html} for an example.} however these all involve starting an instance of MATLAB for each function call. As the system should be fast and scalable, this is not a desirable solution, as there will be a 5-10 second overhead for each MATLAB function call while MATLAB starts up.
 
 \lstset{language=Matlab}
-Instead, a Python-MATLAB bridge was developed using MATLAB's Java runtime environment. This is open source and available from \cite{pymatbridge}. Using some code written by D. Kroon (University of Twente), Java's TCP and socket libraries are used to create a TCP server to handle requests. This is run on a separate TCP port to the web application to avoid cross communication. This means that MATLAB needs to startup only once, after which function calls are issued with local HTTP requests. For example, to call the function \lstinline!test_connect()! in the file \lstinline!test_connect.m! with the MATLAB server running on port \lstinline!4000!, simply issue an HTTP request to \lstinline!http://localhost:4000/test_connect.m!. Arguments to the function can be added as query parameters to the HTTP request and decoded by the MATLAB function.
+Instead, a Python-MATLAB bridge was developed using MATLAB's Java runtime environment. This was released as open source and available from \cite{pymatbridge}. Using some code written by D. Kroon (University of Twente), Java's TCP and socket libraries are used to create a TCP server to handle requests. This is run on a separate TCP port to the web application to avoid cross communication. This means that MATLAB needs to startup only once, after which function calls are issued with local HTTP requests. For example, to call the function \lstinline!test_connect()! in the file \lstinline!test_connect.m! with the MATLAB server running on port \lstinline!4000!, simply issue an HTTP request to \lstinline!http://localhost:4000/test_connect.m!. Arguments to the function can be added as query parameters to the HTTP request and decoded by the MATLAB function.
 
 A MATLAB function \lstinline!web_feval! with a supporting function \lstinline!run_dot_m! simplifies this process so any MATLAB function can be called (whether it be on MATLAB's path or not) with any number of arguments, with the results returned as JSON structures. A Python class \lstinline!Matlab! abstracts this on the Python side -- any locally stored MATLAB function can be run, with arguments, and the results are returned as a Python dictionary. Listing~\ref{lst:pymat} shows how a MATLAB function is called with the created class. The \lstinline!run()! function takes two arguments: the location of the function and a dictionary of arguments to be passed in to the function.
  
@@ -945,13 +945,13 @@ matlab = Matlab('http://localhost:4000')
 while matlab.running:
 	# Matlab is already processing something, wait
         time.sleep(2)
-resp = matlab.run('~/Sites/4YP/visualindex/wikilist_dataset/demo_wiki_get_objects.m', {'image_path': query_image_path, 'display': 1, 'log_file': '%slogs/%s-log.txt' % (settings.MEDIA_ROOT, request.POST.get('key'))}, maxtime=999999)
+resp = matlab.run('~/Sites/4YP/visualindex/wikilist_dataset/demo_wiki_get_objects.m', {'image_path': query_image_path, 'display': 1, 'log_file': 'logs/123-log.txt'}, maxtime=999999)
 # Get the results
 result = resp['result']
 \end{lstlisting}
 \linespread{2} % double line spacing
 
-With this bridge, running any MATLAB function becomes trivial and so the web application can run the MATLAB matching process.
+With this bridge, running any MATLAB function from Python becomes trivial and so the web application can run the MATLAB matching process.
 
 \section{Examples}
 

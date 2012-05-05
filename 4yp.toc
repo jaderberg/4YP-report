@@ -36,6 +36,6 @@
 \contentsline {section}{\numberline {7.2}Web Application}{41}{section.7.2}
 \contentsline {subsection}{\numberline {7.2.1}Front-end}{42}{subsection.7.2.1}
 \contentsline {subsection}{\numberline {7.2.2}Back-end}{43}{subsection.7.2.2}
-\contentsline {section}{\numberline {7.3}Python-MATLAB Bridge}{44}{section.7.3}
+\contentsline {section}{\numberline {7.3}Python-MATLAB Bridge}{43}{section.7.3}
 \contentsline {section}{\numberline {7.4}Examples}{45}{section.7.4}
 \contentsline {chapter}{\numberline {8}Summary}{46}{chapter.8}
