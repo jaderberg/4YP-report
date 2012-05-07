@@ -58,7 +58,7 @@ In this report, a large-scale object retrieval system is presented. It allows th
 
 The system builds upon the state-of-the art in visual object retrieval from large databases -- that is allowing objects to be recognised by searching against millions of images. The images contained within the articles of Wikipedia \cite{wikipedia} are used for the dataset of images, with each article defining an object. In this project, a subset of Wikipedia articles is used to build the object database: the articles linked to by the ``List of Structures in London'' \cite{listofstructures} Wikipedia page. The resulting system can automatically recognise and annotate multiple objects within a query image. 
 
-Various changes are implemented to increase the performance of the baseline system. Geometric improvements to the spatial verification stage as well as changes to the descriptor and detector methods for image features are shown to increase recognition performance. An additional novel process was added which augments the database of object images with the information content of an external source of labelled images. This improvement is shown to drastically increases performance.
+Various changes are implemented to increase the performance of the baseline system. Geometric improvements to the spatial verification stage as well as changes to the image feature detector and descriptor methods are shown to increase recognition performance. An additional novel process was added which augments the database of object images with the information content of an external source of labelled images. This improvement is shown to drastically increases performance.
 
 This work is done with the view to scaling up to the database to a corpus of millions of images and objects.
 
@@ -71,7 +71,7 @@ This work is done with the view to scaling up to the database to a corpus of mil
 %-------------------------------
 \linespread{1}\chapter{Introduction}
 \linespread{1}\section{Motivation}
-The web contains billions of images, and they are often the focus of attention on the web pages that include them. However, there is almost no information about the content of these images. Images on websites are purely binary data files, occasionally with some associated meta data included in their containing HTML\footnote{Hyper Text Markup Language \url{http://en.wikipedia.org/wiki/HTML}} code. Very little information is available about the images, let alone the objects or scenes contained within them. The aim of this project is to create a system which automatically recognises the objects within images, thus releasing the information within them. This is a large scale object retrieval problem.
+The web contains billions of images, and they are often the focus of attention on the web pages that include them. However, there is almost no information about the content of these images. Images on websites are purely binary data files, occasionally with some associated metadata included in their containing HTML\footnote{Hyper Text Markup Language \url{http://en.wikipedia.org/wiki/HTML}} code. Very little information is available about the images, let alone the objects or scenes contained within them. The aim of this project is to create a system which automatically recognises the objects within images, thus releasing the information within them. This is a large scale object retrieval problem.
 
 Recognising a wide range of objects in an image is not a trivial problem. Objects can be photographed from many different viewpoints, under different lighting conditions, with different cameras, and can be occluded in different ways. This presents problems of robustness to these types of variation and noise. As more objects are added to the database, scaling the solution up becomes a problem. Recognition accuracy drops as there are more objects that could be potential matches, and the matching process gets slower as a larger search is needed. These challenges were addressed throughout the project to ensure a fast, accurate recognition system that can be scaled up to millions of objects.
 
@@ -144,7 +144,7 @@ There are three main datasets used by the application:
 
 \item The images from Microsoft Bing that are used for the augmentation improvements. A description of this dataset is found in Section~\ref{sec:turboimages}, and their usage is in Chapter~\ref{chpt:turboboosting}.
 
-\item Test images gathered from Google Images, described in Section~\ref{sec:validationimages} and used in Section~\ref{sub:performance}.
+\item Test images gathered from Google Images, described in Section~\ref{sec:validationimages} and used in Subsection~\ref{sub:performance}.
 \end{itemize}
 
 Table~\ref{tbl:data} gives an overview of the data used. All images that are used are resized so that their larger dimension does not exceed 1000 pixels to reduce storage space and provide homogeneity. This chapter describes the various datasets and how they are acquired. 
@@ -327,7 +327,7 @@ With this measure of performance, the performance of the baseline system (Chapte
 %-------------------------------
 \linespread{1}\chapter{Baseline system}
 \label{chpt:system}
-The baseline system draws upon the research and literature mentioned in Chapter~\ref{chpt:background}. Upon starting the project, an application was provided written in MATLAB and C. However it simply ranked the similarity of database images to a query image, and the database was one of structures in Oxford that has been well researched. There was therefore a very large amount of work to take the starter application forward to the full system proposed by this project.
+The baseline system draws upon the research and literature mentioned in Chapter~\ref{chpt:background}. Upon starting the project, an application was provided written in MATLAB and C. However it simply ranks the similarity of database images to a query image, and the database is one of structures in Oxford that has been well researched. There was therefore a very large amount of work to take the starter application forward to the full system proposed by this project.
 
 There are two separate processes forming the project. The first is the pre-computation process that creates the databases and data structures required for object recognition. The second is the object recognition process that takes a query image and returns the names and locations of the objects in the image. A summary of these two processes is described in Figure~\ref{fig:precompprocess} and Figure~\ref{fig:searchprocess} respectively.
 
@@ -692,7 +692,7 @@ The database-side feature augmentation process of querying the baseline system w
 
 While database-side feature augmentation is not suited to this application, the overall idea of feature augmentation can still be used, with a process called \emph{turbo-boosting}. 
 
-Turbo-boosting is the spatial augmentation of features from images of a completely independent dataset. The process is exactly that of spatial database-side feature expansion \cite{rootsift12}, however rather than the model images being used for augmentation, labelled images from Microsoft's Bing image search are used. A number of images, called \emph{turbo images} are downloaded for each class, by issuing a query to the Bing search engine (see Section~\ref{sec:turboimages}). For example, the turbo images for the class \lstinline!Tower_Bridge! are shown in Figure~\ref{fig:turboturboimages}. For each model image, if a turbo image matches it, the visual words of the turbo image are projected onto the model image.
+Turbo-boosting is the spatial augmentation of features from images of a completely independent dataset. The process is exactly that of spatial database-side feature augmentation \cite{rootsift12}, however rather than the model images being used for augmentation, labelled images from Microsoft's Bing image search are used. A number of images, called \emph{turbo images} are downloaded for each class, by issuing a query to the Bing search engine (see Section~\ref{sec:turboimages}). For example, the turbo images for the class \lstinline!Tower_Bridge! are shown in Figure~\ref{fig:turboturboimages}. For each model image, if a turbo image matches it, the visual words of the turbo image are projected onto the model image.
 
 
 Take, for example, the image in Figure~\ref{fig:turbomodelimage} as the first model image to be turbo-boosted. Each turbo image is tested to see if it matches the model image. In this example, the turbo image in Figure~\ref{fig:turboturboimage} matches against the model image, with the match being shown in Figure~\ref{fig:turbomatch}. The matched region is the bounding rectangle of the spatially verified visual words, with a slight margin. \emph{All} of the visual words contained with the matched region of the turbo image are projected onto the model image, as shown in Figure~\ref{fig:turboaugment}. The ellipse denoting of each of the turbo image's words are projected onto the model image using the affine transformation relating the scenes of the two images that is computed from the matched words. The model image has now been spatially augmented with the visual words of the turbo image.
@@ -762,7 +762,7 @@ Turbo-boosting works by increasing the information content of the model images. 
 \item Some augmented features will be duplicates -- a duplicate feature being one that is common to both the turbo image and the model image and is described by the same visual word in both cases. This means that after turbo-boosting, the model image will contain  multiple identical visual words for the same feature. This effectively gives the feature more weight for matching.
 \end{itemize}
 
-Figure~\ref{fig:turboresult} shows a case where the query image, Figure~\ref{fig:turboresultqueryimage}, cannot be matched to any model images. The inlier threshold is set to 5 so the model image, Figure~\ref{fig:turboresultmodelimage}, does not match with the query image as there are only 4 inliers (Figure~\ref{fig:turboresultvanilla}). However, the model image  can be turbo-boosted by the turbo image in Figure~\ref{fig:turboresultturboimage} due to the match made in Figure~\ref{fig:turboresultturbomatch}, leading to the augmentation of the words in the matched region of the turbo image. The turbo-boosted model image now matches against the query, as shown in Figure~\ref{fig:turboresultturbo}. There are many examples of cases similar to this one -- where the model image is perfectly representative of the object, but does not have enough stable visual words to match reliably. However, due to the large number of turbo images, some augmentation occurs which pulls in better stable visual words.
+Figure~\ref{fig:turboresult} shows a case where the query image, Figure~\ref{fig:turboresultqueryimage}, cannot be matched to any model images. The inlier threshold is set to 5 so the model image, Figure~\ref{fig:turboresultmodelimage}, does not match with the query image as there are only 4 inliers (Figure~\ref{fig:turboresultvanilla}). However, the model image  can be turbo-boosted by the turbo image in Figure~\ref{fig:turboresultturboimage} due to the match made in Figure~\ref{fig:turboresultturbomatch}, leading to the augmentation of the words in the matched region of the turbo image. The turbo-boosted model image (Figure~\ref{fig:turboresultaugmentedmodel}) now matches against the query, as shown in Figure~\ref{fig:turboresultturbo}. There are many examples of cases similar to this one -- where the model image is perfectly representative of the object, but does not have enough stable visual words to match reliably. However, due to the large number of turbo images, some augmentation occurs which pulls in better stable visual words.
 
 %temple bar london is a good example
 
@@ -977,7 +977,7 @@ This project aimed to perform large scale image retrieval to provide automatic o
 
 The image data for the model was crawled from Wikipedia, while the turbo-boosting images and test images were gathered from Bing and Google respectively.  
 
-A baseline system was built to incorporate all the functionality desired. The resulting MATLAB object recognition engine can recognise and tag multiple objects in a single image using the Wikipedia data, and this communicates with a Python web application to allow users to interact with the system over the internet. The performance achieved by this baseline system was a yield of 18.1\%, leaving a lot of room for improvements.
+A baseline system was built to incorporate all the functionality desired. The resulting MATLAB object recognition engine can recognise and tag multiple objects in a single image using the Wikipedia data, and this communicates with a Python web application to allow users to interact with the system over the internet. The performance achieved by this baseline system is a yield of 18.1\%, leaving a lot of room for improvements.
 
 A number of extensions to the baseline system were researched and implemented to improve the performance. Alternative geometric models were explored such as NOSAC, and an affine invariant feature detector was used. In conjunction with mapping the feature descriptors from SIFT space to RootSIFT space, these improvements helped increase the recognition performance by a maximum of 35\% compared to the baseline system, to a yield of 24.5\%.
 
@@ -992,92 +992,6 @@ Further work would aim to increase the yield and scale the size of the database.
 %-------------------------------
 \begin{thebibliography}{99}
 
-	\bibitem{quack09}
-		T. Quack, L. Bossard, S. Gammeter and L. Van Gool.
-		I know what you did last summer: object-level auto-annotation of holiday snaps.
-		In \emph{ICCV}, 2009.
-
-	\bibitem{turcot09}
-		P. Turcot and D. G. Lowe.
-		Better matching with fewer features: The selection of useful features in large database recognition problems.
-		In \emph{WS-LAVD, ICCV}, 2009.
-		
-	\bibitem{randomforest2}
-		C. Silpa-Anan and R. Hartley.
-		Localization using an image-map.
-		In \emph{Proc. ACRA}, 2004.
-		
-	\bibitem{rootsift12}
-		R. Arandjelovi\'{c} and A. Zisserman.
-		Three things everyone should know to improve object retrieval.  
-		In \emph{IEEE Conference on Computer Vision and Pattern Recognition}, 2012.
-		
-	\bibitem{searchengines2003}
-		Y. Aashcim, M.Lida, and K. Risvik.
-		Multi-tier architecture for web search engines.
-		In \emph{Proc. Web Congress}, 2003.
-		
-	\bibitem{googlearchitecture2003}
-		L. Barroso, J. Dean and U. Holzic.
-		Web search for a planet: The google cluster architecture.
-		In \emph{Micro, IEEE, 23}, 2003.
-		
-	\bibitem{recognitiontree2006}
-		D. Nist\'{e}r and H. Stew\'{e}nius.
-		Scalable recognition with a vocabulary tree.
-		In \emph{Proc. CVPR}, 2006.
-	
-	\bibitem{randomforest1}
-		Y. Amit and D. Geman. 
-		Shape quantization and recognition with randomized trees. 
-		In \emph{Neural Computing, 9(7):1545Ð1588}, 1997.
-	
-	\bibitem{videogoogle2003}
-		J. Sivic and A. Zisserman.
-		Video Google: A text retrieval approach to object matching in videos.
-		In \emph{Proc. ICCV}, 2003.
-		
-	\bibitem{lowe1999}
-		D. Lowe.
-		Object recognition from local scale-invariant features. 
-		In \emph{Proc. CVPR}, 1999.
-	 
-	\bibitem{philbin2007}
-		J. Philbin, O. Chum, M. Isard, J. Sivic, and A. Zisserman. 
-		Object
-retrieval with large vocabularies and fast spatial matching. 
-		In \emph{Proc. CVPR}, 2007.
-		
-	\bibitem{hierarchies2006}
-		K. Mikolajczyk, B. Leibe, and B. Schincle.
-		Multiple object class detection with a generative model.
-		In \emph{Proc. CVPR}, 2006.
-	  
-	\bibitem{randomforest2005}
-		V. Lepetit, P. Lagger, and P.Fua.
-		Randomized trees for realtime keypoint recognition.
-		In \emph{Proc. CVPR}, 2005.
-	 
-	 \bibitem{zisserman2004}
-	 	R. I. Hartley and A. Zisserman.
-		\emph{Multiple View Geometry in Computer Vision.}
-		Cambridge University PRess, ISBN: 0521540518, second edition, 2004.
-		
-	\bibitem{sceneclass06}
-		A. Bosch, A. Zisserman and X. Munoz.
-		Scene classification via pLSA.
-		In \emph{European Conference on Computer Vision}, 2006.
-		
-	\bibitem{knopp10}
-		J. Knopp, J. Sivic and T. Pajdla.
-		Avoiding confusing features in place recognition.
-		In \emph{European Conference on Computer Vision}, 2010.
-		
-	\bibitem{quack08}
-		T. Quack, B. Leibe and L. Van Gool.
-		World-scale Mining of Objects and Events from Community Photo Collections.
-		In \emph{CIVR}, 2008.
-		
 	\bibitem{pymatbridge}
 		\url{https://github.com/jaderberg/python-matlab-bridge}
 		
@@ -1092,7 +1006,95 @@ retrieval with large vocabularies and fast spatial matching.
 		
 	\bibitem{listofstructurespdf}
 		\url{https://www.dropbox.com/s/lbdcjd58bs1rmot/List%20of%20structures%20in%20London.pdf}
-	  
+
+	\bibitem{sceneclass06}
+		A. Bosch, A. Zisserman and X. Munoz.
+		Scene classification via pLSA.
+		In \emph{European Conference on Computer Vision}, 2006.
+
+	\bibitem{randomforest2}
+		C. Silpa-Anan and R. Hartley.
+		Localization using an image-map.
+		In \emph{Proc. ACRA}, 2004.
+		
+	\bibitem{lowe1999}
+		D. Lowe.
+		Object recognition from local scale-invariant features. 
+		In \emph{Proc. CVPR}, 1999.
+		
+	\bibitem{recognitiontree2006}
+		D. Nist\'{e}r and H. Stew\'{e}nius.
+		Scalable recognition with a vocabulary tree.
+		In \emph{Proc. CVPR}, 2006.
+		
+	\bibitem{knopp10}
+		J. Knopp, J. Sivic and T. Pajdla.
+		Avoiding confusing features in place recognition.
+		In \emph{European Conference on Computer Vision}, 2010.
+		
+		
+	\bibitem{philbin2007}
+		J. Philbin, O. Chum, M. Isard, J. Sivic, and A. Zisserman. 
+		Object
+retrieval with large vocabularies and fast spatial matching. 
+		In \emph{Proc. CVPR}, 2007.
+	
+	\bibitem{videogoogle2003}
+		J. Sivic and A. Zisserman.
+		Video Google: A text retrieval approach to object matching in videos.
+		In \emph{Proc. ICCV}, 2003.
+		
+	\bibitem{hierarchies2006}
+		K. Mikolajczyk, B. Leibe, and B. Schincle.
+		Multiple object class detection with a generative model.
+		In \emph{Proc. CVPR}, 2006.
+		
+	\bibitem{googlearchitecture2003}
+		L. Barroso, J. Dean and U. Holzic.
+		Web search for a planet: The google cluster architecture.
+		In \emph{Micro, IEEE, 23}, 2003.
+		
+	\bibitem{turcot09}
+		P. Turcot and D. G. Lowe.
+		Better matching with fewer features: The selection of useful features in large database recognition problems.
+		In \emph{WS-LAVD, ICCV}, 2009.
+		
+	\bibitem{rootsift12}
+		R. Arandjelovi\'{c} and A. Zisserman.
+		Three things everyone should know to improve object retrieval.  
+		In \emph{IEEE Conference on Computer Vision and Pattern Recognition}, 2012.
+		
+	\bibitem{zisserman2004}
+	 	R. I. Hartley and A. Zisserman.
+		\emph{Multiple View Geometry in Computer Vision.}
+		Cambridge University PRess, ISBN: 0521540518, second edition, 2004.
+		
+	\bibitem{quack08}
+		T. Quack, B. Leibe and L. Van Gool.
+		World-scale Mining of Objects and Events from Community Photo Collections.
+		In \emph{CIVR}, 2008.
+
+	\bibitem{quack09}
+		T. Quack, L. Bossard, S. Gammeter and L. Van Gool.
+		I know what you did last summer: object-level auto-annotation of holiday snaps.
+		In \emph{ICCV}, 2009.
+		
+	\bibitem{randomforest2005}
+		V. Lepetit, P. Lagger, and P.Fua.
+		Randomized trees for realtime keypoint recognition.
+		In \emph{Proc. CVPR}, 2005.
+
+	\bibitem{searchengines2003}
+		Y. Aashcim, M.Lida, and K. Risvik.
+		Multi-tier architecture for web search engines.
+		In \emph{Proc. Web Congress}, 2003.
+		
+	\bibitem{randomforest1}
+		Y. Amit and D. Geman. 
+		Shape quantization and recognition with randomized trees. 
+		In \emph{Neural Computing, 9(7):1545Ð1588}, 1997.
+		
+		  
 \end{thebibliography}
 
 \end{document}

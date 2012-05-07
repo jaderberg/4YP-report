@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2012.3.10)  7 MAY 2012 13:46
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2012.3.10)  7 MAY 2012 16:56
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -777,14 +777,14 @@ Package pdftex.def Info: images/turbograph.pdf used on input line 752.
  [35
 
  <./images/turbograph.pdf>] [36]
-<images/query_words.pdf, id=1291, 597.23125pt x 740.03845pt>
+<images/query_words.pdf, id=1293, 597.23125pt x 740.03845pt>
 File: images/query_words.pdf Graphic file (type pdf)
 
 <use images/query_words.pdf>
 Package pdftex.def Info: images/query_words.pdf used on input line 775.
 (pdftex.def)             Requested size: 120.92421pt x 149.83438pt.
 
-<images/model_words.pdf, id=1292, 591.77287pt x 790.31975pt>
+<images/model_words.pdf, id=1294, 591.77287pt x 790.31975pt>
 File: images/model_words.pdf Graphic file (type pdf)
 
 <use images/model_words.pdf>
@@ -795,28 +795,28 @@ Underfull \hbox (badness 10000) in paragraph at lines 777--777
 [][]|\OT1/cmss/m/n/9 Model im-age with
  []
 
-<images/turbo_words.pdf, id=1293, 595.6406pt x 603.37622pt>
+<images/turbo_words.pdf, id=1295, 595.6406pt x 603.37622pt>
 File: images/turbo_words.pdf Graphic file (type pdf)
 
 <use images/turbo_words.pdf>
 Package pdftex.def Info: images/turbo_words.pdf used on input line 779.
 (pdftex.def)             Requested size: 120.92421pt x 122.48683pt.
 
-<images/query_vanillamodel.pdf, id=1294, 355.37186pt x 219.93076pt>
+<images/query_vanillamodel.pdf, id=1296, 355.37186pt x 219.93076pt>
 File: images/query_vanillamodel.pdf Graphic file (type pdf)
 
 <use images/query_vanillamodel.pdf>
 Package pdftex.def Info: images/query_vanillamodel.pdf used on input line 781.
 (pdftex.def)             Requested size: 217.66211pt x 134.70792pt.
 
-<images/model_turbo.pdf, id=1295, 363.1115pt x 227.02525pt>
+<images/model_turbo.pdf, id=1297, 363.1115pt x 227.02525pt>
 File: images/model_turbo.pdf Graphic file (type pdf)
 
 <use images/model_turbo.pdf>
 Package pdftex.def Info: images/model_turbo.pdf used on input line 783.
 (pdftex.def)             Requested size: 217.66211pt x 136.08455pt.
 
-<images/turbo_model_words.pdf, id=1296, 597.23125pt x 845.1575pt>
+<images/turbo_model_words.pdf, id=1298, 597.23125pt x 845.1575pt>
 File: images/turbo_model_words.pdf Graphic file (type pdf)
 
 <use images/turbo_model_words.pdf>
@@ -832,7 +832,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 785--785
 \OT1/cmss/m/n/9 words af-ter turbo-
  []
 
-<images/query_turbomodel.pdf, id=1297, 359.24162pt x 223.80042pt>
+<images/query_turbomodel.pdf, id=1299, 359.24162pt x 223.80042pt>
 File: images/query_turbomodel.pdf Graphic file (type pdf)
 
 <use images/query_turbomodel.pdf>
@@ -842,7 +842,7 @@ Package pdftex.def Info: images/query_turbomodel.pdf used on input line 787.
 s.pdf> <./images/query_vanillamodel.pdf> <./images/model_turbo.pdf> <./images/t
 urbo_model_words.pdf> <./images/query_turbomodel.pdf>]
 Chapter 7.
-<images/SystemArchitecture.pdf, id=1399, 324.22911pt x 251.3904pt>
+<images/SystemArchitecture.pdf, id=1400, 324.22911pt x 251.3904pt>
 File: images/SystemArchitecture.pdf Graphic file (type pdf)
 
 <use images/SystemArchitecture.pdf>
@@ -851,25 +851,25 @@ Package pdftex.def Info: images/SystemArchitecture.pdf used on input line 802.
  [38
 
  <./images/SystemArchitecture.pdf>]
-[39] [40] <images/stage1.png, id=1542, 769.87625pt x 612.2875pt>
+[39] [40] <images/stage1.png, id=1543, 769.87625pt x 612.2875pt>
 File: images/stage1.png Graphic file (type png)
 
 <use images/stage1.png>
 Package pdftex.def Info: images/stage1.png used on input line 870.
 (pdftex.def)             Requested size: 193.47578pt x 153.87497pt.
- <images/stage2.png, id=1543, 742.775pt x 584.1825pt>
+ <images/stage2.png, id=1544, 742.775pt x 584.1825pt>
 File: images/stage2.png Graphic file (type png)
 
 <use images/stage2.png>
 Package pdftex.def Info: images/stage2.png used on input line 872.
 (pdftex.def)             Requested size: 193.47578pt x 152.16019pt.
- <images/log.png, id=1544, 873.2625pt x 560.0925pt>
+ <images/log.png, id=1545, 873.2625pt x 560.0925pt>
 File: images/log.png Graphic file (type png)
 
 <use images/log.png>
 Package pdftex.def Info: images/log.png used on input line 874.
 (pdftex.def)             Requested size: 193.47578pt x 124.09245pt.
- <images/stage3.png, id=1545, 765.86125pt x 551.05875pt>
+ <images/stage3.png, id=1546, 765.86125pt x 551.05875pt>
 File: images/stage3.png Graphic file (type png)
 
 <use images/stage3.png>
@@ -886,7 +886,7 @@ File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
 [43] (/usr/local/texlive/2011/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2004/09/05 1.3 listings language file
 )
-[44] <images/anotatedimages.png, id=1621, 1008.76875pt x 622.325pt>
+[44] <images/anotatedimages.png, id=1622, 1008.76875pt x 622.325pt>
 File: images/anotatedimages.png Graphic file (type png)
 
 <use images/anotatedimages.png>
@@ -897,21 +897,21 @@ Chapter 8.
 [46
 
 ] [47]
-Missing character: There is no Ð in font cmssi10!
- [48
-
-]
-Underfull \hbox (badness 10000) in paragraph at lines 1094--1095
+Underfull \hbox (badness 10000) in paragraph at lines 1008--1009
 [][]$\OT1/cmtt/m/n/10.95 https : / / www . dropbox . com / s / lbdcjd58bs1rmot 
 / List % 20of % 20structures % 20in % 20London .
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1098.
-[49]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1098.
+[48
+
+]
+Missing character: There is no Ð in font cmssi10!
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1100.
+ [49]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1100.
  (./4yp.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1098.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1098.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1100.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1100.
 
 Package rerunfilecheck Info: File `4yp.out' has not changed.
 (rerunfilecheck)             Checksum: E5F012248244ACA7E57EE3A1037BC51D;2521.
@@ -922,7 +922,7 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1098.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1100.
  ) 
 Here is how much of TeX's memory you used:
  10268 strings out of 493633
@@ -950,10 +950,10 @@ ive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texli
 ve/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive
 /2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/
 2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on 4yp.pdf (51 pages, 16450771 bytes).
+Output written on 4yp.pdf (51 pages, 16451023 bytes).
 PDF statistics:
- 1780 PDF objects out of 2073 (max. 8388607)
- 1436 compressed objects within 15 object streams
+ 1781 PDF objects out of 2073 (max. 8388607)
+ 1437 compressed objects within 15 object streams
  299 named destinations out of 1000 (max. 500000)
  579 words of extra memory for PDF output out of 10000 (max. 10000000)
 
