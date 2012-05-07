@@ -14,7 +14,7 @@
 \contentsline {chapter}{\numberline {4}Baseline system}{18}{chapter.4}
 \contentsline {section}{\numberline {4.1}Feature Detection and Description}{20}{section.4.1}
 \contentsline {section}{\numberline {4.2}Visual Words}{20}{section.4.2}
-\contentsline {section}{\numberline {4.3}Histograms and Index}{21}{section.4.3}
+\contentsline {section}{\numberline {4.3}Histograms}{21}{section.4.3}
 \contentsline {section}{\numberline {4.4}Spatial Verification}{22}{section.4.4}
 \contentsline {section}{\numberline {4.5}Multiple Object Matching}{24}{section.4.5}
 \contentsline {section}{\numberline {4.6}Performance}{24}{section.4.6}

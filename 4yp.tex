@@ -56,7 +56,9 @@
 
 In this report, a large-scale object retrieval system is presented. It allows the user to supply a query image via a web interface, and the web site returns the \emph{intelligent image} -- the objects in the image are automatically labelled and can be clicked for more information.
 
-The system builds upon the state-of-the art in visual object retrieval from large databases -- that is allowing objects to be recognised by searching against millions of images. This notion is explored by using the images contained on the web pages of an online encyclopaedia as the object database. The resulting system can automatically annotate multiple objects within query images, such as the landmarks in a holiday photo. We demonstrated that the system can be implemented with a front end web user interface for interaction. A number of improvements to the base line system are investigated, including a novel method for increasing the matching performance by external database augmentation.
+The system builds upon the state-of-the art in visual object retrieval from large databases -- that is allowing objects to be recognised by searching against millions of images. The images contained within the articles of Wikipedia \cite{wikipedia} are used for the dataset of images, with each article defining an object. In this project, a subset of Wikipedia articles is used to build the object database: the articles linked to by the ``List of Structures in London'' \cite{listofstructures} Wikipedia page. The resulting system can automatically recognise and annotate multiple objects within a query image. 
+
+Various changes are implemented to increase the performance of the baseline system. Geometric improvements to the spatial verification stage as well as changes to the descriptor and detector methods for image features are shown to increase recognition performance. An additional novel process was added which augments the database of object images with the information content of an external source of labelled images. This improvement is shown to drastically increases performance.
 
 This work is done with the view to scaling up to the database to a corpus of millions of images and objects.
 
@@ -88,7 +90,7 @@ There are a large number of applications that would benefit from having detailed
 \label{fig:intimage}
 \end{figure}
 
-The result of the project is that a query image is inputted, the objects contained within the image are recognised, and the image is returned with the recognised objects \emph{tagged} i.e. the region of the object in the image is outlined and it can be clicked to give relevant information. In this way the standard image has been transformed into the \emph{intelligent image} -- one that knows about the contained scene and can offer up information to the consumer about it's contents.
+The result of the project is that a query image is inputted, the objects contained within the image are recognised, and the image is returned with the recognised objects \emph{tagged} i.e. the region of the object in the image is outlined and it can be clicked to give relevant information. In this way the standard image has been transformed into the \emph{intelligent image} -- one that knows about the contained scene and can offer up information to the consumer about it's contents. Figure~\ref{fig:intimage} shows an example of an intelligent image.
 
 The tagging process works by matching a section of the query image with an image of an object from a database. The query image is then said to contain this object within the region that matches. To be able to recognise a vast corpus of objects, a large collection of reference images is needed to be available to match against. The database of images of objects is created from Wikipedia \cite{wikipedia} -- a crowd-sourced online encyclopaedia with many images contained within the articles. Each Wikipedia article defines an object, and the images that appear in the article are downloaded to the database. If a query image matches a Wikipedia image in the database, the query image is tagged as the object defined by the article from where the Wikipedia image was downloaded.
 
@@ -96,7 +98,7 @@ The aim of the project is to work towards recognising every object on Wikipedia,
 
 \section{Road Map}
 
-The report starts by introducing the background information are previous work published in Chapter~\ref{chpt:background}. This gives a holistic view of the recent innovations in large scale object recognition and retrieval and provides the basis of knowledge used in the project.
+The report starts by introducing the relevant literature in Chapter~\ref{chpt:background}. This gives a holistic view of the recent innovations in large scale object recognition and retrieval and provides the basis of knowledge used in the project.
 
 Chapter~\ref{chpt:data} gives an in-depth account of the data sources used in the project. This includes the acquisition of the database of Wikipedia images as well as various other datasets used for testing and improving the system.
 
@@ -317,7 +319,7 @@ yield = \frac{1}{N}\sum_{i=1}^{N} [y_i=f(x_i)]
 \end{equation}
 where $y_i$ is the ground-truth class of image $x_i$, $f(x_i)$ is the class given by the system, and $N$ is the total number of test images (701 in this case). For example, a yield of 30\% means that 210 of the 701 test images were annotated correctly. It should be noted that each test image is only associated with one ground-truth class\footnote{This means to say that a test image cannot contain multiple objects. There is however a problem during testing of some test images being matched accurately with model images, but their classes being different due to the labelling process. For example, a test image of Big Ben may be labelled as Houses of Parliament -- this would be recorded as a false positive label, even though this would be a perfectly acceptable label for the test image. The result is some false positive labelling which is not actually incorrect. Therefore the true yield performances are always slightly higher than given due to some incorrect false positive labelling during testing.}.
 
-With this measure of performance, the performance of the baseline system (Chapter~\ref{chpt:system}) can be quantified, and the effects of the improvements described in Chapter~\ref{chpt:geoimprovements} and Chapter~\ref{chpt:turboboosting} can inpterpreted.
+With this measure of performance, the performance of the baseline system (Chapter~\ref{chpt:system}) can be quantified, and the effects of the improvements described in Chapter~\ref{chpt:geoimprovements} and Chapter~\ref{chpt:turboboosting} can interpreted.
 
 
 %-------------------------------
@@ -381,7 +383,7 @@ During the pre-computation process, the vocabulary of words is created. The voca
 
 The result of the vocabulary creation is a kd-tree which can be used to get the word associated with a SIFT descriptor. Each word is assigned an ID, and the images can then be represented as a list of words, where each word is the nearest visual word to the SIFT descriptor.
 
-\section{Histograms and Index}
+\section{Histograms}
 \label{sec:histograms}
 The images are represented by a list of words as described in the previous section. This list of words can in turn be represented as a histogram, with each element containing the number of occurrences in the image of the word with ID equal to the element number. Therefore each histogram is a sparse 100K element array. Two examples of the raw histograms are shown in Figure~\ref{fig:rawhist1} and Figure~\ref{fig:rawhist2}.
 
@@ -651,7 +653,7 @@ It is easy to see that implementing the affine invariant detector with the RootS
 \cline{1-5}
 \end{tabular}
 \end{center}
-\caption{The yield acheived for each improvement method with different thresholds for the number of RANSAC inliers required for a match.}
+\caption{The yield achieved for each improvement method with different thresholds for the number of RANSAC inliers required for a match.}
 \label{tbl:improvements}
 \end{table}
 
@@ -663,7 +665,7 @@ It is easy to see that implementing the affine invariant detector with the RootS
 %-------------------------------
 \linespread{1}\chapter{Augmentation Improvements}
 \label{chpt:turboboosting}
-This chapter describes the improvements made using a technique to inflate the visual word content of the model images in the database. This novel technique, defined as \emph{turbo-boosting}, increases the yield performance of the system.
+This chapter describes the improvements made using a technique to inflate the visual word content of the model images in the database. This novel technique, termed \emph{turbo-boosting}, increases the yield performance of the system.
 
 \section{Motivation}
 
@@ -690,10 +692,10 @@ The database-side feature augmentation process of querying the baseline system w
 
 While database-side feature augmentation is not suited to this application, the overall idea of feature augmentation can still be used, with a process called \emph{turbo-boosting}. 
 
-Turbo-boosting is the augmentation of features from images of a completely independent dataset. The process is exactly that of spatially verified database expansion \cite{rootsift12}, however rather than the model images being used for augmentation, labelled images from Microsoft's Bing image search are used. A number of images, called \emph{turbo images} are downloaded for each class, by issuing a query to the Bing search engine (see Section~\ref{sec:turboimages}). For example, the turbo images for the class \lstinline!Tower_Bridge! are shown in Figure~\ref{fig:turboturboimages}. For each model image, if a turbo image matches it, the visual words of the turbo image are projected onto the model image.
+Turbo-boosting is the spatial augmentation of features from images of a completely independent dataset. The process is exactly that of spatial database-side feature expansion \cite{rootsift12}, however rather than the model images being used for augmentation, labelled images from Microsoft's Bing image search are used. A number of images, called \emph{turbo images} are downloaded for each class, by issuing a query to the Bing search engine (see Section~\ref{sec:turboimages}). For example, the turbo images for the class \lstinline!Tower_Bridge! are shown in Figure~\ref{fig:turboturboimages}. For each model image, if a turbo image matches it, the visual words of the turbo image are projected onto the model image.
 
 
-Take, for example, the image in Figure~\ref{fig:turbomodelimage} as the first model image to be turbo-boosted. Each turbo image is tested to see if it matches the model image. In this example, the turbo image in Figure~\ref{fig:turboturboimage} matches against the model image, with the match being shown in Figure~\ref{fig:turbomatch}. The matched region is the bounding rectangle of the spatially verified visual words, with a slight margin. \emph{All} of the visual words contained with the matched region of the turbo image are projected onto the model image, as in Figure~\ref{fig:turboaugment}. The model image has now been augmented with the visual words of the turbo image.
+Take, for example, the image in Figure~\ref{fig:turbomodelimage} as the first model image to be turbo-boosted. Each turbo image is tested to see if it matches the model image. In this example, the turbo image in Figure~\ref{fig:turboturboimage} matches against the model image, with the match being shown in Figure~\ref{fig:turbomatch}. The matched region is the bounding rectangle of the spatially verified visual words, with a slight margin. \emph{All} of the visual words contained with the matched region of the turbo image are projected onto the model image, as shown in Figure~\ref{fig:turboaugment}. The ellipse denoting of each of the turbo image's words are projected onto the model image using the affine transformation relating the scenes of the two images that is computed from the matched words. The model image has now been spatially augmented with the visual words of the turbo image.
 
 This is repeated for every turbo image, for each model image of each class. If no match can be reasonably made with a turbo image, no augmentation occurs and the process continues with trying the next turbo image.
 
@@ -770,19 +772,21 @@ Turbo-boosting is a completely general strategy for increasing the yield/recall 
 
 \begin{figure}[t!]
 \centering 
-\subfloat[Query image]{\label{fig:turboresultqueryimage}\includegraphics[width=0.25\textwidth]{images/turboquery.jpg}}
+\subfloat[Query image with words]{\label{fig:turboresultqueryimage}\includegraphics[width=0.25\textwidth]{images/query_words.pdf}}
 ~
-\subfloat[Model image]{\label{fig:turboresultmodelimage}\includegraphics[width=0.2\textwidth]{images/turbomodelimage.pdf}}
+\subfloat[Model image with words]{\label{fig:turboresultmodelimage}\includegraphics[width=0.22\textwidth]{images/model_words.pdf}}
 ~
-\subfloat[Turbo image]{\label{fig:turboresultturboimage}\includegraphics[width=0.25\textwidth]{images/turbomatch.pdf}}
+\subfloat[Turbo image with words]{\label{fig:turboresultturboimage}\includegraphics[width=0.25\textwidth]{images/turbo_words.pdf}}
 \\
 \subfloat[The match before turbo-boosting]{\label{fig:turboresultvanilla}\includegraphics[width=0.45\textwidth]{images/query_vanillamodel.pdf}}
 ~
-\subfloat[The turbo image matching the model image, resulting in augmentation of the turbo image's visual words]{\label{fig:turboresultturbomatch}\includegraphics[width=0.45\textwidth]{images/model_turbo.pdf}}
+\subfloat[The turbo image matching the model image]{\label{fig:turboresultturbomatch}\includegraphics[width=0.45\textwidth]{images/model_turbo.pdf}}
 \\
+\subfloat[The model image's words after turbo-boosting]{\label{fig:turboresultaugmentedmodel}\includegraphics[width=0.22\textwidth]{images/turbo_model_words.pdf}}
+~
 \subfloat[The match after turbo-boosting]{\label{fig:turboresultturbo}\includegraphics[width=0.5\textwidth]{images/query_turbomodel.pdf}}
 
-\caption{The query image Figure~\ref{fig:turboresultqueryimage} will not be identified unless model image Figure~\ref{fig:turboresultmodelimage} is augmented with the words of Figure~\ref{fig:turboresultturboimage}.}
+\caption{The query image Figure~\ref{fig:turboresultqueryimage} will not be identified unless model image Figure~\ref{fig:turboresultmodelimage} is augmented with the words of Figure~\ref{fig:turboresultturboimage}. Due to the match in Figure~\ref{fig:turboresultturbomatch}, the positions of the visual words in the turbo image are projected onto the model image, Figure~\ref{fig:turboresultaugmentedmodel}.}
 \label{fig:turboresult}
 \end{figure}
 
@@ -814,7 +818,7 @@ The resulting interface is a MATLAB function \lstinline!get_objects()! that take
 
 A filesystem is used for the storage of model images (see Chapter~\ref{chpt:data}), however a working record is needed of the dataset for book keeping and quick searching. For this, MongoDB\footnote{\url{http://www.mongodb.org}} is used. 
 
-MongoDB is a NoSQL\footnote{NoSQL is a family of databases that does not require fixed table schemas, and are sometimes known as ``structured storage''.} database application that stores data in the form of documents -- data structures similar to JSON objects. The data is unstructured, and provides a simple way of storing data without dealing with the complexities of tables and relationships that come with relational databases (e.g. SQL). Listing~\ref{lst:bson} shows a model image stored in the MongoDB database. The fields of the documents (i.e. \lstinline!"_id", "name", "path", "class", "size"!) are fully searchable and can be indexed for faster lookup\footnote{By deafault, the \lstinline!"_id"! field is indexed for fast lookup by ID.}. 
+MongoDB is a NoSQL\footnote{NoSQL is a family of databases that does not require fixed table schemas, and are sometimes known as ``structured storage''.} database application that stores data in the form of documents -- data structures similar to JSON objects. The data is unstructured, and provides a simple way of storing data without dealing with the complexities of tables and relationships that come with relational databases (e.g. SQL). Listing~\ref{lst:bson} shows a model image stored in the MongoDB database. The fields of the documents (i.e. \lstinline!"_id", "name", "path", "class", "size"!) are fully searchable and can be indexed for faster lookup\footnote{By default, the \lstinline!"_id"! field is indexed for fast lookup by ID.}. 
 
 
 \linespread{1} % single line spacing
@@ -960,7 +964,7 @@ Figure~\ref{fig:anotations} shows various example results and a video of the imp
 \begin{figure}[htb]
 \centering 
 \includegraphics[width=1.0\textwidth]{images/anotatedimages}
-\caption{A selection of annotated images. Clockwise from top left: London Central Mosque, Abbey Mills Pumping Station, Bloomsbury Square, University of Greenwich, Victoria and Albert Museum, and St Jame's Church, Piccadilly.}
+\caption{A selection of annotated images. Clockwise from top left: London Central Mosque, Abbey Mills Pumping Station, Bloomsbury Square, University of Greenwich, Victoria and Albert Museum, and St James's Church, Piccadilly.}
 \label{fig:anotations}
 \end{figure}
 

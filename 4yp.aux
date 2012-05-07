@@ -14,6 +14,8 @@
 \global\let\hyper@last\relax 
 \gdef\HyperFirstAtBeginDocument#1{#1}
 \providecommand\HyField@AuxAddToFields[1]{}
+\citation{wikipedia}
+\citation{listofstructures}
 \@writefile{toc}{\contentsline {chapter}{\numberline {1}Introduction}{3}{chapter.1}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
@@ -115,9 +117,9 @@
 \newlabel{eqn:descrs}{{4.2}{20}{Feature Detection and Description\relax }{equation.4.1.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4.2}Visual Words}{20}{section.4.2}}
 \newlabel{sec:visualwords}{{4.2}{20}{Visual Words\relax }{section.4.2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.3}Histograms and Index}{21}{section.4.3}}
-\newlabel{sec:histograms}{{4.3}{21}{Histograms and Index\relax }{section.4.3}{}}
-\newlabel{eqn:tfidfscore}{{4.3}{21}{Histograms and Index\relax }{equation.4.3.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.3}Histograms}{21}{section.4.3}}
+\newlabel{sec:histograms}{{4.3}{21}{Histograms\relax }{section.4.3}{}}
+\newlabel{eqn:tfidfscore}{{4.3}{21}{Histograms\relax }{equation.4.3.3}{}}
 \newlabel{fig:rawhist1}{{4.3b}{22}{Subfigure 4 4.3b\relax }{subfigure.4.3.2}{}}
 \newlabel{sub@fig:rawhist1}{{(b)}{b}{Subfigure 4 4.3b\relax }{subfigure.4.3.2}{}}
 \newlabel{fig:rawhist2}{{4.3e}{22}{Subfigure 4 4.3e\relax }{subfigure.4.3.5}{}}
@@ -179,8 +181,8 @@
 \newlabel{lst:rootsift}{{5.2}{29}{Mapping of SIFT descriptors to RootSIFT space}{lstlisting.5.2}{}}
 \@writefile{lol}{\contentsline {lstlisting}{\numberline {5.2}Mapping of SIFT descriptors to RootSIFT space.}{29}{lstlisting.5.2}}
 \@writefile{toc}{\contentsline {section}{\numberline {5.4}Results}{30}{section.5.4}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.1}{\ignorespaces The yield acheived for each improvement method with different thresholds for the number of RANSAC inliers required for a match.\relax }}{30}{table.caption.18}}
-\newlabel{tbl:improvements}{{5.1}{30}{The yield acheived for each improvement method with different thresholds for the number of RANSAC inliers required for a match.\relax \relax }{table.caption.18}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.1}{\ignorespaces The yield achieved for each improvement method with different thresholds for the number of RANSAC inliers required for a match.\relax }}{30}{table.caption.18}}
+\newlabel{tbl:improvements}{{5.1}{30}{The yield achieved for each improvement method with different thresholds for the number of RANSAC inliers required for a match.\relax \relax }{table.caption.18}{}}
 \@writefile{toc}{\contentsline {chapter}{\numberline {6}Augmentation Improvements}{31}{chapter.6}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
@@ -226,16 +228,19 @@
 \newlabel{sub@fig:turboresultvanilla}{{(d)}{d}{Subfigure 6 6.4d\relax }{subfigure.6.4.4}{}}
 \newlabel{fig:turboresultturbomatch}{{6.4e}{37}{Subfigure 6 6.4e\relax }{subfigure.6.4.5}{}}
 \newlabel{sub@fig:turboresultturbomatch}{{(e)}{e}{Subfigure 6 6.4e\relax }{subfigure.6.4.5}{}}
-\newlabel{fig:turboresultturbo}{{6.4f}{37}{Subfigure 6 6.4f\relax }{subfigure.6.4.6}{}}
-\newlabel{sub@fig:turboresultturbo}{{(f)}{f}{Subfigure 6 6.4f\relax }{subfigure.6.4.6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.4}{\ignorespaces The query image Figure\nobreakspace  {}\ref  {fig:turboresultqueryimage} will not be identified unless model image Figure\nobreakspace  {}\ref  {fig:turboresultmodelimage} is augmented with the words of Figure\nobreakspace  {}\ref  {fig:turboresultturboimage}.\relax }}{37}{figure.caption.23}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Query image}}}{37}{subfigure.6.4.1}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Model image}}}{37}{subfigure.6.4.2}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Turbo image}}}{37}{subfigure.6.4.3}}
+\newlabel{fig:turboresultaugmentedmodel}{{6.4f}{37}{Subfigure 6 6.4f\relax }{subfigure.6.4.6}{}}
+\newlabel{sub@fig:turboresultaugmentedmodel}{{(f)}{f}{Subfigure 6 6.4f\relax }{subfigure.6.4.6}{}}
+\newlabel{fig:turboresultturbo}{{6.4g}{37}{Subfigure 6 6.4g\relax }{subfigure.6.4.7}{}}
+\newlabel{sub@fig:turboresultturbo}{{(g)}{g}{Subfigure 6 6.4g\relax }{subfigure.6.4.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.4}{\ignorespaces The query image Figure\nobreakspace  {}\ref  {fig:turboresultqueryimage} will not be identified unless model image Figure\nobreakspace  {}\ref  {fig:turboresultmodelimage} is augmented with the words of Figure\nobreakspace  {}\ref  {fig:turboresultturboimage}. Due to the match in Figure\nobreakspace  {}\ref  {fig:turboresultturbomatch}, the positions of the visual words in the turbo image are projected onto the model image, Figure\nobreakspace  {}\ref  {fig:turboresultaugmentedmodel}.\relax }}{37}{figure.caption.23}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Query image with words}}}{37}{subfigure.6.4.1}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Model image with words}}}{37}{subfigure.6.4.2}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Turbo image with words}}}{37}{subfigure.6.4.3}}
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {The match before turbo-boosting}}}{37}{subfigure.6.4.4}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(e)}{\ignorespaces {The turbo image matching the model image, resulting in augmentation of the turbo image's visual words}}}{37}{subfigure.6.4.5}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(f)}{\ignorespaces {The match after turbo-boosting}}}{37}{subfigure.6.4.6}}
-\newlabel{fig:turboresult}{{6.4}{37}{The query image Figure~\ref {fig:turboresultqueryimage} will not be identified unless model image Figure~\ref {fig:turboresultmodelimage} is augmented with the words of Figure~\ref {fig:turboresultturboimage}.\relax \relax }{figure.caption.23}{}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(e)}{\ignorespaces {The turbo image matching the model image}}}{37}{subfigure.6.4.5}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(f)}{\ignorespaces {The model image's words after turbo-boosting}}}{37}{subfigure.6.4.6}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(g)}{\ignorespaces {The match after turbo-boosting}}}{37}{subfigure.6.4.7}}
+\newlabel{fig:turboresult}{{6.4}{37}{The query image Figure~\ref {fig:turboresultqueryimage} will not be identified unless model image Figure~\ref {fig:turboresultmodelimage} is augmented with the words of Figure~\ref {fig:turboresultturboimage}. Due to the match in Figure~\ref {fig:turboresultturbomatch}, the positions of the visual words in the turbo image are projected onto the model image, Figure~\ref {fig:turboresultaugmentedmodel}.\relax \relax }{figure.caption.23}{}}
 \@writefile{toc}{\contentsline {chapter}{\numberline {7}Implementation}{38}{chapter.7}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
@@ -278,8 +283,8 @@
 \@writefile{lol}{\contentsline {lstlisting}{\numberline {7.3}Python code to run the object matching MATLAB function.}{44}{lstlisting.7.3}}
 \citation{video}
 \@writefile{toc}{\contentsline {section}{\numberline {7.4}Examples}{45}{section.7.4}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7.3}{\ignorespaces A selection of annotated images. Clockwise from top left: London Central Mosque, Abbey Mills Pumping Station, Bloomsbury Square, University of Greenwich, Victoria and Albert Museum, and St Jame's Church, Piccadilly.\relax }}{45}{figure.caption.26}}
-\newlabel{fig:anotations}{{7.3}{45}{A selection of annotated images. Clockwise from top left: London Central Mosque, Abbey Mills Pumping Station, Bloomsbury Square, University of Greenwich, Victoria and Albert Museum, and St Jame's Church, Piccadilly.\relax \relax }{figure.caption.26}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7.3}{\ignorespaces A selection of annotated images. Clockwise from top left: London Central Mosque, Abbey Mills Pumping Station, Bloomsbury Square, University of Greenwich, Victoria and Albert Museum, and St James's Church, Piccadilly.\relax }}{45}{figure.caption.26}}
+\newlabel{fig:anotations}{{7.3}{45}{A selection of annotated images. Clockwise from top left: London Central Mosque, Abbey Mills Pumping Station, Bloomsbury Square, University of Greenwich, Victoria and Albert Museum, and St James's Church, Piccadilly.\relax \relax }{figure.caption.26}{}}
 \@writefile{toc}{\contentsline {chapter}{\numberline {8}Summary}{46}{chapter.8}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
