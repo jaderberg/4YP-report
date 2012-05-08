@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2012.3.10)  7 MAY 2012 16:56
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2012.3.10)  8 MAY 2012 11:29
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -896,13 +896,7 @@ Package pdftex.def Info: images/anotatedimages.png used on input line 966.
 Chapter 8.
 [46
 
-] [47]
-Underfull \hbox (badness 10000) in paragraph at lines 1008--1009
-[][]$\OT1/cmtt/m/n/10.95 https : / / www . dropbox . com / s / lbdcjd58bs1rmot 
-/ List % 20of % 20structures % 20in % 20London .
- []
-
-[48
+] [47] [48
 
 ]
 Missing character: There is no Ð in font cmssi10!
@@ -950,10 +944,10 @@ ive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texli
 ve/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive
 /2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/
 2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on 4yp.pdf (51 pages, 16451023 bytes).
+Output written on 4yp.pdf (51 pages, 16451089 bytes).
 PDF statistics:
- 1781 PDF objects out of 2073 (max. 8388607)
- 1437 compressed objects within 15 object streams
+ 1780 PDF objects out of 2073 (max. 8388607)
+ 1436 compressed objects within 15 object streams
  299 named destinations out of 1000 (max. 500000)
  579 words of extra memory for PDF output out of 10000 (max. 10000000)
 

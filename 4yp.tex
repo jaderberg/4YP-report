@@ -695,7 +695,7 @@ While database-side feature augmentation is not suited to this application, the 
 Turbo-boosting is the spatial augmentation of features from images of a completely independent dataset. The process is exactly that of spatial database-side feature augmentation \cite{rootsift12}, however rather than the model images being used for augmentation, labelled images from Microsoft's Bing image search are used. A number of images, called \emph{turbo images} are downloaded for each class, by issuing a query to the Bing search engine (see Section~\ref{sec:turboimages}). For example, the turbo images for the class \lstinline!Tower_Bridge! are shown in Figure~\ref{fig:turboturboimages}. For each model image, if a turbo image matches it, the visual words of the turbo image are projected onto the model image.
 
 
-Take, for example, the image in Figure~\ref{fig:turbomodelimage} as the first model image to be turbo-boosted. Each turbo image is tested to see if it matches the model image. In this example, the turbo image in Figure~\ref{fig:turboturboimage} matches against the model image, with the match being shown in Figure~\ref{fig:turbomatch}. The matched region is the bounding rectangle of the spatially verified visual words, with a slight margin. \emph{All} of the visual words contained with the matched region of the turbo image are projected onto the model image, as shown in Figure~\ref{fig:turboaugment}. The ellipse denoting of each of the turbo image's words are projected onto the model image using the affine transformation relating the scenes of the two images that is computed from the matched words. The model image has now been spatially augmented with the visual words of the turbo image.
+Take, for example, the image in Figure~\ref{fig:turbomodelimage} as the first model image to be turbo-boosted. Each turbo image is tested to see if it matches the model image. In this example, the turbo image in Figure~\ref{fig:turboturboimage} matches against the model image, with the match being shown in Figure~\ref{fig:turbomatch}. The matched region is the bounding rectangle of the spatially verified visual words, with a slight margin. \emph{All} of the visual words contained with the matched region of the turbo image are projected onto the model image, as shown in Figure~\ref{fig:turboaugment}. The ellipse representing each of the turbo image's words within the matched region are projected onto the model image using the affine transformation relating the scenes of the two images that is computed from the matched words. The model image has now been spatially augmented with the visual words of the turbo image.
 
 This is repeated for every turbo image, for each model image of each class. If no match can be reasonably made with a turbo image, no augmentation occurs and the process continues with trying the next turbo image.
 
@@ -1005,7 +1005,7 @@ Further work would aim to increase the yield and scale the size of the database.
 		\url{http://www.youtube.com/watch?v=NFFOjgw7QhM}
 		
 	\bibitem{listofstructurespdf}
-		\url{https://www.dropbox.com/s/lbdcjd58bs1rmot/List%20of%20structures%20in%20London.pdf}
+		\url{http://www.2shared.com/document/KQ8GqF7Z/List_of_structures_in_London.html}
 
 	\bibitem{sceneclass06}
 		A. Bosch, A. Zisserman and X. Munoz.
